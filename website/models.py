@@ -1,10 +1,16 @@
+# This is an auto-generated Django model module.
+# You'll have to do the following manually to clean this up:
+#   * Rearrange models' order
+#   * Make sure each model has one field with primary_key=True
+#   * Make sure each ForeignKey and OneToOneField has `on_delete` set to the desired behavior
+#   * Remove `managed = False` lines if you wish to allow Django to create, modify, and delete the table
+# Feel free to rename the models, but don't rename db_table values or field names.
 from django.db import models
 
 
 class ControlePagamento(models.Model):
-    id = models.IntegerField(primary_key=True)  # The composite primary key (id, solicitação_id, professor_id) found, that is not supported. The first column is selected.
     situação_pasta = models.CharField(max_length=45)
-    solicitação = models.ForeignKey('Solicitao', models.DO_NOTHING, unique=True)
+    solicitação = models.ForeignKey('Solicitao', models.DO_NOTHING)
     data_inicio = models.DateField()
     data_termino = models.DateField()
     modalidade = models.CharField(max_length=45)
@@ -24,23 +30,12 @@ class ControlePagamento(models.Model):
     professor = models.ForeignKey('Professor', models.DO_NOTHING)
 
     class Meta:
-        
+        managed = False
         db_table = 'controle_pagamento'
         unique_together = (('id', 'solicitação', 'professor'),)
 
 
-class Login(models.Model):
-    id = models.IntegerField(primary_key=True)  # The composite primary key (id, usuario_id) found, that is not supported. The first column is selected.
-    usuario = models.ForeignKey('Usuario', models.DO_NOTHING)
-
-    class Meta:
-        
-        db_table = 'login'
-        unique_together = (('id', 'usuario'),)
-
-
 class Professor(models.Model):
-    id = models.IntegerField(primary_key=True)
     nome = models.CharField(max_length=45)
     email = models.CharField(max_length=255)
     telefone = models.CharField(max_length=45)
@@ -49,22 +44,11 @@ class Professor(models.Model):
     pf_ou_pj = models.CharField(max_length=15)
 
     class Meta:
-        
+        managed = False
         db_table = 'professor'
 
 
-class Relatorio(models.Model):
-    solicitação = models.OneToOneField('Solicitao', models.DO_NOTHING, primary_key=True, unique=True)  # The composite primary key (solicitação_id, controle_pagamento_id, controle_pagamento_solicitação_id) found, that is not supported. The first column is selected.
-    controle_pagamento = models.ForeignKey(ControlePagamento, models.DO_NOTHING)
-    controle_pagamento_solicitação = models.ForeignKey(ControlePagamento, models.DO_NOTHING, to_field='solicitação_id', related_name='relatrio_controle_pagamento_solicitação_set')
-
-    class Meta:
-        db_table = 'relatório'
-        unique_together = (('solicitação', 'controle_pagamento', 'controle_pagamento_solicitação'),)
-
-
 class Solicitao(models.Model):
-    id = models.IntegerField(primary_key=True)
     status = models.CharField(max_length=45)
     parecer_coordenação = models.TextField()
     parecer_secretaria = models.TextField()
@@ -85,16 +69,16 @@ class Solicitao(models.Model):
     observação = models.TextField()
 
     class Meta:
-        
+        managed = False
         db_table = 'solicitação'
 
 
 class Usuario(models.Model):
-    id = models.IntegerField(primary_key=True)
+    nome = models.CharField(max_length=45)
     email = models.CharField(max_length=255)
     número_telefone = models.CharField(max_length=45)
     senha = models.CharField(max_length=45)
 
     class Meta:
-        
+        managed = False
         db_table = 'usuario'

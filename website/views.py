@@ -9,7 +9,7 @@ class IndexView(CreateView):
     model = models.Usuario
     form_class = forms.LoginForm
     template_name = "login.html"
-    success_url = "#"
+    success_url = "menu/"
 
 class MenuView(TemplateView):
     template_name = "menu.html"

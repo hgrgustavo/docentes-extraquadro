@@ -29,6 +29,9 @@ class ControlePagamento(models.Model):
     observação = models.TextField()
     professor = models.ForeignKey('Professor', models.DO_NOTHING)
 
+    
+
+
     class Meta:
         managed = False
         db_table = 'controle_pagamento'

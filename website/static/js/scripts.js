@@ -1,17 +1,17 @@
-function dropdown() {
-  document.getElementById("dropdown").classList.toggle("show");
-}
 
-// Close the dropdown menu if the user clicks outside of it
-window.onclick = function(event) {
-  if (!event.target.matches('.dropbtn')) {
-    var dropdowns = document.getElementsById("dropdown-conttent");
-    var i;
-    for (i = 0; i < dropdowns.length; i++) {
-      var openDropdown = dropdowns[i];
-      if (openDropdown.classList.contains('show')) {
-        openDropdown.classList.remove('show');
-      }
+function dropdown() {
+  const dropdownButton = document.getElementById("dropdownButton");
+  const dropdownContent = document.getElementById("dropdownMenu");
+
+  dropdownButton.addEventListener("click", () => {
+    dropdownContent.classList.toggle("hidden");
+  });
+
+  document.addEventListener("click", (event) => {
+    const isClickInside = dropdownButton.contains(event.target) || dropdownContent.contains(event.target);
+    if (!isClickInside) {
+      dropdownContent.classList.add("hidden");
     }
-  }
-} 
+
+  });
+}

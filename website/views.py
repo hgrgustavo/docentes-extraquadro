@@ -1,8 +1,8 @@
 from django.shortcuts import render
 from django.views.generic import TemplateView
 from django.views.generic.edit import CreateView
-from . import models 
-from . import forms
+from django.views.generic.list import ListView
+from . import models, forms
 
 
 class IndexView(CreateView):
@@ -13,6 +13,15 @@ class IndexView(CreateView):
 
 class MenuView(TemplateView):
     template_name = "menu.html"
+
+class InicioView(ListView):
+    template_name = "menu_inicio.html"
+    models = models.Usuario
+    context_object_name = "usuario"
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        return context
 
 
 

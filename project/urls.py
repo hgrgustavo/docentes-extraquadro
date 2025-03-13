@@ -21,5 +21,6 @@ from website import views
 urlpatterns = [
     path("", views.IndexView.as_view(), name="loginpage"),
     path("menu/", views.MenuView.as_view(), name="menupage"), 
+    path("menu/inicio/", views.InicioView.as_view(), name="iniciopage"),
 
 ]

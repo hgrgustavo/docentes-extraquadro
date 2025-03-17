@@ -1,146 +1,84 @@
-<!DOCTYPE html> 
-{% load static %} 
-<html class="h-full bg-white" lang="pt-br"> 
-<head> 
-    <meta charset="UTF-8"> 
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
-    <link rel="stylesheet" href="{% static 'css/output.css' %}"> 
-    <script src="{% static 'js/scripts.js' %}"></script>
-    <title>menu</title> 
+<!DOCTYPE html>
+<html lang="pt-br">
+{% load static %}
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Home{% endblock %}</title>
+    <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
 </head>
-<body>
-<nav class="bg-indigo-600">
-  <div class="mx-auto max-w-7xl px-6 sm:px-6 lg:px-10">
-    <div class="relative flex h-16 items-center justify-between">
-      <div class="absolute inset-y-0 left-0 flex items-center sm:hidden">
-        <!-- Mobile menu button-->
-        <button type="button"  class="relative inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:bg-gray-700 hover:text-white focus:ring-2 focus:ring-white focus:outline-hidden focus:ring-inset" aria-controls="mobile-menu" aria-expanded="false">
-          <span class="absolute -inset-0.5"></span>
-          <span class="sr-only">Open main menu</span>
-          <!--
-            Icon when menu is closed.
 
-            Menu open: "hidden", Menu closed: "block"
-          -->
-          <svg class="block size-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true" data-slot="icon">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
-          </svg>
-          <!--
-            Icon when menu is open.
-
-            Menu open: "block", Menu closed: "hidden"
-          -->
-          <svg class="hidden size-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true" data-slot="icon">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
-          </svg>
-        </button>
-      </div>
-      <div class="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
-        <div class="flex shrink-0 items-center">
-
-        </div>
-        <div class="hidden sm:ml-6 sm:block">
-          <div class="flex space-x-4">
-            <!-- Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" -->
-		           </div>
-        </div>
-      </div>
-      <div class="inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
-       
-        <!-- Profile dropdown -->
-        <div>
-          <!-- Dropdown Button -->
-          <button id="dropdownButton" onclick="dropdown()" class="">
-            <i width="40px" height="35px" data-lucide="circle-user"></i>
-          </button>
+<body class="h-screen>
+    <div class="h-full flex flex-col relative">
+        <nav class="text-white p-4 flex items-center justify-between">
         
-          <!-- Dropdown Menu -->
-          <div id="dropdownMenu" class="hidden absolute right-0 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5">
-            <div class="py-1" role="menu" aria-orientation="vertical">
-              <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">Profile</a>
-              <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">Settings</a>
-              <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">Logout</a>
-            </div>
-          </div>
+        </nav>
+        <div class="flex flex-1">
+            <aside class="w-56 p-4 text-gray-900">
+                <ul class="overflow-y-auto space-y-2">
+                    <li
+                        class="flex items-center p-3 rounded-lg cursor-pointer hover:bg-blue-700 hover:text-white transition-all">
+                        <a href="#" class="flex items-center gap-2">
+                            <i data-lucide="shield" class="duration-700 transition-all"></i>
+                            <span class="flex-1 ms-2 whitespace-nowrap">Início</span>
+                        </a>
+                    </li>
+                    <li
+                        class="flex items-center p-3 rounded-lg cursor-pointer hover:bg-blue-700 hover:text-white transition-all">
+                        <a href="#" class="flex items-center gap-2">
+                            <i data-lucide="user-round" class="duration-700 transition-all"></i>
+                            <span class="flex-1 ms-2 whitespace-nowrap">Professores</span>
+                        </a>
+                    </li>
+                    <li
+                        class="flex items-center p-3 rounded-lg cursor-pointer hover:bg-blue-700 hover:text-white transition-all">
+                        <a href="#" class="flex items-center gap-2">
+                            <i data-lucide="chart-pie" class="duration-700 transition-all"></i>
+                            <span class="flex-1 ms-2 whitespace-nowrap">Relatórios</span>
+                        </a>
+                    </li>
+                    <hr>
+                    <li
+                        class="flex items-center p-3 rounded-lg cursor-pointer hover:bg-blue-700 hover:text-white transition-all">
+                        <a href="#" class="flex items-center gap-2">
+                            <i data-lucide="log-out" class="duration-700 transition-all"></i>
+                            <span class="flex-1 ms-2 whitespace-nowrap">Sign-out</span>
+                        </a>
+                    </li>
+
+                </ul>
+            </aside>
+            <main>
+                {% block content %}
+                {% endblock %}
+            </main>
         </div>
-        
-      </div>
     </div>
-  </div>
 
-  <!-- Mobile menu, show/hide based on menu state. -->
-  <div class="sm:hidden" id="mobile-menu">
-    <div class="space-y-1 px-2 pt-2 pb-3">
-      <!-- Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" -->
-      <a href="#" class="block rounded-md bg-gray-900 px-3 py-2 text-base font-medium text-white" aria-current="page">Dashboard</a>
-      <a href="#" class="block rounded-md px-3 py-2 text-base font-medium text-gray-300 hover:bg-white hover:text-black">Team</a>
-      <a href="#" class="block rounded-md px-3 py-2 text-base font-medium text-gray-300 hover:bg-white hover:text-black">Projects</a>
-      <a href="#" class="block rounded-md px-3 py-2 text-base font-medium text-gray-300 hover:bg-white hover:text-black">Calendar</a>
-    </div>
-  </div>
-</nav>
+    <script>
+        // Função para mostrar/ocultar o dropdown
+        function toggleDropdown(event) {
+            event.stopPropagation();  // Impede o fechamento ao clicar no próprio botão
+            document.getElementById("dropdown").classList.toggle("hidden");
+        }
 
-<aside id="default-sidebar" class="fixed top-0 left-0 z-40 w-64 h-screen transition-transform -translate-x-full sm:translate-x-0" aria-label="Sidebar">
-   <div class="h-full px-3 py-4 overflow-y-auto bg-white">
-      <ul class="space-y-2 font-medium">
-         <li>
-            <a href="{% url 'iniciopage' %}" class="flex items-center p-2 text-gray-400 rounded-lg dark:text-gray-500 hover:bg-gray-700 dark:hover:bg-gray-700 group hover:text-white">
-               <i data-lucide="shield" class="w-5 h-5 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"  viewBox="0 0 22 21">
-               </i>
-               <span class="ms-3">Início</span>
-            </a>
-         </li>
-         <li>
-            <a href="#" class="flex items-center p-2 text-gray-400 rounded-lg dark:text-gray-500 hover:bg-gray-700 group hover:text-white">
-               <i data-lucide="users-round" class="shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"  viewBox="0 0 18 18">
-                                </i>
-               <span class="flex-1 ms-3 whitespace-nowrap">Professores</span>
-            </a>
-         </li>
-         <li>
-            <a href="#" class="flex items-center p-2 text-gray-400 rounded-lg dark:text-gray-500 hover:bg-gray-700 dark:hover:bg-gray-700 group hover:text-white">
-               <i data-lucide="chart-no-axes-combined" class="shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"  viewBox="0 0 20 20">
-                                </i>
-               <span class="flex-1 ms-3 whitespace-nowrap">Dados</span>
+        // Fecha o dropdown ao clicar fora
+        document.addEventListener("click", function (event) {
+            const dropdown = document.getElementById("dropdown");
+            const trigger = document.querySelector(".flex.gap-4");
 
-            </a>
-         </li>
-         <li>
-            <a href="#" class="flex items-center p-2 text-gray-400 rounded-lg dark:text-gray-500 hover:bg-gray-700 dark:hover:bg-gray-700 group hover:text-white">
-               <i data-lucide="user-round" class="shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"  viewBox="0 0 20 18">
-        	</i>
-               <span class="flex-1 ms-3 whitespace-nowrap">Usuários</span>
-            </a>
-         </li>
-  	 <li>
-            <a href="#" class="flex items-center p-2 text-gray-400 rounded-lg dark:text-gray-500 hover:bg-gray-700 dark:hover:bg-gray-700 group hover:text-white">
-               <i data-lucide="calendar-1" class="shrink-0 w-5 h-5 text-gray-500 transition dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 18">
-        	</i>
-               <span class="flex-1 ms-3 whitespace-nowrap">Calendário</span>
-            </a>
-         </li> 
-      </ul>
-       
-      
-   </div>
-</aside>
+            if (!trigger.contains(event.target) && !dropdown.contains(event.target)) {
+                dropdown.classList.add("hidden");
+            }
+        });
+    </script>
 
-<div class="p-4 sm:ml-64">
-   <div class="p-4 border-2 border-gray-200 border-dashed rounded-lg dark:border-gray-700">
-      <div class="grid grid-cols-3 gap-4 mb-4">
-      <!-- content -->
-        {% block content %}
-
-
-        {% endblock %}
-      </div>
-   </div>
-</div>
-<script src="https://unpkg.com/lucide@latest"></script>
-<script>
-    lucide.createIcons();
-</script>
-
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script>
+        lucide.createIcons();
+    </script>
+    {% block scripts %}{% endblock %}
 
 </body>
 
+</html>

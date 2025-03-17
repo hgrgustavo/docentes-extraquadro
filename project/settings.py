@@ -79,7 +79,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'db_controleextraquadro',
         'USER': 'root',
-        'PASSWORD': 'admin',
+        'PASSWORD': 'Gustavo@mysql69',
         'HOST': 'localhost',
         'PORT': '3306',
     }

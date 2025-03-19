@@ -8,7 +8,7 @@
     <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
 </head>
 
-<body class="h-screen>
+<body>
     <div class="h-full flex flex-col relative">
         <nav class="text-white p-4 flex items-center justify-between">
         
@@ -26,8 +26,15 @@
                     <li
                         class="flex items-center p-3 rounded-lg cursor-pointer hover:bg-blue-700 hover:text-white transition-all">
                         <a href="#" class="flex items-center gap-2">
+                            <i data-lucide="scroll-text" class="duration-700 transition-all"></i>
+                            <span class="flex-1 ms-2 whitespace-nowrap">Listar Professores</span>
+                        </a>
+                    </li>
+                    <li
+                        class="flex items-center p-3 rounded-lg cursor-pointer hover:bg-blue-700 hover:text-white transition-all">
+                        <a href="#" class="flex items-center gap-2">
                             <i data-lucide="user-round" class="duration-700 transition-all"></i>
-                            <span class="flex-1 ms-2 whitespace-nowrap">Professores</span>
+                            <span class="flex-1 ms-2 whitespace-nowrap">Cadastrar Professores</span>
                         </a>
                     </li>
                     <li
@@ -45,7 +52,6 @@
                             <span class="flex-1 ms-2 whitespace-nowrap">Sign-out</span>
                         </a>
                     </li>
-
                 </ul>
             </aside>
             <main>

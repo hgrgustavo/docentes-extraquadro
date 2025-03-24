@@ -5,62 +5,67 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}Home{% endblock %}</title>
-    <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
 </head>
 
 <body>
-    <div class="h-full flex flex-col relative">
-        <nav class="text-white p-4 flex items-center justify-between">
+    <div class="h-full flex flex-col relative z-0 overflow-visible">
+        <nav class="relative bg-blue-700 pb-10 mb-10 flex items-center justify-between z-0">
         
         </nav>
-        <div class="flex flex-1">
+        <div class="flex flex-1 relative">
             <aside class="w-56 p-4 text-gray-900">
-                <ul class="overflow-y-auto space-y-2">
-                    <li
-                        class="flex items-center p-3 rounded-lg cursor-pointer hover:bg-blue-700 hover:text-white transition-all">
-                        <a href="#" class="flex items-center gap-2">
+                <ul class="space-y-2">
+                <a href="{% url 'menuiniciopage' %}" class="flex items-center p-3 rounded-lg cursor-pointer hover:bg-blue-700 hover:text-white transition-all">
+                    <li class="flex items-center gap-1">
+                       
                             <i data-lucide="shield" class="duration-700 transition-all"></i>
-                            <span class="flex-1 ms-2 whitespace-nowrap">Início</span>
-                        </a>
+                            <span class="flex-1 whitespace-nowrap">Início</span>
+                     
                     </li>
-                    <li
-                        class="flex items-center p-3 rounded-lg cursor-pointer hover:bg-blue-700 hover:text-white transition-all">
-                        <a href="#" class="flex items-center gap-2">
+                </a>
+                <a href="{% url 'menucriarprofessorpage' %}" class="flex items-center p-3 rounded-lg cursor-pointer hover:bg-blue-700 hover:text-white transition-all">
+                    <li class="flex items-center gap-1">
+                       
+                            <i data-lucide="clipboard-pen" class="duration-700 transition-all"></i>
+                            <span class="flex-1 whitespace-nowrap">Cadastrar professor</span>
+                     
+                    </li>
+                </a>
+                <a href="{% url 'menuiniciopage' %}" class="flex items-center p-3 rounded-lg cursor-pointer hover:bg-blue-700 hover:text-white transition-all">
+                    <li class="flex items-center gap-1">
+                       
                             <i data-lucide="scroll-text" class="duration-700 transition-all"></i>
-                            <span class="flex-1 ms-2 whitespace-nowrap">Listar Professores</span>
-                        </a>
+                            <span class="flex-1 whitespace-nowrap">Listar professor</span>
+                     
                     </li>
-                    <li
-                        class="flex items-center p-3 rounded-lg cursor-pointer hover:bg-blue-700 hover:text-white transition-all">
-                        <a href="#" class="flex items-center gap-2">
-                            <i data-lucide="user-round" class="duration-700 transition-all"></i>
-                            <span class="flex-1 ms-2 whitespace-nowrap">Cadastrar Professores</span>
-                        </a>
-                    </li>
-                    <li
-                        class="flex items-center p-3 rounded-lg cursor-pointer hover:bg-blue-700 hover:text-white transition-all">
-                        <a href="#" class="flex items-center gap-2">
+                </a>
+                <a href="{% url 'menuiniciopage' %}" class="flex items-center p-3 rounded-lg cursor-pointer hover:bg-blue-700 hover:text-white transition-all">
+                    <li class="flex items-center gap-1">
+                       
                             <i data-lucide="chart-pie" class="duration-700 transition-all"></i>
-                            <span class="flex-1 ms-2 whitespace-nowrap">Relatórios</span>
-                        </a>
+                            <span class="flex-1 whitespace-nowrap">Relatório</span>
+                     
                     </li>
+                </a>
                     <hr>
-                    <li
-                        class="flex items-center p-3 rounded-lg cursor-pointer hover:bg-blue-700 hover:text-white transition-all">
-                        <a href="#" class="flex items-center gap-2">
-                            <i data-lucide="log-out" class="duration-700 transition-all"></i>
-                            <span class="flex-1 ms-2 whitespace-nowrap">Sign-out</span>
-                        </a>
-                    </li>
+                    <a href="{% url 'menuiniciopage' %}" class="flex items-center p-3 rounded-lg cursor-pointer hover:bg-red-700 hover:text-white transition-all">
+                        <li class="flex items-center gap-1">
+                           
+                                <i data-lucide="log-out" class="duration-700 transition-all"></i>
+                                <span class="flex-1 whitespace-nowrap">Sair</span>
+                         
+                        </li>
+                    </a>
                 </ul>
             </aside>
-            <main>
-                {% block content %}
+                       {% block content %}
                 {% endblock %}
-            </main>
-        </div>
+            </div>
     </div>
-
+    
+    <!-- dropdown logic
     <script>
         // Função para mostrar/ocultar o dropdown
         function toggleDropdown(event) {
@@ -78,13 +83,11 @@
             }
         });
     </script>
+    -->
 
-    <script src="https://unpkg.com/lucide@latest"></script>
-    <script>
+       <script>
         lucide.createIcons();
     </script>
-    {% block scripts %}{% endblock %}
-
 </body>
 
 </html>

@@ -1,4 +1,17 @@
 {% extends "menu.html" %}
+{% load static %}
 {% block content %}
-<h1>Bem vindo, <span>{{ usuario.nome }}</span>!</h1>
+<div class="w-4/5 rounded shadow-lg ml-5 h-dvh">
+  <div class="px-6 py-4 grid grid-rows-1" >
+    <div class="font-bold text-xl row-span-1">
+        Bem-vindo, {{ get_nome }}!
+        <p class="text-gray-700 text-base">
+          Inicio do website controle de docentes extraquadro. Explore as outras opções!         
+        </p>
+    </div>
+    <div class="flex justify-center mt-25">
+      <img class="w-50 h-50" src="{% static 'img/trophy.png' %}">
+    </div>
+  </div>
+</div>
 {% endblock %}

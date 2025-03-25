@@ -8,6 +8,7 @@
     <script src="https://unpkg.com/lucide@latest"></script>
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <script src="{% static 'js/fixes.js' %}" defer></script>
+    <script src="{% static 'js/async.js' %}"></script>
 </head>
 
 <body>
@@ -22,7 +23,7 @@
                     <li class="flex items-center gap-1">
                        
                             <i data-lucide="shield" class="duration-700 transition-all"></i>
-                            <span class="flex-1 whitespace-nowrap">Início</span>
+                            <span class="flex-1 ml-2 whitespace-nowrap">Início</span>
                      
                     </li>
                 </a>
@@ -30,26 +31,33 @@
                     <li class="flex items-center gap-1">
                        
                             <i data-lucide="clipboard-pen" class="duration-700 transition-all"></i>
-                            <span class="flex-1 whitespace-nowrap">Cadastrar professor</span>
+                            <span class="flex-1 ml-2 whitespace-nowrap">Cadastrar professor</span>
                      
                     </li>
                 </a>
-                <a href="{% url 'menuiniciopage' %}" class="flex items-center p-3 rounded-lg cursor-pointer hover:bg-blue-700 hover:text-white transition-all">
+                <a href="{% url 'menulistarprofessor' %}" class="flex items-center p-3 rounded-lg cursor-pointer hover:bg-blue-700 hover:text-white transition-all">
                     <li class="flex items-center gap-1">
                        
                             <i data-lucide="scroll-text" class="duration-700 transition-all"></i>
-                            <span class="flex-1 whitespace-nowrap">Listar professor</span>
+                            <span class="flex-1 ml-2 whitespace-nowrap">Listar professor</span>
                      
                     </li>
                 </a>
-                <a href="{% url 'menuiniciopage' %}" class="flex items-center p-3 rounded-lg cursor-pointer hover:bg-blue-700 hover:text-white transition-all">
-                    <li class="flex items-center gap-1">
-                       
-                            <i data-lucide="chart-pie" class="duration-700 transition-all"></i>
-                            <span class="flex-1 whitespace-nowrap">Relatório</span>
-                     
-                    </li>
-                </a>
+               <button id="menu-button" aria-expanded="false" aria-haspopup="true" class="dropdown-toggle flex items-center p-3 rounded-lg cursor-pointer hover:bg-blue-700 hover:text-white transition-all">
+                  <i data-lucide="chart-pie" class="duration-700 transition-all"></i>
+                  <span class="flex-1 ml-3 whitespace-nowrap">Relatório</span>
+                  <svg class="-mr-1 ml-2 h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                    <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
+                  </svg>
+               </button>
+
+               <div class="origin-top-right absolute right-0 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none hidden" role="menu" aria-orientation="vertical" aria-labelledby="menu-button" tabindex="-1">
+                  <div class="py-1" role="none">
+                    <a href="" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900" role="menuitem" tabindex="-1" id="menu-item-0">Relatório 1</a>
+                    <a href="" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900" role="menuitem" tabindex="-1" id="menu-item-1">Relatório 2</a>
+                    <a href="" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900" role="menuitem" tabindex="-1" id="menu-item-2">Relatório 3</a>
+                  </div>
+               </div>
                     <hr>
                     <a href="{% url 'menuiniciopage' %}" class="flex items-center p-3 rounded-lg cursor-pointer hover:bg-red-700 hover:text-white transition-all">
                         <li class="flex items-center gap-1">

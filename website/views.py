@@ -1,5 +1,6 @@
 from django.views.generic import base, edit, list
 from . import models, forms
+from django import http
 
 
 class Index(edit.CreateView):
@@ -21,12 +22,10 @@ class MenuInicio(list.ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         try:
-            # Busca o usuário diretamente pelo ID
             usuario = models.Usuario.objects.get(pk=1)
-            context["get_nome"] = usuario.nome  # Pega apenas o nome do usuário
+            context["get_nome"] = usuario.nome
 
         except models.Usuario.DoesNotExist:
-            # Se o usuário não for encontrado, retorna None
             context["get_nome"] = None
 
         return context
@@ -36,3 +35,15 @@ class MenuCriarProfessor(edit.CreateView):
     template_name = "menu_criarprofessor.html"
     model = models.Professor
     form_class = forms.CriarProfessorForm
+    success_url = "#"
+
+
+class MenuListarProfessor(list.ListView):
+    template_name = "menu_listarprofessor.html"
+    model = models.Professor
+    context_object_name = "professor"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        return context

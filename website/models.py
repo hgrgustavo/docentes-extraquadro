@@ -42,7 +42,7 @@ class Professor(models.Model):
     email = models.CharField(max_length=255)
     telefone = models.CharField(max_length=45)
     data_nascimento = models.DateField()
-    observacao = models.CharField(max_length=45)
+    observacao = models.TextField()
     pf_ou_pj = models.CharField(max_length=15, choices=CHOICES)
     cpf = models.CharField(max_length=14, null=True, blank=True, validators=[validators.RegexValidator(
         regex=r'([0-9]{2}[\.]?[0-9]{3}[\.]?[0-9]{3}[\/]?[0-9]{4}[-]?[0-9]{2})|([0-9]{3}[\.]?[0-9]{3}[\.]?[0-9]{3}[-]?[0-9]{2})')])

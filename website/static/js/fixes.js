@@ -1,7 +1,9 @@
 class Fixes {
   constructor(formId) {
     this.form = document.getElementById(formId);
-    this.applyFixes();
+    document.addEventListener("DOMContentLoaded", () => {
+      this.applyFixes();
+    });
   }
 
   applyFixes() {
@@ -10,26 +12,34 @@ class Fixes {
       return;
     }
 
-    // applying fixes
     this.removeSelectDashes();
+    this.dropdownClick();
   }
 
   removeSelectDashes() {
-    try {
-      document.addEventListener("DOMContentLoaded", () => {
-        let select = document.getElementById("pf_ou_pj");
-        if (select && select.options.length > 0) {
-          select.remove(0);
+    const select = document.getElementById("pf_ou_pj");
+    if (select && select.options.length > 0) {
+      select.remove(0);
+      console.log("Dashes removidos com sucesso!");
+    } else {
+      console.error("O elemento select não foi encontrado ou está vazio.");
+    }
+  }
 
-          console.log("Dashes removidos com sucesso!");
-        } else {
-          console.error("O elemento select não foi encontrado ou está vazio.");
-        }
-      });
+  dropdownClick() {
+    const menuButton = document.getElementById("menu-button");
+    const dropdown = document.querySelector(".origin-top-right");
+
+    if (!menuButton || !dropdown) {
+      console.error("Elementos do dropdown não foram encontrados.");
+      return;
     }
-    catch (error) {
-      console.error("Erro ao reomver o elemento: ", error.messsage || error);
-    }
+
+    menuButton.addEventListener("click", () => {
+      const isExpanded = menuButton.getAttribute("aria-expanded") === "true";
+      menuButton.setAttribute("aria-expanded", !isExpanded);
+      dropdown.classList.toggle("hidden");
+    });
   }
 }
 

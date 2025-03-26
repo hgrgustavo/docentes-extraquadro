@@ -1,13 +1,12 @@
 from django.views.generic import base, edit, list
 from . import models, forms
-from django import http
 
 
 class Index(edit.CreateView):
     model = models.Usuario
     form_class = forms.LoginForm
     template_name = "login.html"
-    success_url = "menu/"
+    success_url = "menu/inicio/"
 
 
 class Menu(base.TemplateView):

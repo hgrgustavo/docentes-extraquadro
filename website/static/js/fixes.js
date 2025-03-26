@@ -1,17 +1,11 @@
 class Fixes {
-  constructor(formId) {
-    this.form = document.getElementById(formId);
+  constructor() {
     document.addEventListener("DOMContentLoaded", () => {
       this.applyFixes();
     });
   }
 
   applyFixes() {
-    if (!this.form) {
-      console.error("Form não encontrado!");
-      return;
-    }
-
     this.removeSelectDashes();
     this.dropdownClick();
   }
@@ -27,21 +21,21 @@ class Fixes {
   }
 
   dropdownClick() {
-    const menuButton = document.getElementById("menu-button");
-    const dropdown = document.querySelector(".origin-top-right");
+    const button = document.getElementById("menu-button");
+    const dropdown = document.getElementById("dropdown");
 
-    if (!menuButton || !dropdown) {
-      console.error("Elementos do dropdown não foram encontrados.");
-      return;
-    }
-
-    menuButton.addEventListener("click", () => {
-      const isExpanded = menuButton.getAttribute("aria-expanded") === "true";
-      menuButton.setAttribute("aria-expanded", !isExpanded);
+    button.addEventListener("click", (event) => {
+      event.stopPropagation();
       dropdown.classList.toggle("hidden");
+    });
+
+    document.addEventListener("click", (event) => {
+      if (!dropdown.contains(event.target) && !button.contains(event.target)) {
+        dropdown.classList.add("hidden");
+      }
     });
   }
 }
 
-const fixes = new Fixes("professor-form");
+const fixes = new Fixes();
 

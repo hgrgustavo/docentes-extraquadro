@@ -13,90 +13,73 @@
 
 <body>
     <div class="h-full flex flex-col relative z-0 overflow-visible">
-        <nav class="relative bg-blue-700 pb-10 mb-10 flex items-center justify-between z-0">
-        
-        </nav>
+        <!-- Navegação -->
+        <nav class="relative bg-blue-700 pb-10 mb-10 flex items-center justify-between z-0"></nav>
+
         <div class="flex flex-1 relative">
+            <!-- Barra lateral -->
             <aside class="w-56 p-4 text-gray-900">
                 <ul class="space-y-2">
-                <a href="{% url 'menuiniciopage' %}" class="flex items-center p-3 rounded-lg cursor-pointer hover:bg-blue-700 hover:text-white transition-all">
-                    <li class="flex items-center gap-1">
-                       
+                    <!-- Links de navegação -->
+                    <li>
+                        <a href="{% url 'menuiniciopage' %}" class="flex items-center p-3 rounded-lg cursor-pointer hover:bg-blue-700 hover:text-white transition-all">
                             <i data-lucide="shield" class="duration-700 transition-all"></i>
                             <span class="flex-1 ml-2 whitespace-nowrap">Início</span>
-                     
+                        </a>
                     </li>
-                </a>
-                <a href="{% url 'menucriarprofessorpage' %}" class="flex items-center p-3 rounded-lg cursor-pointer hover:bg-blue-700 hover:text-white transition-all">
-                    <li class="flex items-center gap-1">
-                       
+                    <li>
+                        <a href="{% url 'menucriarprofessorpage' %}" class="flex items-center p-3 rounded-lg cursor-pointer hover:bg-blue-700 hover:text-white transition-all">
                             <i data-lucide="clipboard-pen" class="duration-700 transition-all"></i>
                             <span class="flex-1 ml-2 whitespace-nowrap">Cadastrar professor</span>
-                     
+                        </a>
                     </li>
-                </a>
-                <a href="{% url 'menulistarprofessor' %}" class="flex items-center p-3 rounded-lg cursor-pointer hover:bg-blue-700 hover:text-white transition-all">
-                    <li class="flex items-center gap-1">
-                       
+                    <li>
+                        <a href="{% url 'menulistarprofessor' %}" class="flex items-center p-3 rounded-lg cursor-pointer hover:bg-blue-700 hover:text-white transition-all">
                             <i data-lucide="scroll-text" class="duration-700 transition-all"></i>
                             <span class="flex-1 ml-2 whitespace-nowrap">Listar professor</span>
-                     
+                        </a>
                     </li>
-                </a>
-               <button id="menu-button" aria-expanded="false" aria-haspopup="true" class="dropdown-toggle flex items-center p-3 rounded-lg cursor-pointer hover:bg-blue-700 hover:text-white transition-all">
-                  <i data-lucide="chart-pie" class="duration-700 transition-all"></i>
-                  <span class="flex-1 ml-3 whitespace-nowrap">Relatório</span>
-                  <svg class="-mr-1 ml-2 h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                    <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
-                  </svg>
-               </button>
-
-               <div class="origin-top-right absolute right-0 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none hidden" role="menu" aria-orientation="vertical" aria-labelledby="menu-button" tabindex="-1">
-                  <div class="py-1" role="none">
-                    <a href="" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900" role="menuitem" tabindex="-1" id="menu-item-0">Relatório 1</a>
-                    <a href="" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900" role="menuitem" tabindex="-1" id="menu-item-1">Relatório 2</a>
-                    <a href="" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900" role="menuitem" tabindex="-1" id="menu-item-2">Relatório 3</a>
-                  </div>
-               </div>
+                    <li>
+                        <!-- Dropdown -->
+                        <div class="flex flex-col space-y-2"> 
+                            <div class="w-full">
+                                <button id="menu-button" aria-expanded="true" aria-haspopup="true" class="flex items-center w-full p-3 rounded-lg cursor-pointer hover:bg-blue-700 hover:text-white transition-all">
+                                    <i data-lucide="chart-pie" class="wr-2 duration-700 transition-all"></i>
+                                    <span class="ml-2 whitespace-nowrap">Relatório</span>
+                                    <svg class="-mr-1 ml-2 h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="false">
+                                        <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
+                                    </svg>
+                                </button>
+                            </div> 
+                            <div id="dropdown" class="hidden bg-white text-black" role="menu" aria-orientation="vertical" aria-labelledby="menu-button">
+                                <div class="py-1" role="none">
+                                    <a href="#" class="block px-4 py-2 text-sm hover:bg-gray-100">Relatório 1</a>
+                                    <a href="#" class="block px-4 py-2 text-sm hover:bg-gray-100">Relatório 2</a>
+                                    <a href="#" class="block px-4 py-2 text-sm hover:bg-gray-100">Relatório 3</a>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
                     <hr>
-                    <a href="{% url 'menuiniciopage' %}" class="flex items-center p-3 rounded-lg cursor-pointer hover:bg-red-700 hover:text-white transition-all">
-                        <li class="flex items-center gap-1">
-                           
-                                <i data-lucide="log-out" class="duration-700 transition-all"></i>
-                                <span class="flex-1 whitespace-nowrap">Sair</span>
-                         
-                        </li>
-                    </a>
+                    <li>
+                        <a href="{% url 'menuiniciopage' %}" class="flex items-center p-3 rounded-lg cursor-pointer hover:bg-red-700 hover:text-white transition-all">
+                            <i data-lucide="log-out" class="duration-700 transition-all"></i>
+                            <span class="flex-1 whitespace-nowrap">Sair</span>
+                        </a>
+                    </li>
                 </ul>
             </aside>
-                       {% block content %}
-                {% endblock %}
-            </div>
+            <!-- Conteúdo principal -->
+            {% block content %}
+            {% endblock %}
+        </div>
     </div>
+
     
-    <!-- dropdown logic
     <script>
-        // Função para mostrar/ocultar o dropdown
-        function toggleDropdown(event) {
-            event.stopPropagation();  // Impede o fechamento ao clicar no próprio botão
-            document.getElementById("dropdown").classList.toggle("hidden");
-        }
-
-        // Fecha o dropdown ao clicar fora
-        document.addEventListener("click", function (event) {
-            const dropdown = document.getElementById("dropdown");
-            const trigger = document.querySelector(".flex.gap-4");
-
-            if (!trigger.contains(event.target) && !dropdown.contains(event.target)) {
-                dropdown.classList.add("hidden");
-            }
-        });
-    </script>
-    -->
-
-       <script>
+        // Função para inicializar ícones Lucide
         lucide.createIcons();
     </script>
 </body>
-
 </html>
+

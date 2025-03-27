@@ -78,13 +78,12 @@ class Solicitacao(models.Model):
     horario_termino = models.TimeField()
     carga_horaria = models.IntegerField()
     valor_hora = models.FloatField()
-    prestador = models.CharField(max_length=45)
-    curso_treinamento = models.CharField(max_length=45)
+    prestador = models.CharField(max_length=255)
+    curso_treinamento = models.TextField()
     servico = models.TextField()
     observacao = models.TextField()
 
     class Meta:
-
         db_table = 'solicitacao'
 
 

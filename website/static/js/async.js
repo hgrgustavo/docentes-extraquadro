@@ -24,6 +24,17 @@ class Async {
     });
   }
 
+  updateReports() {
+    const form = document.getElementById("sampleForm");
+    form.addEventListener("submit", (event) => {
+      event.preventDefault();
+      const data = document.getElementById("data").value;
+      // Aqui você processa os dados e atualiza o relatório.
+      updateReport(data);
+    });
+
+  }
+
   // implementar um meio de salvar imagem em cache
 }
 

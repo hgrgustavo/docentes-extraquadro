@@ -1,0 +1,109 @@
+{% extends "menu.html" %}
+{% load static %}
+
+
+{% block content %}
+<div class="w-4/5 rounded shadow-lg ml-5 h-dvh overflow-auto">
+  <div class="px-6 py-4 grid grid-rows-1">
+    <div class="font-bold text-xl row-span-1">
+      <h2>Gerar contrato</h2>
+      <p class="text-gray-700 text-base">
+        Preencha os campos e gere um contrato hora-aula.
+      </p>
+    </div>
+    <form id="professor-form" method="post">
+      {%csrf_token %}
+      <div class="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
+        <div class="sm:col-span-3">
+          <label for="country" class="block text-sm/6 font-medium text-gray-900">Processo</label>
+
+          <div class="mt-2 grid grid-cols-1">
+            {{ form.processo }}
+            <svg
+              class="pointer-events-none col-start-1 row-start-1 mr-2 size-5 self-center justify-self-end text-gray-500 sm:size-4"
+              viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" data-slot="icon">
+              <path fill-rule="evenodd"
+                d="M4.22 6.22a.75.75 0 0 1 1.06 0L8 8.94l2.72-2.72a.75.75 0 1 1 1.06 1.06l-3.25 3.25a.75.75 0 0 1-1.06 0L4.22 7.28a.75.75 0 0 1 0-1.06Z"
+                clip-rule="evenodd" />
+            </svg>
+          </div>
+        </div>
+
+        <div class="sm:col-span-3">
+          <label for="first-name" class="block text-sm/6 font-medium text-gray-900">Evento</label>
+          <div class="mt-2">
+
+            {{ form.evento_sige }}
+          </div>
+        </div>
+
+        <div class="sm:col-span-full">
+          <label for="email" class="block text-sm/6 font-medium text-gray-900">Prestador</label>
+          <div class="mt-2">
+
+            {{ form.prestador }}
+          </div>
+        </div>
+
+        <div class="sm:col-span-full">
+          <label for="street-address" class="block text-sm/6 font-medium text-gray-900">Serviço</label>
+          <div class="mt-2">
+
+            {{ form.servico }}
+          </div>
+        </div>
+
+        <div class="sm:col-span-full">
+          <label for="city" class="block text-sm/6 font-medium text-gray-900">Componentes</label>
+          <div class="mt-2">
+
+            {{ form.curso_treinamento }}
+          </div>
+        </div>
+
+        <div class="sm:col-span-3">
+          <label for="city" class="block text-sm/6 font-medium text-gray-900">Data início</label>
+          <div class="mt-2">
+
+            {{ form.data_inicio }}
+          </div>
+        </div>
+
+        <div class="sm:col-span-3">
+          <label for="city" class="block text-sm/6 font-medium text-gray-900">Data término</label>
+          <div class="mt-2">
+
+            {{ form.data_termino }}
+          </div>
+        </div>
+
+        <div class="sm:col-span-3">
+          <label for="about" class="block text-sm/6 font-medium text-gray-900">Carga horária</label>
+          <div class="mt-2">
+
+            {{ form.carga_horaria }}
+          </div>
+        </div>
+        <div class="sm:col-span-3">
+          <label for="about" class="block text-sm/6 font-medium text-gray-900">Valor hora-aula</label>
+          <div class="mt-2">
+
+            {{ form.valor_hora }}
+          </div>
+        </div>
+        <button type="submit"
+          class="sm:col-span-1 p-1 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded border-b-5 border-blue-700 flex items-center justify-center">
+          <i data-lucide="layers" class="w-6 h-6 m-1"></i>
+          <span>Gerar contrato</span>
+        </button>
+
+        <button
+          class="sm:col-span-1 bg-green-600 hover:bg-green-700 text-white font-bold rounded border-b-5 border-green-700 flex items-center justify-center">
+          <i data-lucide="cloud-upload" class="w-6 h-6 m-1"></i>
+          <span>Upload nuvem</span>
+        </button>
+    </form>
+  </div>
+
+</div>
+{% endblock %}

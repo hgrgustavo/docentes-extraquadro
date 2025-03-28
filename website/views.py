@@ -68,8 +68,30 @@ class GeneratePDF(base.View):
         return response
 
     def post(self, request, **kwargs):
-        doc_data = models.Solicitacao.objects.order_by("id").desc()[0]
-        context_dict = {
-            "id": doc_data.id,
-            "processo": doc_data.processo,
-        }
+        try:
+            query = models.Solicitacao.objects.order_by("id").desc()[0]
+            context_dict = {
+                "id": query.id,
+                "processo": query.processo,
+                "evento_sige": query.evento_sige,
+                "prestador": query.prestador,
+                "servico": query.servico,
+                "curso_treinamento": query.curso_treinamento,
+                "data_inicio": query.data_inicio,
+                "data_termino": query.data_termino,
+                "horario_inicio": query.horario_inicio,
+                "horario_termino": query.horario.termino,
+                "carga_horaria": query.carga_horaria,
+                "valor_hora": query.valor_hora,
+                "parecer_coordenacao": query.parecer_coordenacao,
+                "parecer_secretaria": query.parecer_secretaria,
+            }
+
+            response = self.render_to_pdf("pdf_template.html", context_dict)
+            if response.status_code == 500:
+                return http.JsonResponse({"error": "Erro ao gerar o PDF"}, status=500)
+
+            return http.JsonResponse({"message": "PDF gerado com sucesso", "pdf_url": f"menu/contratos/historico/{query.id}/contrato.pdf"})
+
+        except Exception as e:
+            return http.JsonResponse({"error": str(e)}, status=500)

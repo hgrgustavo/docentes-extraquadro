@@ -3,6 +3,17 @@ class Async {
     this.showUserAvatar();
   }
 
+  getCSRFToken() {
+    const token = document.querySelector("[name=csrfmiddlewaretoken]") ||
+      document.querySelector('meta[name="csrf-token"]');
+
+    if (!token) {
+      console.warn("CSRF token não encontrado!");
+    }
+
+    return token ? token.getAttribute('content') || token.value : '';
+  }
+
   showUserAvatar() {
     document.addEventListener("DOMContentLoaded", () => {
       document.getElementById("file-upload").addEventListener("change", (event) => {
@@ -24,18 +35,33 @@ class Async {
     });
   }
 
-  updateReports() {
-    const form = document.getElementById("sampleForm");
-    form.addEventListener("submit", (event) => {
-      event.preventDefault();
-      const data = document.getElementById("data").value;
-      // Aqui você processa os dados e atualiza o relatório.
-      updateReport(data);
+
+  async generatePDF() {
+    document.getElementById("btn-generatepdf").addEventListener("click", async () => {
+      try {
+        const urlId = document.getElementById("btn-generatepdf").getAttribute("data-id");
+        const response = await fetch(`${urlId}/`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "X-CSRFToken": this.getCSRFToken(),
+          },
+        });
+
+        if (!response.ok) {
+          throw new Error("Erro ao gerar o PDF");
+        }
+
+        const data = await response.json();
+        console.log("PDF gerado com sucesso:", data);
+        alert("Contrato gerado com sucesso!");
+
+      } catch (error) {
+        console.error("Erro na requisição:", error);
+        alert("Erro ao gerar o contrato: ", error);
+      }
     });
-
   }
-
-  // implementar um meio de salvar imagem em cache
 }
 
 const async = new Async();

@@ -84,6 +84,7 @@
             {{ form.carga_horaria }}
           </div>
         </div>
+
         <div class="sm:col-span-3">
           <label for="about" class="block text-sm/6 font-medium text-gray-900">Valor hora-aula</label>
           <div class="mt-2">
@@ -91,19 +92,13 @@
             {{ form.valor_hora }}
           </div>
         </div>
-        <button data-id="{{ id }}" id="btn-generatepdf" type="submit"
+        
+        <button type="submit"
           class="sm:col-span-1 p-1 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded border-b-5 border-blue-700 flex items-center justify-center">
-          <i data-lucide="layers" class="w-6 h-6 m-1"></i>
+          <i data-lucide="file-pen-line" class="w-6 h-6 mr-2 m-1"></i>
           <span>Gerar contrato</span>
-        </button>
-
-        <button
-          class="sm:col-span-1 bg-green-600 hover:bg-green-700 text-white font-bold rounded border-b-5 border-green-700 flex items-center justify-center">
-          <i data-lucide="cloud-upload" class="w-6 h-6 m-1"></i>
-          <span>Upload nuvem</span>
-        </button>
+        </button> 
     </form>
   </div>
-
 </div>
 {% endblock %}

@@ -69,7 +69,10 @@ class GeneratePDF(base.View):
 
     def post(self, request, **kwargs):
         try:
-            query = models.Solicitacao.objects.order_by("id").desc()[0]
+            query = models.Solicitacao.objects.order_by("-id").first()
+            if not query:
+                return http.JsonResponse({"error": "Nenhuma solicitação encontrada"}, status=404)
+
             context_dict = {
                 "id": query.id,
                 "processo": query.processo,
@@ -80,7 +83,7 @@ class GeneratePDF(base.View):
                 "data_inicio": query.data_inicio,
                 "data_termino": query.data_termino,
                 "horario_inicio": query.horario_inicio,
-                "horario_termino": query.horario.termino,
+                "horario_termino": query.horario_termino,
                 "carga_horaria": query.carga_horaria,
                 "valor_hora": query.valor_hora,
                 "parecer_coordenacao": query.parecer_coordenacao,
@@ -88,10 +91,24 @@ class GeneratePDF(base.View):
             }
 
             response = self.render_to_pdf("pdf_template.html", context_dict)
+            query.pdf.save(f"contrato_{query.id}.pdf", response)
+
             if response.status_code == 500:
                 return http.JsonResponse({"error": "Erro ao gerar o PDF"}, status=500)
 
-            return http.JsonResponse({"message": "PDF gerado com sucesso", "pdf_url": f"menu/contratos/historico/{query.id}/contrato.pdf"})
+            return http.JsonResponse({
+                "message": "PDF gerado com sucesso",
+                "pdf_url": query.pdf.url
+            })
+
+        except models.Solicitacao.DoesNotExist:
+            return http.JsonResponse({"error": "Solicitação não encontrada"}, status=404)
 
         except Exception as e:
-            return http.JsonResponse({"error": str(e)}, status=500)
+            return http.JsonResponse({"error": f"Erro inesperado: {str(e)}"}, status=500)
+
+
+class MenuHistorico(list.ListView):
+    template_name = "menu_historico.html"
+    context_object_name = "contratos"
+    model = models.Solicitacao

@@ -7,6 +7,9 @@
     <title>{% block title %}Home{% endblock %}</title>
     <script src="https://unpkg.com/lucide@latest"></script>
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link rel="stylesheet" href="https://cdn.datatables.net/2.2.2/css/dataTables.dataTables.css" />  
+    <script src="https://cdn.datatables.net/2.2.2/js/dataTables.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
     <script src="{% static 'js/fixes.js' %}" defer></script>
     <script src="{% static 'js/async.js' %}"></script>
 </head>
@@ -34,7 +37,7 @@
                         </a>
                     </li>
                     <li>
-                        <a href="{% url 'menulistarprofessor' %}" class="flex items-center p-3 rounded-lg cursor-pointer hover:bg-blue-700 hover:text-white transition-all">
+                        <a href="{% url 'menulistarprofessorpage' %}" class="flex items-center p-3 rounded-lg cursor-pointer hover:bg-blue-700 hover:text-white transition-all">
                             <i data-lucide="scroll-text" class="duration-700 transition-all"></i>
                             <span class="flex-1 ml-2 whitespace-nowrap">Listar professor</span>
                         </a>
@@ -53,7 +56,7 @@
                             </div> 
                             <div id="dropdown" class="hidden bg-white text-black" role="menu" aria-orientation="vertical" aria-labelledby="menu-button">
                               <div class="py-1" role="none">
-                                <a href="#" class="block px-4 py-2 text-sm hover:bg-gray-100">Histórico</a>
+                                <a href="{% url 'menuhistoricopage' %}" class="block px-4 py-2 text-sm hover:bg-gray-100">Histórico</a>
                                 <a href="{% url 'menugerarcontratopage' %}" class="block px-4 py-2 text-sm hover:bg-gray-100">Gerar contrato</a> 
                               </div>
                             </div>
@@ -72,9 +75,7 @@
             {% block content %}
             {% endblock %}
         </div>
-    </div>
-
-    
+    </div> 
     <script>
         // Função para inicializar ícones Lucide
         lucide.createIcons();

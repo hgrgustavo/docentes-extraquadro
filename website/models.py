@@ -82,6 +82,8 @@ class Solicitacao(models.Model):
     curso_treinamento = models.TextField()
     servico = models.TextField()
     observacao = models.TextField()
+    pdf = models.FileField(
+        upload_to="historico_pdfs/", null=True, blank=True)
 
     class Meta:
         db_table = 'solicitacao'

@@ -10,7 +10,7 @@ class ControlePagamento(models.Model):
         'Solicitacao', models.DO_NOTHING, default="")
     data_inicio = models.DateField()
     data_termino = models.DateField()
-    modalidade = models.CharField(max_length=45)
+    modalidade = models.CharField(max_length=45, default="hora-aula")
     curso_componentes = models.CharField(max_length=45)
     evento = models.CharField(max_length=45)
     solicitante = models.CharField(max_length=45)

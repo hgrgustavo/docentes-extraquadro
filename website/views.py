@@ -112,3 +112,11 @@ class MenuHistorico(list.ListView):
     template_name = "menu_historico.html"
     context_object_name = "contratos"
     model = models.Solicitacao
+
+    def get_context_data(self, **kwargs):
+        # Correção: desembrulhar o **kwargs ao chamar o método da classe pai
+        context = super().get_context_data(**kwargs)
+        # Adicionar "modalidade" ao contexto
+        context["modalidade"] = models.ControlePagamento.objects.values("modalidade")
+        return context
+ 

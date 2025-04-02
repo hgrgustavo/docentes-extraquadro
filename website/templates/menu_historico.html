@@ -9,7 +9,34 @@
         Lista todos os contratos gerados.
       </p>
     </div>
-
+    <div class="m-2 mt-10">
+      <table class="table-fixed text-left">
+        <thead class="bg-gray-200">
+            <tr class="flex gap-4 border-b-3 border-black text-center">
+                <th>Contrato</th>
+                <th>Modalidade</th>
+                <th>Data de Início</th>
+                <th>Data de término</th>
+                <th>Ações</th>
+                
+            </tr>
+        </thead>
+        <tbody>
+          {% for c in contratos %}
+            <tr id="{{ c.id }}">
+                <td>{{ c.pdf.url }}</td>
+                <td>{{ modalidade }}</td>
+                <td>{{ c.data_inicio }}</td>
+                <td>{{ c.data_termino }}</td>
+                <td>
+                  <a href=""><i data-lucide="trash"></i></a>
+                  <a href=""><i data-lucide="cloud-upload"></i></a>
+                </td>
+            </tr>
+          {% endfor %}
+        </tbody>
+    </table>
+    </div>
   </div>
 </div>
 {% endblock %}

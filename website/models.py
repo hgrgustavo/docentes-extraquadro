@@ -82,8 +82,6 @@ class Solicitacao(models.Model):
     curso_treinamento = models.TextField()
     servico = models.TextField()
     observacao = models.TextField()
-    pdf = models.FileField(
-        upload_to="historico_pdfs/", null=True, blank=True)
 
     class Meta:
         db_table = 'solicitacao'
@@ -111,3 +109,17 @@ class Usuario(models.Model):
 
     class Meta:
         db_table = 'usuario'
+
+
+class Contratos(models.Model):
+    processo = models.CharField(max_length=255)
+    evento = models.DateField()
+    prestador = models.CharField(max_length=255)
+    servico = models.CharField(max_length=255)
+    componentes = models.CharField(max_length=255)
+    data_inicio = models.DateField()
+    data_termino = models.DateField()
+    carga_horaria = models.IntegerField()
+    valor_hora_aula = models.FloatField()
+    pdf = models.FileField(
+        upload_to="contratos/hora-aula/", default=None, blank=False)

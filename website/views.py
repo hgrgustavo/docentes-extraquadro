@@ -3,6 +3,8 @@ from . import models, forms
 from django import http
 from django.template import loader
 from xhtml2pdf import pisa
+import io
+from django.core.files.base import ContentFile
 
 
 class Index(edit.CreateView):
@@ -49,74 +51,91 @@ class MenuListarProfessor(list.ListView):
 
 class MenuGerarContrato(edit.CreateView):
     template_name = "menu_gerarcontrato.html"
-    model = models.Solicitacao
+    model = models.Contratos
     form_class = forms.GerarContratoForm
     success_url = "#"
 
 
 class GeneratePDF(base.View):
-    def render_to_pdf(html_src, context_dict):
+    def render_to_pdf(self, html_src, context_dict):
+        try:
+            template = loader.get_template(html_src)
+            html = template.render(context_dict)
+            buffer = io.BytesIO()
 
-        template = loader.get_template(html_src)
-        html = template.render(context_dict)
-        response = http.HttpResponse(content_type="application/pdf")
-        pisa_status = pisa.CreatePDF(html, dest=response)
+            pisa_status = pisa.CreatePDF(html, dest=buffer)
 
-        if pisa_status.err:
-            return http.HttpResponse("Erro ao gerar PDF", status=500)
+            if pisa_status.err:
+                print("Erro na geração do PDF")
+                return None
 
-        return response
+            buffer.seek(0)
+            return buffer
+
+        except Exception as e:
+            print(f"Erro ao renderizar o PDF: {str(e)}")
+            return None
 
     def post(self, request, **kwargs):
         try:
-            query = models.Solicitacao.objects.order_by("-id").first()
+            query = models.Contratos.objects.order_by("-id").first()
             if not query:
-                return http.JsonResponse({"error": "Nenhuma solicitação encontrada"}, status=404)
+                return http.JsonResponse(
+                    {"error": "Nenhum contrato encontrado"}, status=404
+                )
 
             context_dict = {
                 "id": query.id,
                 "processo": query.processo,
-                "evento_sige": query.evento_sige,
+                "evento": query.evento_sige,
                 "prestador": query.prestador,
                 "servico": query.servico,
-                "curso_treinamento": query.curso_treinamento,
+                "componentes": query.curso_treinamento,
                 "data_inicio": query.data_inicio,
                 "data_termino": query.data_termino,
-                "horario_inicio": query.horario_inicio,
-                "horario_termino": query.horario_termino,
                 "carga_horaria": query.carga_horaria,
-                "valor_hora": query.valor_hora,
-                "parecer_coordenacao": query.parecer_coordenacao,
-                "parecer_secretaria": query.parecer_secretaria,
+                "valor_hora_aula": query.valor_hora,
             }
 
-            response = self.render_to_pdf("pdf_template.html", context_dict)
-            query.pdf.save(f"contrato_{query.id}.pdf", response)
+            response_buffer = self.render_to_pdf(
+                "pdf_template.html", context_dict)
 
-            if response.status_code == 500:
-                return http.JsonResponse({"error": "Erro ao gerar o PDF"}, status=500)
+            if not response_buffer:
+                return http.JsonResponse(
+                    {"error": "Erro ao gerar o PDF"}, status=500
+                )
 
-            return http.JsonResponse({
-                "message": "PDF gerado com sucesso",
-                "pdf_url": query.pdf.url
-            })
+            query.pdf.save(
+                f"contrato_{query.id}.pdf", ContentFile(response_buffer.read())
+            )
 
-        except models.Solicitacao.DoesNotExist:
-            return http.JsonResponse({"error": "Solicitação não encontrada"}, status=404)
+            response_buffer.close()
+
+            return http.JsonResponse(
+                {
+                    "message": "PDF gerado com sucesso",
+                    "pdf_url": query.pdf.url,
+                }
+            )
+
+        except models.Contratos.DoesNotExist:
+            return http.JsonResponse({"error": "Contrato não encontrado"}, status=404)
 
         except Exception as e:
-            return http.JsonResponse({"error": f"Erro inesperado: {str(e)}"}, status=500)
+            return http.JsonResponse(
+                {"error": f"Erro inesperado: {str(e)}"}, status=500
+            )
 
 
 class MenuHistorico(list.ListView):
     template_name = "menu_historico.html"
     context_object_name = "contratos"
-    model = models.Solicitacao
+    model = models.Contratos
 
     def get_context_data(self, **kwargs):
-        # Correção: desembrulhar o **kwargs ao chamar o método da classe pai
         context = super().get_context_data(**kwargs)
-        # Adicionar "modalidade" ao contexto
-        context["modalidade"] = models.ControlePagamento.objects.values("modalidade")
+        context["modalidade"] = models.ControlePagamento.objects.values(
+            "modalidade"
+        )
+
         return context
- 

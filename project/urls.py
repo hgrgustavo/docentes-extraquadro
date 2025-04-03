@@ -15,8 +15,10 @@ urlpatterns = [
         path("contratos/", include([
             path("gerar-contrato/", views.MenuGerarContrato.as_view(),
                  name="menugerarcontratopage"),
+
             path("gerar-contrato/<int:pk>/",
                  views.GeneratePDF.as_view(), name="gerarcontrato"),
+
             path("historico/", views.MenuHistorico.as_view(),
                  name="menuhistoricopage"),
         ]))

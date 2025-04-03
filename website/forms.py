@@ -42,34 +42,27 @@ class CriarProfessorForm(forms.ModelForm):
 
 class GerarContratoForm(forms.ModelForm):
     class Meta:
-        model = models.Solicitacao
+        model = models.Contratos
         fields = [
             "processo",
-            "evento_sige",
+            "evento",
             "prestador",
             "servico",
-            "curso_treinamento",
+            "componentes",
             "data_inicio",
             "data_termino",
-            "horario_inicio",
-            "horario_termino",
             "carga_horaria",
-            "valor_hora",
-            "parecer_secretaria",
-            "parecer_coordenacao",
+            "valor_hora_aula",
         ]
 
         widgets = {
-            "processo": forms.Select(attrs={"id": "pf_ou_pj", "class": "col-start-1 row-start-1 w-full appearance-none rounded-md bg-white py-1.5 pr-8 pl-3 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"}),
-            "evento_sige": forms.DateInput(attrs={"id": "data_nascimento", "type": "date", "class": "block w-full rounded-md bg-white px-3 py-1.5 text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"}),
+            "processo": forms.TextInput(attrs={"id": "pf_ou_pj", "class": "col-start-1 row-start-1 w-full appearance-none rounded-md bg-white py-1.5 pr-8 pl-3 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"}),
+            "evento": forms.DateInput(attrs={"id": "data_nascimento", "type": "date", "class": "block w-full rounded-md bg-white px-3 py-1.5 text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"}),
             "prestador": forms.TextInput(attrs={"id": "nome", "class": "block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"}),
             "servico": forms.Textarea(attrs={"id": "obs", "rows": "3", "class": "block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"}),
-            "curso_treinamento": forms.Textarea(attrs={"id": "obs", "rows": "3", "class": "block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"}),
+            "componentes": forms.Textarea(attrs={"id": "obs", "rows": "3", "class": "block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"}),
             "data_inicio": forms.DateInput(attrs={"id": "data_nascimento", "type": "date", "class": "block w-full rounded-md bg-white px-3 py-1.5 text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"}),
             "data_termino": forms.DateInput(attrs={"id": "data_nascimento", "type": "date", "class": "block w-full rounded-md bg-white px-3 py-1.5 text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"}),
             "carga_horaria": forms.TextInput(attrs={"id": "nome", "class": "block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"}),
-            "valor_hora": forms.TextInput(attrs={"id": "nome", "class": "block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"}),
-            "parecer_secretaria": forms.Textarea(attrs={"id": "obs", "rows": "3", "class": "block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"}),
-            "parecer_coordenacao": forms.Textarea(attrs={"id": "obs", "rows": "3", "class": "block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"}),
-
+            "valor_hora_aula": forms.TextInput(attrs={"id": "nome", "class": "block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"}),
         }

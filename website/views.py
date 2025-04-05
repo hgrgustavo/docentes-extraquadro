@@ -5,7 +5,6 @@ from django.template import loader
 from xhtml2pdf import pisa
 import io
 from django.core.files.base import ContentFile
-from django.urls import reverse
 
 
 class Index(edit.CreateView):
@@ -56,9 +55,33 @@ class MenuGerarContrato(edit.CreateView):
     form_class = forms.GerarContratoForm
 
     def form_valid(self, form):
-        self.object = form.save()
+        try:
+            contrato = form.save()
 
-        return http.JsonResponse({'message': 'Objeto criado com sucesso!'})
+            pdf_buffer = GeneratePDF().render_to_pdf(
+                "pdf_template.html",
+                contrato.get_pdf_context()
+            )
+
+            if pdf_buffer:
+                contrato.pdf.save(
+                    f"contrato_{contrato.id}.pdf",
+                    ContentFile(pdf_buffer.read()))
+
+            pdf_buffer.close()
+
+            return http.JsonResponse(  # melhorar retorno !
+                {
+                    "message": "PDF gerado com sucesso",
+                    "contrato_id": contrato.id
+                }
+            )
+
+        except Exception as e:
+            return http.JsonResponse(
+                {"error": f"Erro inesperado: {str(e)}"},
+                status=500
+            )
 
 
 class GeneratePDF(base.View):
@@ -80,54 +103,6 @@ class GeneratePDF(base.View):
         except Exception as e:
             print(f"Erro ao renderizar o PDF: {str(e)}")
             return None
-
-    def post(self, request, **kwargs):
-        try:
-            query = models.Contratos.objects.order_by("-id").first()
-
-            if not query:
-                return http.JsonResponse(
-                    {"error": "Nenhum contrato encontrado"}, status=404
-                )
-
-            context_dict = {
-                "id": query.id,
-                "processo": query.processo,
-                "evento": query.evento_sige,
-                "prestador": query.prestador,
-                "servico": query.servico,
-                "componentes": query.curso_treinamento,
-                "data_inicio": query.data_inicio,
-                "data_termino": query.data_termino,
-                "carga_horaria": query.carga_horaria,
-                "valor_hora_aula": query.valor_hora,
-            }
-
-            response_buffer = self.render_to_pdf(
-                "pdf_template.html", context_dict)
-
-            if not response_buffer:
-                return http.JsonResponse(
-                    {"error": "Erro ao gerar o PDF"}, status=500
-                )
-
-            query.pdf.save(
-                f"contrato_{query.id}.pdf", ContentFile(response_buffer.read())
-            )
-
-            response_buffer.close()
-
-            return http.JsonResponse(
-                {"message": "PDF gerado com sucesso", }
-            )
-
-        except models.Contratos.DoesNotExist:
-            return http.JsonResponse({"error": "Contrato não encontrado"}, status=404)
-
-        except Exception as e:
-            return http.JsonResponse(
-                {"error": f"Erro inesperado: {str(e)}"}, status=500
-            )
 
 
 class MenuHistorico(list.ListView):

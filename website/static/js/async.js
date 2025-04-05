@@ -36,40 +36,6 @@ class Async {
     });
   }
 
-
-  generatePDF() {
-    document.addEventListener("DOMContentLoaded", () => {
-      const button = document.getElementById("generatepdf");
-      if (button) {
-        button.addEventListener("click", async (event) => {
-          event.preventDefault(); // Evita a navegação para "#"
-          console.log("Clique detectado! Iniciando...");
-          try {
-            const response = await fetch(`pdf/`, {
-              method: "POST",
-              headers: {
-                "X-CSRFToken": this.getCSRFToken(),
-              },
-            });
-
-            if (!response.ok) {
-              throw new Error("Erro ao gerar o PDF");
-            }
-
-            const data = await response.json();
-            console.log("PDF gerado com sucesso:", data);
-            alert("Contrato gerado com sucesso!");
-          } catch (error) {
-            console.error("Erro na requisição:", error);
-            alert(`Erro ao gerar o contrato: ${error.message}`);
-          }
-        });
-      } else {
-        console.error("Botão não encontrado no DOM!");
-      }
-    });
-  }
-
 }
 
 const async = new Async();

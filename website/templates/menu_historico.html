@@ -23,7 +23,7 @@
     </thead>
     <tbody>
       {% for c in contratos %}
-        <tr id="btn-generatepdf">
+          <tr id={{ c.id }}>
             <td class="p-2">{{ c.pdf.url }}</td>
             <td class="p-2">{{ modalidade }}</td>
             <td class="p-2">{{ c.data_inicio }}</td>

@@ -16,8 +16,8 @@ urlpatterns = [
             path("gerar-contrato/", views.MenuGerarContrato.as_view(),
                  name="menugerarcontratopage"),
 
-            path("gerar-contrato/<int:pk>/",
-                 views.GeneratePDF.as_view(), name="gerarcontrato"),
+            path("gerar-contrato/pdf/",
+                 views.GeneratePDF.as_view(), name="gerarcontratopage"),
 
             path("historico/", views.MenuHistorico.as_view(),
                  name="menuhistoricopage"),

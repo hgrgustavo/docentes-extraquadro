@@ -5,6 +5,7 @@ from django.template import loader
 from xhtml2pdf import pisa
 import io
 from django.core.files.base import ContentFile
+from django.urls import reverse
 
 
 class Index(edit.CreateView):
@@ -53,7 +54,11 @@ class MenuGerarContrato(edit.CreateView):
     template_name = "menu_gerarcontrato.html"
     model = models.Contratos
     form_class = forms.GerarContratoForm
-    success_url = "#"
+
+    def form_valid(self, form):
+        self.object = form.save()
+
+        return http.JsonResponse({'message': 'Objeto criado com sucesso!'})
 
 
 class GeneratePDF(base.View):
@@ -79,6 +84,7 @@ class GeneratePDF(base.View):
     def post(self, request, **kwargs):
         try:
             query = models.Contratos.objects.order_by("-id").first()
+
             if not query:
                 return http.JsonResponse(
                     {"error": "Nenhum contrato encontrado"}, status=404
@@ -112,10 +118,7 @@ class GeneratePDF(base.View):
             response_buffer.close()
 
             return http.JsonResponse(
-                {
-                    "message": "PDF gerado com sucesso",
-                    "pdf_url": query.pdf.url,
-                }
+                {"message": "PDF gerado com sucesso", }
             )
 
         except models.Contratos.DoesNotExist:

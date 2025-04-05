@@ -122,4 +122,4 @@ class Contratos(models.Model):
     carga_horaria = models.IntegerField()
     valor_hora_aula = models.FloatField()
     pdf = models.FileField(
-        upload_to="contratos/hora-aula/", default=None, blank=False)
+        upload_to="contratos/hora-aula/", null=True, blank=True)

@@ -4,34 +4,6 @@ from django.core import validators, exceptions
 import os
 
 
-class ControlePagamento(models.Model):
-    situacao_pasta = models.CharField(max_length=45)
-    solicitacao = models.ForeignKey(
-        'Solicitacao', models.DO_NOTHING, default="")
-    data_inicio = models.DateField()
-    data_termino = models.DateField()
-    modalidade = models.CharField(max_length=45, default="hora-aula")
-    curso_componentes = models.CharField(max_length=45)
-    evento = models.CharField(max_length=45)
-    solicitante = models.CharField(max_length=45)
-    fornecedor = models.CharField(max_length=45)
-    valor_sc = models.FloatField()
-    total_horas_contradas = models.IntegerField()
-    valor_hora_aula = models.FloatField()
-    valor_pago = models.FloatField()
-    saldo = models.FloatField()
-    saldo_de_horas = models.IntegerField()
-    horas_pagas = models.IntegerField()
-    prazo_validade_contrato = models.DateField()
-    observacao = models.TextField()
-    professor = models.ForeignKey('Professor', models.DO_NOTHING, default="")
-
-    class Meta:
-
-        db_table = 'controle_pagamento'
-        unique_together = (('id', 'solicitacao', 'professor'),)
-
-
 class Professor(models.Model):
     CHOICES = [
         ("PF", "Pessoa Física"),
@@ -59,32 +31,6 @@ class Professor(models.Model):
         if self.pf_ou_pj == "PJ" and self.cpf:
             raise exceptions.ValidationError(
                 "Pessoa Jurídica não pode ter CPF")
-
-    # implementar mascaras p/ cpf e cnpj
-
-
-class Solicitacao(models.Model):
-    status = models.CharField(max_length=45)
-    parecer_coordenacao = models.TextField()
-    parecer_secretaria = models.TextField()
-    parecer_compras = models.TextField()
-    pendencias = models.TextField()
-    evento_sige = models.CharField(max_length=45)
-    processo = models.CharField(max_length=45)
-    solicitante = models.CharField(max_length=45)
-    data_inicio = models.DateField()
-    data_termino = models.DateField()
-    horario_inicio = models.TimeField()
-    horario_termino = models.TimeField()
-    carga_horaria = models.IntegerField()
-    valor_hora = models.FloatField()
-    prestador = models.CharField(max_length=255)
-    curso_treinamento = models.TextField()
-    servico = models.TextField()
-    observacao = models.TextField()
-
-    class Meta:
-        db_table = 'solicitacao'
 
 
 class Usuario(models.Model):

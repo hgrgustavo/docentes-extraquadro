@@ -1,17 +1,31 @@
 from django.views.generic import base, edit, list
 from . import models, forms
-from django import http
+from django import http, urls
 from django.template import loader
 from xhtml2pdf import pisa
 import io
 from django.core.files.base import ContentFile
+from django.contrib import auth
 
 
-class Index(edit.CreateView):
-    model = models.Usuario
-    form_class = forms.LoginForm
+class LoginView(edit.FormView):
     template_name = "login.html"
-    success_url = "menu/inicio/"
+    form_class = forms.LoginForm
+    success_url = urls.reverse("menuiniciopage")
+
+    def form_valid(self, form):
+        username = form.cleaned_data["username"]
+        password = form.cleaned_data["password"]
+        user = auth.authenticate(
+            self.request, username=username, password=password)
+
+        if user is not None:
+            auth.login(self.request, user)
+
+            return http.HttpResponseRedirect(self.success_url)
+        else:
+            form.add_error(None, "Usuário ou senha inválidos")
+            return super().form_invalid(form)
 
 
 class MenuInicio(list.ListView):

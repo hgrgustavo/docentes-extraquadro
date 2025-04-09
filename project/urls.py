@@ -3,10 +3,10 @@ from website import views
 
 
 urlpatterns = [
-    path("", views.Index.as_view(), name="loginpage"),
+    path("", views.MenuInicio.as_view(), name="menuiniciopage"),
+    path("login/", views.Login.as_view(), name="loginpage"),
 
     path("menu/", include([
-        path("inicio/", views.MenuInicio.as_view(), name="menuiniciopage"),
         path("criar-professor/", views.MenuCriarProfessor.as_view(),
              name="menucriarprofessorpage"),
         path("listar-professor", views.MenuListarProfessor.as_view(),

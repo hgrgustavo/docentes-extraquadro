@@ -41,18 +41,18 @@
                     </li> 
                     <li>
                         <!-- Dropdown -->
-                        <div class="flex flex-col space-y-2"> 
+                        <div class="flex flex-col hover:bg-blue-700 hover:text-white rounded-lg transition-all align-center"> 
                             <div class="w-full">
-                                <button id="menu-button" aria-expanded="true" aria-haspopup="true" class="flex items-center w-full p-3 rounded-lg cursor-pointer hover:bg-blue-700 hover:text-white transition-all">
+                                <button id="menu-button" aria-expanded="true" aria-haspopup="true" class="flex items-center w-full p-3 rounded-lg cursor-pointer">
                                     <i data-lucide="dollar-sign" class="wr-2 duration-700 transition-all"></i>
                                     <span class="ml-2 whitespace-nowrap">Contratos</span>
                                     <i data-lucide="chevron-down" class="translate-x-10"></i>
                                 </button>
                             </div> 
-                            <div id="dropdown" class="hidden bg-white text-black -translate-y-2" role="menu" aria-orientation="vertical" aria-labelledby="menu-button">
-                              <div class="py-1" role="none">
-                                <a href="{% url 'menuhistoricopage' %}" class="block px-4 py-2 text-sm hover:bg-gray-100">Histórico</a>
-                                <a href="{% url 'menugerarcontratopage' %}" class="block px-4 py-2 text-sm hover:bg-gray-100">Gerar contrato</a> 
+                            <div id="dropdown" class="hidden -translate-y-1 underline hover:bg-blue-700 hover:text-white rounded-lg transition-all" role="menu" aria-orientation="vertical" aria-labelledby="menu-button">
+                              <div class="py-2" role="none">
+                                <a href="{% url 'menuhistoricopage' %}" class="block px-4 py-1 text-sm underline">Histórico</a>
+                                <a href="{% url 'menugerarcontratopage' %}" class="block px-4 py-1 text-sm underline">Gerar contrato</a> 
                               </div>
                             </div>
                         </div>

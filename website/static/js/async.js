@@ -1,7 +1,8 @@
 class Async {
   constructor() {
     this.showUserAvatar();
-    this.generatePDF();
+    this.deleteContract();
+
   }
 
   getCSRFToken() {
@@ -36,6 +37,48 @@ class Async {
     });
   }
 
+  deleteContract() {
+    document.addEventListener("DOMContentLoaded", () => {
+      document.querySelectorAll("a.hover\\:text-red-700").forEach((anchor) => {
+        anchor.addEventListener("click", (event) => {
+          event.preventDefault();
+          const row = event.target.closest("tr[id]");
+
+          if (!row) {
+            console.error("Linha não encontrada!");
+            return;
+          }
+
+          const row_id = row.id;
+
+          if (confirm(`Deseja excluir o contrato Nº${row_id}?`)) {
+            fetch(`excluir/${row_id}/`, {
+              method: "DELETE",
+              headers: {
+                "X-CSRFToken": this.getCSRFToken(),
+                "Content-Type": "application/json",
+              },
+            })
+              .then((response) => response.json())
+              .then((data) => {
+                if (data.status === "success") {
+                  const table_body = document.getElementById("table_body");
+
+                  if (table_body) {
+                    row.parentNode.removeChild(row);
+                  }
+                } else {
+                  console.error("Falha ao excluir o contrato.");
+                }
+              })
+              .catch((error) => {
+                console.error("Erro ao excluir linha: " + error);
+              });
+          }
+        });
+      });
+    });
+  }
 }
 
 const async = new Async();

@@ -1,6 +1,6 @@
 from django.views.generic import base, edit, list
 from . import models, forms
-from django import http, urls
+from django import http
 from django.template import loader
 from xhtml2pdf import pisa
 import io
@@ -11,7 +11,6 @@ from django.contrib import auth
 class LoginView(edit.FormView):
     template_name = "login.html"
     form_class = forms.LoginForm
-    success_url = urls.reverse("menuiniciopage")
 
     def form_valid(self, form):
         username = form.cleaned_data["username"]
@@ -126,8 +125,26 @@ class MenuHistorico(list.ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["modalidade"] = models.ControlePagamento.objects.values(
-            "modalidade"
-        )
 
         return context
+
+
+class DeleteContratos(edit.DeleteView):
+    model = models.Contratos
+
+    def delete(self, request, **kwargs):
+        try:
+            self.get_object().delete()
+            return http.JsonResponse(
+                {
+                    "status": "success"
+                }
+            )
+
+        except models.Contratos.DoesNotExist:
+            return http.JsonResponse(
+                {
+                    "status": "error",
+                    "cause": "Item not found"
+                }
+            )

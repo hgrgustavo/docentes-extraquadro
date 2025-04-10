@@ -1,49 +1,42 @@
 {% extends "menu.html" %}
 {% load static %}
+
 {% block content %}
 <div class="w-4/5 rounded shadow-lg ml-5 h-dvh overflow-auto">
   <div class="px-6 py-4 grid grid-rows-1">
     <div class="font-bold text-xl row-span-1">
       <h2>Histórico</h2>
-      <p class="text-gray-700">
-        Lista todos os contratos gerados.
-      </p>
+      <p class="text-gray-700">Lista todos os contratos gerados.</p>
     </div>
-    <div class="m-2 mt-10">
-      
-<table class="table-fixed text-left">
-    <thead class="bg-gray-200">
-        <tr class="border-b-3 border-black text-left">
-            <th class="p-2">Contrato</th>
-            <th class="p-2">Modalidade</th>
-            <th class="p-2">Data de Início</th>
-            <th class="p-2">Data de término</th>
-            <th class="p-2">Ações</th>
-        </tr>
-    </thead>
-    <tbody>
-      {% for c in contratos %}
-          <tr id={{ c.id }}>
-            <td class="p-2">
-              {% if c.pdf %}
-                <a href="{{ c.pdf }}" target="_blank" class="text-blue-500 underline">Baixar PDF</a>
-              {% else %}
-                <span class="text-gray-500">PDF indisponível</span>
-              {% endif %}
-            </td>
-            <td class="p-2"></td>
-            <td class="p-2">{{ c.data_inicio }}</td>
-            <td class="p-2">{{ c.data_termino }}</td>
-            <td class="p-2 flex">
-              <a href=""><i data-lucide="trash"></i></a>
-              <a href=""><i data-lucide="cloud-upload"></i></a>
-            </td>
-        </tr>
-      {% endfor %}
-    </tbody>
-</table>
 
+    <div class="m-2 mt-10 flex justify-center">
+      <table class="table-fixed text-center shadow-xl">
+        <thead class="bg-gray-200 text-right">
+          <tr class="border-b-3 border-black text-left odd:bg-blue-500">
+            <th class="p-4 text-center">Prestador</th>
+            <th class="p-4 text-center">Modalidade</th>
+            <th class="p-4 text-center">Data de Início</th>
+            <th class="p-4 text-center">Data de término</th>
+            <th class="p-4 text-center">Ações</th>
+          </tr>
+        </thead>
+        <tbody id="table_body">
+          {% for c in contratos %}
+          <tr id="{{ c.id }}" class="odd:bg-gray-100">
+            <td class="p-4">{{ c.prestador }}</td>
+            <td class="p-4">{{ c.modalidade }}</td>
+            <td class="p-4">{{ c.data_inicio }}</td>
+            <td class="p-4">{{ c.data_termino }}</td>
+            <td class="p-4 flex gap-3">
+              <a href=""><i data-lucide="download" class="hover:text-orange-600"></i></a>
+              <a href="#" class="hover:text-red-700"><i data-lucide="trash"></i></a>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
     </div>
   </div>
 </div>
 {% endblock %}
+

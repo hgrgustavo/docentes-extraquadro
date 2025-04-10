@@ -58,6 +58,10 @@ class Usuario(models.Model):
 
 
 class Contratos(models.Model):
+    CHOICES_MODALIDADES = [
+        ("hora-aula", "Hora-aula"),
+    ]
+
     processo = models.CharField(max_length=255)
     evento = models.DateField()
     prestador = models.CharField(max_length=255)
@@ -67,6 +71,7 @@ class Contratos(models.Model):
     data_termino = models.DateField()
     carga_horaria = models.IntegerField()
     valor_hora_aula = models.FloatField()
+    modalidade = models.CharField(max_length=50, default="Hora-aula")
     pdf = models.FileField(
         upload_to="contratos/hora-aula/", null=True, blank=True)
 

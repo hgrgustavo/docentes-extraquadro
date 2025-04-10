@@ -4,7 +4,7 @@ from website import views
 
 urlpatterns = [
     path("", views.MenuInicio.as_view(), name="menuiniciopage"),
-    path("login/", views.Login.as_view(), name="loginpage"),
+    path("login/", views.LoginView.as_view(), name="loginpage"),
 
     path("menu/", include([
         path("criar-professor/", views.MenuCriarProfessor.as_view(),
@@ -21,6 +21,8 @@ urlpatterns = [
 
             path("historico/", views.MenuHistorico.as_view(),
                  name="menuhistoricopage"),
+            path("historico/excluir/<int:pk>/",
+                 views.DeleteContratos.as_view(), name="deletecontrato")
         ]))
     ])),
 ]

@@ -1,11 +1,8 @@
 {% extends "menu.html" %}
 {% load static %}
 
-
-<script src="../static/js/async.js"></script>
-
 {% block content %}
-<div class="w-4/5 rounded-4xl shadow-xl h-dvh absolute translate-x-50 -translate-y-35 ml-20 bg-white" style="z-index: 3;">
+<div class="w-4/5 rounded-4xl shadow-xl h-dvh absolute translate-x-50 -translate-y-35 ml-20 bg-white z-10">
   <div class="px-6 py-4 grid grid-rows-1">
     
     <div class="font-bold text-xl row-span-1">
@@ -15,7 +12,7 @@
       </p>
     </div>
     {% for p in professor %}
-    <div class="mt-10 grid grid-cols-1 gap-x-5 gap-y-8 sm:grid-cols-5">
+    <div class="mt-10 grid grid-cols-24 gap-x-5 gap-y-8 sm:grid-cols-5">
       <div class="col-span-1">
         <img class="avatar-preview rounded-full w-[300px] h-[200px] border border-dashed">
         <div class="text-center">
@@ -32,7 +29,17 @@
           <br>
           <span>E-mail: <strong>{{ p.email }}</strong></span>
           <br>
-        <span>Telefone: <strong><a target="_blank" rel="noopener noreferrer" style="color: #0DD940" class="underline" href="https://web.whatsapp.com/send?phone={{ p.telefone }}">{{ p.telefone }}</a></strong><span>
+          <div>
+            <span>Telefone: 
+              <strong>{{ p.telefone }}
+                <div class="col-end-2">
+                  <a target="_blank" rel="noopener noreferrer" style="color: #0DD940" class="underline" href="https://web.whatsapp.com/send?phone={{ p.telefone }}">
+                    <img class="flex" src="{% static 'img/whatsapp.webp' %}" width=30px; height=5px;>
+                  </a>
+                </div>
+              </strong> 
+            <span>
+          </div>
           <br>
           <span>Nascimento: <strong>{{ p.data_nascimento }}</strong></span> 
           <br><br>

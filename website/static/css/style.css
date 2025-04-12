@@ -13,3 +13,7 @@ table.dataTable thead th, table.dataTable thead td, table.dataTable tfoot th, ta
   text-align: center;
 }
 
+div.relative {
+    transform: scale(1); /* Isso cria um novo contexto de empilhamento */
+}
+

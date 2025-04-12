@@ -5,82 +5,124 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token }}">
+<!DOCTYPE html>
+<html lang="pt-br">
+{% load static %}
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="{{ csrf_token }}">
     <title>{% block title %}Home{% endblock %}</title>
     <script src="https://unpkg.com/lucide@latest"></script>
-    <link href="https://cdn.datatables.net/v/dt/dt-2.2.2/datatables.min.css" rel="stylesheet" integrity="sha384-2vMryTPZxTZDZ3GnMBDVQV8OtmoutdrfJxnDTg0bVam9mZhi7Zr3J1+lkVFRr71f" crossorigin="anonymous">
+    <link 
+        href="https://cdn.datatables.net/v/dt/dt-2.2.2/datatables.min.css" 
+        rel="stylesheet" 
+        integrity="sha384-2vMryTPZxTZDZ3GnMBDVQV8OtmoutdrfJxnDTg0bVam9mZhi7Zr3J1+lkVFRr71f" 
+        crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-    <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+    <script 
+        src="https://code.jquery.com/jquery-3.7.1.js" 
+        integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" 
+        crossorigin="anonymous"></script>
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
     <script src="{% static 'js/fixes.js' %}" defer></script>
-    <script src="{% static 'js/async.js' %}"></script>
-    <script src="{% static 'js/tables.js' %}"></script>
+    <script src="{% static 'js/async.js' %}" defer></script>
+    <script src="{% static 'js/tables.js' %}" defer></script>
 </head>
 
 <body>
-    <div class="h-full flex flex-col relative z-0 overflow-visible">
-        <!-- Navegação -->
-        <nav class="relative bg-blue-700 pb-10 mb-10 flex items-center justify-between z-0"></nav>
+    <!-- Navbar -->
+    <div class="bg-blue-700 pb-65 relative" style="z-index: -1;"></div>
 
-        <div class="flex flex-1 relative">
+    <div class="h-full flex flex-col">
+        <div class="flex flex-1 bg-gray-50 pb-100">
             <!-- Barra lateral -->
             <aside class="w-56 p-4 text-gray-900">
                 <ul class="space-y-2">
                     <!-- Links de navegação -->
                     <li>
-                        <a href="{% url 'menuiniciopage' %}" class="flex items-center p-3 rounded-lg cursor-pointer hover:bg-blue-700 hover:text-white transition-all">
+                        <a 
+                            href="{% url 'menuiniciopage' %}" 
+                            class="flex items-center p-3 rounded-lg cursor-pointer hover:bg-blue-700 hover:text-white transition-all">
                             <i data-lucide="shield" class="duration-700 transition-all"></i>
-                            <span class="flex-1 ml-2 whitespace-nowrap">Início</span>
+                            <span class="flex-1 ml-2 whitespace-nowrap text-sm">Início</span>
                         </a>
                     </li>
                     <li>
-                        <a href="{% url 'menucriarprofessorpage' %}" class="flex items-center p-3 rounded-lg cursor-pointer hover:bg-blue-700 hover:text-white transition-all">
-                            <i data-lucide="clipboard-pen" class="duration-700 transition-all"></i>
-                            <span class="flex-1 ml-2 whitespace-nowrap">Cadastrar professor</span>
+                        <a 
+                            href="{% url 'menucriarprofessorpage' %}" 
+                            class="flex items-center p-3 rounded-lg cursor-pointer hover:bg-blue-700 hover:text-white transition-all">
+                            <i data-lucide="user-pen" class="duration-700 transition-all"></i>
+                            <span class="flex-1 ml-2 whitespace-nowrap text-sm">Cadastrar professor</span>
                         </a>
                     </li>
                     <li>
-                        <a href="{% url 'menulistarprofessorpage' %}" class="flex items-center p-3 rounded-lg cursor-pointer hover:bg-blue-700 hover:text-white transition-all">
+                        <a 
+                            href="{% url 'menulistarprofessorpage' %}" 
+                            class="flex items-center p-3 rounded-lg cursor-pointer hover:bg-blue-700 hover:text-white transition-all">
                             <i data-lucide="scroll-text" class="duration-700 transition-all"></i>
-                            <span class="flex-1 ml-2 whitespace-nowrap">Listar professor</span>
+                            <span class="flex-1 ml-2 whitespace-nowrap text-sm">Listar professor</span>
                         </a>
-                    </li> 
+                    </li>
                     <li>
                         <!-- Dropdown -->
-                        <div class="flex flex-col hover:bg-blue-700 hover:text-white rounded-lg transition-all align-center"> 
+                        <div class="flex flex-col hover:bg-blue-700 hover:text-white rounded-lg transition-all align-center">
                             <div class="w-full">
-                                <button id="menu-button" aria-expanded="true" aria-haspopup="true" class="flex items-center w-full p-3 rounded-lg cursor-pointer">
+                                <button 
+                                    id="menu-button" 
+                                    aria-expanded="true" 
+                                    aria-haspopup="true" 
+                                    class="flex items-center w-full p-3 rounded-lg cursor-pointer">
                                     <i data-lucide="dollar-sign" class="wr-2 duration-700 transition-all"></i>
-                                    <span class="ml-2 whitespace-nowrap">Contratos</span>
-                                    <i data-lucide="chevron-down" class="translate-x-10"></i>
+                                    <span class="ml-2 whitespace-nowrap text-sm">Contratos</span>
+                                    <i data-lucide="chevron-down" class="translate-x-13"></i>
                                 </button>
-                            </div> 
-                            <div id="dropdown" class="hidden -translate-y-1 underline hover:text-white rounded-lg transition-all" role="menu" aria-orientation="vertical" aria-labelledby="menu-button">
-                              <div class="py-2" role="none">
-                                <a href="{% url 'menuhistoricopage' %}" class="block px-4 py-1 text-sm underline">Histórico</a>
-                                <a href="{% url 'menugerarcontratopage' %}" class="block px-4 py-1 text-sm underline">Gerar contrato</a> 
-                              </div>
+                            </div>
+                            <div 
+                                id="dropdown" 
+                                class="hidden -translate-y-1 underline hover:text-white rounded-lg transition-all" 
+                                role="menu" 
+                                aria-orientation="vertical" 
+                                aria-labelledby="menu-button">
+                                <div class="py-2" role="none">
+                                    <a 
+                                        href="{% url 'menuhistoricopage' %}" 
+                                        class="block px-4 py-1 text-sm underline">Histórico</a>
+                                    <a 
+                                        href="{% url 'menugerarcontratopage' %}" 
+                                        class="block px-4 py-1 text-sm underline">Gerar contrato</a>
+                                </div>
                             </div>
                         </div>
-                    </li> 
-                    <hr>
-                    <li>
-                        <a href="{% url 'menuiniciopage' %}" class="flex items-center p-3 rounded-lg cursor-pointer hover:bg-red-700 hover:text-white transition-all">
+                    </li>
+                    <li class="translate-x-0.5">
+                      <a 
+                        href="{% url 'menuiniciopage' %}" 
+                        class="flex items-center p-3 rounded-lg cursor-pointer hover:bg-green-700 hover:text-white transition-all">
+                        <i data-lucide="bolt" class="duration-700 transition-all"></i>
+                        <span class="flex-1 ml-2 whitespace-nowrap text-sm">Configurações</span>
+                      </a>
+                    </li>
+                    <li class="translate-x-0.5">
+                        <a 
+                            href="{% url 'menuiniciopage' %}" 
+                            class="flex items-center p-3 rounded-lg cursor-pointer hover:bg-red-700 hover:text-white transition-all">
                             <i data-lucide="log-out" class="duration-700 transition-all"></i>
-                            <span class="flex-1 ml-2 whitespace-nowrap">Sair</span>
+                            <span class="flex-1 ml-2 whitespace-nowrap text-sm">Sair</span>
                         </a>
                     </li>
                 </ul>
             </aside>
+
             <!-- Conteúdo principal -->
             {% block content %}
             {% endblock %}
         </div>
-    </div> 
+    </div>
+
+    <!-- Scripts -->
     <script>lucide.createIcons();</script>
     <script src="https://cdn.datatables.net/2.2.2/js/dataTables.js"></script>
-    
-
-    
 </body>
 </html>
 

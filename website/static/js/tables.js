@@ -4,12 +4,20 @@ class DataTablesHandler {
   }
 
   initializeTables() {
-    $("#table_history").DataTable();
-    // Adicione aqui outras inicializações para diferentes tabelas, se necessário
+    $("#table_history").DataTable({
+      language: {
+        search: "Filtrar:",
+        info: "_START_ de _END_ resultados",
+        lengthMenu: "_MENU_ resultados por página",
+      },
+
+
+
+
+    });
   }
 }
 
-// Instanciar a classe quando o DOM estiver pronto
 $(document).ready(() => {
   new DataTablesHandler();
 });

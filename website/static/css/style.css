@@ -1,0 +1,15 @@
+div.dt-container.dt-empty-footer tbody > tr:last-child > * {
+  border-bottom: 1px solid rgba(0, 0, 0, 0);
+  
+}
+
+table.dataTable > thead > tr > th, table.dataTable > thead > tr > td {
+  padding: 10px;
+  padding-right: 10px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0);
+}
+
+table.dataTable thead th, table.dataTable thead td, table.dataTable tfoot th, table.dataTable tfoot td {
+  text-align: center;
+}
+

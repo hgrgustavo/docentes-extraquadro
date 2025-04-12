@@ -35,11 +35,17 @@ class MenuInicio(list.ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         try:
-            usuario = models.Usuario.objects.get(pk=1)
-            context["get_nome"] = usuario.nome
+            user = models.Usuario.objects.get(pk=1)
+            teacher = models.Professor.objects.all()
+            contract = models.Contratos.objects.all()
+
+            context["user_name"] = user.nome
+            context["user_email"] = user.email
+            context["teacher_quantity"] = teacher.count()
+            context["contract_quantity"] = contract.count()
 
         except models.Usuario.DoesNotExist:
-            context["get_nome"] = None
+            context["user_nome"] = None
 
         return context
 

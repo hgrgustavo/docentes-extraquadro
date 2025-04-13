@@ -24,6 +24,7 @@
 </head>
 
 <body>
+    
     <!-- Navbar -->
     <div class="bg-blue-700 pb-80 relative z-0 flex flex-col justify-left">
       <div>
@@ -70,6 +71,7 @@
           </div>
         </span>
       </div>
+      {% block user_info %}
       <div class=" absolute self-left translate-x-20 translate-y-30">
         <img class="avatar-preview rounded-full w-[120px] h-[120px] border border-dashed border-white">
         <div class="text-center">
@@ -81,7 +83,10 @@
           </div>
         </div>
       </div>
+      {% endblock %}
     </div>
+    
+    
 
     <div class="h-full flex flex-col">
         <div class="flex flex-1 bg-gray-50 pb-100">
@@ -161,7 +166,7 @@
                         </a>
                     </li>
                 </ul>
-            </aside>
+            </aside> 
 
             <!-- Conteúdo principal -->
             <div class="w-4/5 rounded-4xl shadow-xl h-dvh absolute translate-x-50 -translate-y-35 ml-20 bg-white z-10">

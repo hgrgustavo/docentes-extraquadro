@@ -41,6 +41,7 @@ class MenuInicio(list.ListView):
 
             context["user_name"] = user.nome
             context["user_email"] = user.email
+
             context["teacher_quantity"] = teacher.count()
             context["contract_quantity"] = contract.count()
 
@@ -55,6 +56,27 @@ class MenuCriarProfessor(edit.CreateView):
     model = models.Professor
     form_class = forms.CriarProfessorForm
     success_url = "#"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        try:
+            user = models.Usuario.objects.get(pk=1)
+            teacher = models.Professor.objects.all()
+
+            context["user_name"] = user.nome
+            context["user_email"] = user.email
+
+            context["last_record"] = teacher.order_by("-id").first().id
+            context["teacher_cpf_percentage"] = round((teacher.filter(
+                pf_ou_pj="PF").count() / teacher.count()) * 100)
+
+            context["teacher_cnpj_percentage"] = round((teacher.filter(
+                pf_ou_pj="PJ").count() / teacher.count()) * 100)
+
+        except models.Usuario.DoesNotExist:
+            context["user_nome"] = None
+
+        return context
 
 
 class MenuListarProfessor(list.ListView):

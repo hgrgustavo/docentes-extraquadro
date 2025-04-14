@@ -1,8 +1,178 @@
-{% extends "menu.html" %}
+<!DOCTYPE html>
+<html lang="pt-br">
 {% load static %}
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="{{ csrf_token }}">
+    <title>{% block title %}Home{% endblock %}</title>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link 
+        href="https://cdn.datatables.net/v/dt/dt-2.2.2/datatables.min.css" 
+        rel="stylesheet" 
+        integrity="sha384-2vMryTPZxTZDZ3GnMBDVQV8OtmoutdrfJxnDTg0bVam9mZhi7Zr3J1+lkVFRr71f" 
+        crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <script 
+        src="https://code.jquery.com/jquery-3.7.1.js" 
+        integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" 
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.min.js" integrity="sha512-L0Shl7nXXzIlBSUUPpxrokqq4ojqgZFQczTYlGjzONGTDAcLremjwaWv5A+EDLnxhQzY5xUZPWLOLqYRkY0Cbw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <script src="{% static 'js/fixes.js' %}" defer></script>
+    <script src="{% static 'js/async.js' %}" defer></script>
+    <script src="{% static 'js/tables.js' %}" defer></script>
+</head>
 
+<body>
+    <!-- Navbar -->
+    <div class="bg-blue-700 pb-80 relative z-0 flex flex-col justify-left">
+      <div>
+        <img class=" absolute brightness-50" src="{% static 'img/senai.png' %}" title="Serviço Nacional de Aprendizagem Industrial">
+      </div>
+      <!-- Nav Query -->
+      <div class="flex translate-x-140 mt-4 absolute hover:text-white gap-10">
+        <span class="flex opacity-65 bg-blue-800 p-5 rounded-xl">
+          <img class="w-25 h-25" src="{% static 'img/piggybank.png' %}">
+          <div class="ml-2 translate-y-1.5 text-white">
+            {% if total_cost == 0 %}
+            <strong class="text-5xl">Nenhuma</strong>
+            <p class="text-xl">Despesa</p>
+            {% endif %}
 
-{% block content %}
+            {% if total_cost > 1 %}
+            <strong class="text-5xl">R$ {{ total_cost|floatformat:"2g" }}</strong>
+            <p class="text-xl">De Despesa</p> 
+            {% endif %} 
+          </div>
+        </span>
+        <!-- Nav Query -->
+         <span class="flex opacity-65 bg-blue-800 p-5 rounded-xl">
+          <img class="w-25 h-25" src="{% static 'img/cpf.png' %}">
+          <div class="ml-2 translate-y-1.5 text-white">
+             {% if teacher_cpf_percentage == 0 %}
+            <strong class="text-5xl">Nenhum</strong>
+            <p class="text-xl">Pessoa Física</p>
+            {% endif %}
+ 
+            {% if teacher_cpf_percentage > 0 %}
+            <strong class="text-5xl">{{ teacher_cpf_percentage }}%</strong>
+            <p class="text-xl">Pessoa Física</p> 
+            {% endif %}  
+          </div>
+        </span>
+
+        <!-- Nav Query -->
+         <span class="flex opacity-65 bg-blue-800 p-5 rounded-xl">
+          <img class="w-25 h-25" src="{% static 'img/encpj.webp' %}">
+          <div class="ml-2 translate-y-1.5 text-white">
+            {% if teacher_cnpj_percentage == 0 %}
+            <strong class="text-5xl">Nenhum</strong>
+            <p class="text-xl">Pessoa Jurídica</p>
+            {% endif %}
+ 
+            {% if teacher_cnpj_percentage > 0 %}
+            <strong class="text-5xl">{{ teacher_cnpj_percentage }}%</strong>
+            <p class="text-xl">Pessoa Jurídica</p> 
+            {% endif %} 
+          </div>
+        </span>
+      </div>
+      <!-- Nav Query -->
+      <div class=" absolute self-left translate-x-20 translate-y-30">
+        <img class="avatar-preview rounded-full w-[120px] h-[120px] border border-dashed border-white">
+        <div class="text-center">
+          <div class="mt-4 flex flex-col justify-left text-sm text-gray-600"> 
+            <strong class="text-2xl text-white -translate-x-3 -translate-y-1">{{ user_name }}</strong>
+            <strong class="text-md text-gray-400 -translate-x-3">{{ user_email }}</strong>
+            
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="h-full flex flex-col">
+        <div class="flex flex-1 bg-gray-50 pb-100">
+            <!-- Barra lateral -->
+            <aside class="w-56 p-4 text-gray-900 translate-x-3 flex flex-col justify-items-center">
+                <ul class="space-y-2">
+                    <!-- Links de navegação -->
+                    <li>
+                        <a 
+                            href="{% url 'menuiniciopage' %}" 
+                            class="flex items-center p-3 rounded-lg cursor-pointer hover:bg-blue-700 hover:text-white transition-all">
+                            <i data-lucide="shield" class="duration-700 transition-all"></i>
+                            <span class="flex-1 ml-2 whitespace-nowrap text-sm">Início</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a 
+                            href="{% url 'menucriarprofessorpage' %}" 
+                            class="flex items-center p-3 rounded-lg cursor-pointer hover:bg-blue-700 hover:text-white transition-all">
+                            <i data-lucide="user-pen" class="duration-700 transition-all"></i>
+                            <span class="flex-1 ml-2 whitespace-nowrap text-sm">Cadastrar professor</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a 
+                            href="{% url 'menulistarprofessorpage' %}" 
+                            class="flex items-center p-3 rounded-lg cursor-pointer hover:bg-blue-700 hover:text-white transition-all">
+                            <i data-lucide="scroll-text" class="duration-700 transition-all"></i>
+                            <span class="flex-1 ml-2 whitespace-nowrap text-sm">Listar professor</span>
+                        </a>
+                    </li>
+                    <li>
+                        <!-- Dropdown -->
+                        <div class="flex flex-col hover:bg-blue-700 hover:text-white rounded-lg transition-all align-center">
+                            <div class="w-full">
+                                <button 
+                                    id="menu-button" 
+                                    aria-expanded="true" 
+                                    aria-haspopup="true" 
+                                    class="flex items-center w-full p-3 rounded-lg cursor-pointer">
+                                    <i data-lucide="dollar-sign" class="wr-2 duration-700 transition-all"></i>
+                                    <span class="ml-2 whitespace-nowrap text-sm">Contratos</span>
+                                    <i data-lucide="chevron-down" class="translate-x-13"></i>
+                                </button>
+                            </div>
+                            <div 
+                                id="dropdown" 
+                                class="hidden -translate-y-1 underline hover:text-white rounded-lg transition-all" 
+                                role="menu" 
+                                aria-orientation="vertical" 
+                                aria-labelledby="menu-button">
+                                <div class="py-2" role="none">
+                                    <a 
+                                        href="{% url 'menuhistoricopage' %}" 
+                                        class="block px-4 py-1 text-sm underline">Histórico</a>
+                                    <a 
+                                        href="{% url 'menugerarcontratopage' %}" 
+                                        class="block px-4 py-1 text-sm underline">Gerar contrato</a>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                      <a 
+                        href="{% url 'menuiniciopage' %}" 
+                        class="flex items-center p-3 rounded-lg cursor-pointer hover:bg-green-700 hover:text-white transition-all">
+                        <i data-lucide="bolt" class="duration-700 transition-all"></i>
+                        <span class="flex-1 ml-2 whitespace-nowrap text-sm">Configurações</span>
+                      </a>
+                    </li>
+                    <li>
+                        <a 
+                            href="{% url 'menuiniciopage' %}" 
+                            class="flex items-center p-3 rounded-lg cursor-pointer hover:bg-red-700 hover:text-white transition-all">
+                            <i data-lucide="door-open" class="duration-700 transition-all"></i>
+                            <span class="flex-1 ml-2 whitespace-nowrap text-sm">Sair</span>
+                        </a>
+                    </li>
+                </ul>
+            </aside>
+
+<!-- Conteúdo principal -->
 <div class="w-4/5 rounded-4xl shadow-xl absolute translate-x-50 -translate-y-35 ml-20 bg-white z-10">
   <div class="px-6 py-4 grid grid-rows-1">
     <div class="font-bold text-xl row-span-1">
@@ -95,4 +265,8 @@
     </form>
   </div>
 </div>
-{% endblock %}
+<!-- Scripts -->
+    <script>lucide.createIcons();</script>
+    <script src="https://cdn.datatables.net/2.2.2/js/dataTables.js"></script>
+</body>
+</html>

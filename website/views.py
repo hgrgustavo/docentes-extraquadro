@@ -6,6 +6,7 @@ from xhtml2pdf import pisa
 import io
 from django.core.files.base import ContentFile
 from django.contrib import auth
+from django.db.models import Sum
 
 
 class LoginView(edit.FormView):
@@ -86,6 +87,22 @@ class MenuListarProfessor(list.ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        try:
+            user = models.Usuario.objects.get(pk=1)
+            teacher = models.Professor.objects.all()
+
+            context["user_name"] = user.nome
+            context["user_email"] = user.email
+
+            context["last_record"] = teacher.order_by("-id").first().id
+            context["teacher_cpf_percentage"] = round((teacher.filter(
+                pf_ou_pj="PF").count() / teacher.count()) * 100)
+
+            context["teacher_cnpj_percentage"] = round((teacher.filter(
+                pf_ou_pj="PJ").count() / teacher.count()) * 100)
+
+        except models.Usuario.DoesNotExist:
+            context["user_nome"] = None
 
         return context
 
@@ -124,6 +141,26 @@ class MenuGerarContrato(edit.CreateView):
                 status=500
             )
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        try:
+            user = models.Usuario.objects.get(pk=1)
+            contract = models.Contratos.objects.all()
+
+            aggregate_data = contract.aggregate(
+                sum_carga_horaria=Sum("carga_horaria"),
+                sum_valor_hora_aula=Sum("valor_hora_aula")
+            )
+
+            context["user_name"] = user.nome
+            context["user_email"] = user.email
+            context["total_cost"] = aggregate_data["sum_carga_horaria"] * \
+                aggregate_data["sum_valor_hora_aula"]
+        except models.Usuario.DoesNotExist:
+            context["user_nome"] = None
+
+        return context
+
 
 class GeneratePDF(base.View):
     def render_to_pdf(self, html_src, context_dict):
@@ -153,6 +190,21 @@ class MenuHistorico(list.ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        try:
+            user = models.Usuario.objects.get(pk=1)
+            contract = models.Contratos.objects.all()
+
+            aggregate_data = contract.aggregate(
+                sum_carga_horaria=Sum("carga_horaria"),
+                sum_valor_hora_aula=Sum("valor_hora_aula")
+            )
+
+            context["user_name"] = user.nome
+            context["user_email"] = user.email
+            context["total_cost"] = aggregate_data["sum_carga_horaria"] * \
+                aggregate_data["sum_valor_hora_aula"]
+        except models.Usuario.DoesNotExist:
+            context["user_nome"] = None
 
         return context
 

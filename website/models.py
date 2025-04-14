@@ -71,7 +71,8 @@ class Contratos(models.Model):
     data_termino = models.DateField()
     carga_horaria = models.IntegerField()
     valor_hora_aula = models.FloatField()
-    modalidade = models.CharField(max_length=50, default="Hora-aula")
+    modalidade = models.CharField(
+        max_length=50, default="hora-aula", choices=CHOICES_MODALIDADES)
     pdf = models.FileField(
         upload_to="contratos/hora-aula/", null=True, blank=True)
 

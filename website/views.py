@@ -1,5 +1,5 @@
 from django.views.generic import base, edit, list
-from . import models, forms
+from . import models, forms, storages
 from django import http
 from django.template import loader
 from xhtml2pdf import pisa
@@ -126,6 +126,9 @@ class MenuGerarContrato(edit.CreateView):
                     f"contrato_{contrato.id}.pdf",
                     ContentFile(pdf_buffer.read()))
 
+                file_id = storages.GoogleDriveStorage()._save(
+                    f"contrato_{contrato.id}.pdf", contrato.pdf)
+
             pdf_buffer.close()
 
             return http.JsonResponse(  # melhorar retorno !
@@ -152,10 +155,13 @@ class MenuGerarContrato(edit.CreateView):
                 sum_valor_hora_aula=Sum("valor_hora_aula")
             )
 
+            sum_carga_horaria = aggregate_data["sum_carga_horaria"] or 0
+            sum_valor_hora_aula = aggregate_data["sum_valor_hora_aula"] or 0
+
             context["user_name"] = user.nome
             context["user_email"] = user.email
-            context["total_cost"] = aggregate_data["sum_carga_horaria"] * \
-                aggregate_data["sum_valor_hora_aula"]
+            context["total_cost"] = sum_carga_horaria * sum_valor_hora_aula
+
         except models.Usuario.DoesNotExist:
             context["user_nome"] = None
 
@@ -199,10 +205,13 @@ class MenuHistorico(list.ListView):
                 sum_valor_hora_aula=Sum("valor_hora_aula")
             )
 
+            sum_carga_horaria = aggregate_data["sum_carga_horaria"] or 0
+            sum_valor_hora_aula = aggregate_data["sum_valor_hora_aula"] or 0
+
             context["user_name"] = user.nome
             context["user_email"] = user.email
-            context["total_cost"] = aggregate_data["sum_carga_horaria"] * \
-                aggregate_data["sum_valor_hora_aula"]
+            context["total_cost"] = sum_carga_horaria * sum_valor_hora_aula
+
         except models.Usuario.DoesNotExist:
             context["user_nome"] = None
 

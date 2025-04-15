@@ -138,3 +138,6 @@ PASSWORD_HASHERS = [
 
 MEDIA_URL = "/media/"
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
+
+DEFAULT_FILE_STORAGE = 'website.storages.GoogleDriveStorage'
+GOOGLE_DRIVE_CREDENTIALS = BASE_DIR / "credentials/credentials.json"

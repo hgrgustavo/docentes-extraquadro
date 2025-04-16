@@ -126,7 +126,7 @@ class MenuGerarContrato(edit.CreateView):
                     f"contrato_{contrato.id}.pdf",
                     ContentFile(pdf_buffer.read()))
 
-                file_id = storages.GoogleDriveStorage()._save(
+                storages.GoogleDriveStorage()._save(
                     f"contrato_{contrato.id}.pdf", contrato.pdf)
 
             pdf_buffer.close()

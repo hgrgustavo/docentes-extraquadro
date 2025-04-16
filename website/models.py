@@ -17,9 +17,9 @@ class Professor(models.Model):
     observacao = models.TextField()
     pf_ou_pj = models.CharField(max_length=15, choices=CHOICES)
     cpf = models.CharField(max_length=14, null=True, blank=True, validators=[validators.RegexValidator(
-        regex=r'([0-9]{2}[\.]?[0-9]{3}[\.]?[0-9]{3}[\/]?[0-9]{4}[-]?[0-9]{2})|([0-9]{3}[\.]?[0-9]{3}[\.]?[0-9]{3}[-]?[0-9]{2})')])
+        regex=r'\d{3}\.?\d{3}\.?\d{3}-?\d{2}$')])
     cnpj = models.CharField(max_length=18, null=True, blank=True, validators=[
-                            validators.RegexValidator(regex=r'/^[0-9]{2}[\.]?[0-9]{3}[\.]?[0-9]{3}[\/]?[0-9]{4}[-]?[0-9]{2}$/')])
+                            validators.RegexValidator(regex=r'^\d{2}\.?(\d{3}\.?){2}/?\d{4}-?\d{2}$')])
 
     class Meta:
         db_table = 'professor'

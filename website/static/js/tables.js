@@ -9,6 +9,10 @@ class DataTablesHandler {
         search: "Filtrar:",
         info: "_START_ de _END_ resultados",
         lengthMenu: "_MENU_ resultados por página",
+
+        emptyTable: "Não há dados disponíveis",
+        infoEmpty: "Nenhum resultado",
+        zeroRecords: "Registros não encontrados",
       },
 
 

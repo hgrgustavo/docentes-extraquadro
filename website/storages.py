@@ -14,7 +14,8 @@ class GoogleDriveStorage(storage.Storage):
 
     def _save(self, name, content):
         file_metadata = {"name": name}
-        media = http.MediaFileUpload(filename=name, mimetype="application/pdf")
+        media = http.MediaIoBaseUpload(
+            filename=name, mimetype="application/pdf")
         file = (
             self.service.files()
             .create(body=file_metadata, media_body=media, fields="id")

@@ -122,19 +122,22 @@ class MenuGerarContrato(edit.CreateView):
             )
 
             if pdf_buffer:
-                contrato.pdf.save(
-                    f"contrato_{contrato.id}.pdf",
-                    ContentFile(pdf_buffer.read()))
+                file_content = ContentFile(pdf_buffer.read())
+                file_name = f"contrato_{contrato.id}.pdf"
 
-                storages.GoogleDriveStorage()._save(
-                    f"contrato_{contrato.id}.pdf", contrato.pdf)
+                contrato.pdf.save(
+                    file_name,
+                    file_content)
+
+                storages.GoogleDriveStorage().save(file_content, file_name)
 
             pdf_buffer.close()
 
             return http.JsonResponse(  # melhorar retorno !
                 {
                     "message": "PDF gerado com sucesso",
-                    "contrato_id": contrato.id
+                    "contrato_id": contrato.id,
+                    "public_url": storages.GoogleDriveStorage.url(self, file_name)
                 }
             )
 

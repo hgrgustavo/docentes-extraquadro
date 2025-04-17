@@ -12,10 +12,13 @@ class GoogleDriveStorage(storage.Storage):
         self.service = discovery.build(
             "drive", "v3", credentials=self.credentials)
 
-    def _save(self, name, content):
-        file_metadata = {"name": name}
+    def save(self, fd, filename):
+        file_metadata = {
+            "name": str(filename),
+            "parents": ["1Ykw24XKHNcartBaRbSAvrBf1z-qTKqGd"],
+        }
         media = http.MediaIoBaseUpload(
-            filename=name, mimetype="application/pdf")
+            fd=fd, mimetype="application/pdf")
         file = (
             self.service.files()
             .create(body=file_metadata, media_body=media, fields="id")
@@ -26,4 +29,4 @@ class GoogleDriveStorage(storage.Storage):
 
     def url(self, name):
         # Retorna a URL pública ou o ID do arquivo no Google Drive
-        return f'https://drive.google.com/file/d/{name}/view'
+        return f'https://drive.google.com/drive/u/0/folders/1Ykw24XKHNcartBaRbSAvrBf1z-qTKqGd'

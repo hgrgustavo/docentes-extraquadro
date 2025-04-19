@@ -46,7 +46,7 @@ class Async {
           const row = event.target.closest("tr[id]");
 
           if (!row) {
-            console.error("Linha não encontrada!");
+            console.error("Table row not found.");
             return;
           }
 
@@ -68,12 +68,10 @@ class Async {
                   if (table_body) {
                     row.parentNode.removeChild(row);
                   }
-                } else {
-                  console.error("Falha ao excluir o contrato.");
                 }
               })
               .catch((error) => {
-                console.error("Erro ao excluir linha: " + error);
+                console.error(`Error while deleting row: ${error}`);
               });
           }
         });
@@ -87,7 +85,7 @@ class Async {
         const row = anchor.closest("tr[id]");
 
         if (!row) {
-          console.error("Linha não encontrada!");
+          console.error("Table row not found");
           return;
         }
 
@@ -98,8 +96,6 @@ class Async {
           headers: {
             "X-CSRFToken": this.getCSRFToken(),
             "Content-Type": "application/json",
-            "Cache-Control": "no-cache",
-            "Pragma": "no-cache"
           },
         })
           .then((response) => {
@@ -118,7 +114,7 @@ class Async {
             }
           })
           .catch(error => {
-            alert(`Erro no download: ${error}`);
+            alert(`Download links attribution error: ${error}`);
           })
       })
     })

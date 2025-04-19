@@ -146,13 +146,15 @@ class MenuGenContract(edit.CreateView):
                 {
                     "message": "PDF gerado com sucesso",
                     "contrato_id": contrato.id,
-                    "public_url": storages.GoogleDriveStorage.url(self, file_name)
+                    "public_url": storages.GoogleDriveStorage.url()
                 }
             )
 
         except Exception as e:
             return http.JsonResponse(
-                {"message": f"Erro inesperado: {str(e)}"},
+                {
+                    "message": f"Erro inesperado: {str(e)}"
+                },
                 status=500
             )
 
@@ -236,7 +238,10 @@ class DeleteContract(edit.DeleteView):
 
     def delete(self, request, **kwargs):
         try:
-            self.get_object().delete()
+            obj = self.get_object()
+            obj.delete()
+            storages.GoogleDriveStorage().delete(obj.id)
+
             return http.JsonResponse(
                 {
                     "message": "success"
@@ -251,6 +256,15 @@ class DeleteContract(edit.DeleteView):
                     "cause": "Item not found"
                 },
                 status=404
+            )
+
+        except Exception as e:
+            return http.JsonResponse(
+                {
+                    "message": "error",
+                    "cause": f"Failed to delete file on Google Drive: {str(e)}"
+                },
+                status=500
             )
 
 

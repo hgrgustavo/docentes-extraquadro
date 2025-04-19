@@ -50,7 +50,7 @@ class GoogleDriveStorage(storage.Storage):
             return files[0]["id"]
 
         except HttpError as error:
-            return f"Search error: {error}"
+            return f"Error while fetching file id, because {error}"
 
     def get_download_link(self, url_id):
 
@@ -58,7 +58,7 @@ class GoogleDriveStorage(storage.Storage):
             drivefile_id = self.search_drivefile_id(url_id)
 
             if not drivefile_id:
-                raise ValueError("Nenhum arquivo encontrado.")
+                raise ValueError("File not found")
 
             request = (
                 self.service.files().get(
@@ -69,5 +69,24 @@ class GoogleDriveStorage(storage.Storage):
 
             return request.get("webContentLink")
 
-        except ValueError as error:
-            return f"Link not found, cause: {error}"
+        except HttpError as error:
+            return f"Link not found, because {error}"
+
+    def url():
+        return None
+
+    def delete(self, url_id):
+        try:
+            drivefile_id = self.search_drivefile_id(url_id)
+
+            if not drivefile_id:
+                raise ValueError("File not found.")
+
+            self.service.files().delete(
+                fileId=drivefile_id
+            ).execute()
+
+            return f"contrato_{url_id} deleted successfully!"
+
+        except HttpError as e:
+            return f"Error while deleting file, because {e}"

@@ -1,15 +1,15 @@
 /* Overriding datatables css rules */
 
-div.dt-container.dt-empty-footer tbody>tr:last-child>* {
+/*div.dt-container.dt-empty-footer tbody>tr:last-child>* {
   border-bottom: 1px solid rgba(0, 0, 0, 0);
 
-}
+}*/
 
 table.dataTable>thead>tr>th,
 table.dataTable>thead>tr>td {
   padding: 10px;
   padding-right: 10px;
-  border-bottom: 1px solid rgba(0, 0, 0, 0);
+  /*border-bottom: 1px solid rgba(0, 0, 0, 0); */
   text-align: center;
 }
 

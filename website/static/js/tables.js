@@ -10,14 +10,10 @@ class DataTablesHandler {
         info: "_START_ de _END_ resultados",
         lengthMenu: "_MENU_ resultados por página",
 
-        emptyTable: "Não há dados disponíveis",
+        emptyTable: "Não há contratos disponíveis",
         infoEmpty: "Nenhum resultado",
         zeroRecords: "Registros não encontrados",
       },
-
-
-
-
     });
   }
 }

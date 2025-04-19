@@ -5,22 +5,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token }}">
-    <title>{% block title %}Home{% endblock %}</title>
+    <title>Adicionar Professor</title>
     <script src="https://unpkg.com/lucide@latest"></script>
-    <link 
-        href="https://cdn.datatables.net/v/dt/dt-2.2.2/datatables.min.css" 
-        rel="stylesheet" 
-        integrity="sha384-2vMryTPZxTZDZ3GnMBDVQV8OtmoutdrfJxnDTg0bVam9mZhi7Zr3J1+lkVFRr71f" 
-        crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-    <script 
-        src="https://code.jquery.com/jquery-3.7.1.js" 
-        integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" 
-        crossorigin="anonymous"></script>
-    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script> 
     <script src="{% static 'js/fixes.js' %}" defer></script>
-    <script src="{% static 'js/async.js' %}" defer></script>
-    <script src="{% static 'js/tables.js' %}" defer></script>
+    <link type="image/x-icon" rel="icon" href="{% static 'img/senai-icon.png' %}">
 </head>
 
 <body>
@@ -30,13 +19,13 @@
         <img class=" absolute brightness-50" src="{% static 'img/senai.png' %}" title="Serviço Nacional de Aprendizagem Industrial">
       </div>
       <!-- Nav Query -->
-      <div class="flex translate-x-120 mt-4 absolute hover:text-white gap-10 text-left">
-        <span class="flex opacity-65 bg-blue-800 p-5 rounded-xl">
+      <div class="flex translate-x-120 mt-4 absolute hover:text-white gap-10 align-left">
+        <span class="flex opacity-65 bg-blue-800 p-4 rounded-xl">
           <img class="w-25 h-25 mr-3" src="{% static 'img/tape.png' %}">
-          <div class="ml-2 translate-y-1.5 text-white text-left">
+          <div class="ml-2 translate-y-1.5 text-white">
             {% if last_record == 0 %}
             <strong class="text-5xl">Nenhum</strong>
-            <p class="text-xl">Cadastro</p>
+            <p class="text-xl">Cadastro<br>Realizado</p>
             {% endif %}
 
             {% if last_record == 1 %}
@@ -46,7 +35,7 @@
 
             {% if last_record > 1 %}
             <strong class="text-5xl">{{ last_record }}</strong>
-            <p class="text-xl">Cadastros</p> 
+            <p class="text-xl">Cadastros<br>Realizados</p> 
             {% endif %} 
           </div>
         </span>
@@ -106,23 +95,23 @@
                         <a 
                             href="{% url 'menuiniciopage' %}" 
                             class="flex items-center p-3 rounded-lg cursor-pointer hover:bg-blue-700 hover:text-white transition-all">
-                            <i data-lucide="shield" class="duration-700 transition-all"></i>
-                            <span class="flex-1 ml-2 whitespace-nowrap text-sm">Início</span>
+                            <i data-lucide="house" class="duration-700 transition-all"></i>
+                            <span class="flex-1 ml-2 whitespace-nowrap text-sm">Home</span>
                         </a>
                     </li>
                     <li>
                         <a 
                             href="{% url 'menucriarprofessorpage' %}" 
                             class="flex items-center p-3 rounded-lg cursor-pointer hover:bg-blue-700 hover:text-white transition-all">
-                            <i data-lucide="user-pen" class="duration-700 transition-all"></i>
-                            <span class="flex-1 ml-2 whitespace-nowrap text-sm">Cadastrar professor</span>
+                            <i data-lucide="user-plus" class="duration-700 transition-all"></i>
+                            <span class="flex-1 ml-2 whitespace-nowrap text-sm">Adicionar professor</span>
                         </a>
                     </li>
                     <li>
                         <a 
                             href="{% url 'menulistarprofessorpage' %}" 
                             class="flex items-center p-3 rounded-lg cursor-pointer hover:bg-blue-700 hover:text-white transition-all">
-                            <i data-lucide="scroll-text" class="duration-700 transition-all"></i>
+                            <i data-lucide="list" class="duration-700 transition-all"></i>
                             <span class="flex-1 ml-2 whitespace-nowrap text-sm">Listar professor</span>
                         </a>
                     </li>
@@ -161,7 +150,7 @@
                       <a 
                         href="{% url 'menuiniciopage' %}" 
                         class="flex items-center p-3 rounded-lg cursor-pointer hover:bg-green-700 hover:text-white transition-all">
-                        <i data-lucide="bolt" class="duration-700 transition-all"></i>
+                        <i data-lucide="wrench" class="duration-700 transition-all"></i>
                         <span class="flex-1 ml-2 whitespace-nowrap text-sm">Configurações</span>
                       </a>
                     </li>

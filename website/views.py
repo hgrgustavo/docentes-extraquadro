@@ -142,14 +142,6 @@ class MenuGenContract(edit.CreateView):
 
             pdf_buffer.close()
 
-            return http.JsonResponse(  # async
-                {
-                    "message": "PDF gerado com sucesso",
-                    "contrato_id": contrato.id,
-                    "public_url": storages.GoogleDriveStorage.url()
-                }
-            )
-
         except Exception as e:
             return http.JsonResponse(
                 {

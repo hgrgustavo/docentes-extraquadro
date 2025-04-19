@@ -1,19 +1,32 @@
-div.dt-container.dt-empty-footer tbody > tr:last-child > * {
+/* Overriding datatables css rules */
+
+div.dt-container.dt-empty-footer tbody>tr:last-child>* {
   border-bottom: 1px solid rgba(0, 0, 0, 0);
-  
+
 }
 
-table.dataTable > thead > tr > th, table.dataTable > thead > tr > td {
+table.dataTable>thead>tr>th,
+table.dataTable>thead>tr>td {
   padding: 10px;
   padding-right: 10px;
   border-bottom: 1px solid rgba(0, 0, 0, 0);
+  text-align: center;
 }
 
-table.dataTable thead th, table.dataTable thead td, table.dataTable tfoot th, table.dataTable tfoot td {
+table.dataTable thead th,
+table.dataTable thead td,
+table.dataTable tfoot th,
+table.dataTable tfoot td {
   text-align: center;
 }
 
 div.relative {
-    transform: scale(1); /* Isso cria um novo contexto de empilhamento */
+  transform: scale(1);
 }
 
+table.dataTable th.dt-type-numeric,
+table.dataTable th.dt-type-date,
+table.dataTable td.dt-type-numeric,
+table.dataTable td.dt-type-date {
+  text-align: center;
+}

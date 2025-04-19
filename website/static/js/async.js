@@ -2,6 +2,7 @@ class Async {
   constructor() {
     this.showUserAvatar();
     this.deleteContract();
+    this.downloadContract();
 
   }
 
@@ -61,7 +62,7 @@ class Async {
             })
               .then((response) => response.json())
               .then((data) => {
-                if (data.status === "success") {
+                if (data.message === "success") {
                   const table_body = document.getElementById("table_body");
 
                   if (table_body) {
@@ -78,6 +79,49 @@ class Async {
         });
       });
     });
+  }
+
+  downloadContract() {
+    document.addEventListener("DOMContentLoaded", () => {
+      document.querySelectorAll("a.hover\\:text-orange-700").forEach((anchor) => {
+        const row = anchor.closest("tr[id]");
+
+        if (!row) {
+          console.error("Linha não encontrada!");
+          return;
+        }
+
+        const row_id = row.id;
+
+        fetch(`download/${row_id}/`, {
+          method: "POST",
+          headers: {
+            "X-CSRFToken": this.getCSRFToken(),
+            "Content-Type": "application/json",
+            "Cache-Control": "no-cache",
+            "Pragma": "no-cache"
+          },
+        })
+          .then((response) => {
+            if (!response.ok) {
+              throw new Error(`Erro HTTP: ${response.status}`);
+            }
+
+            return response.json();
+          })
+          .then((data) => {
+            if (data.message === "success" && data.link) {
+              anchor.setAttribute("href", data.link);
+              anchor.setAttribute("target", "_blank");
+              anchor.setAttribute("rel", "noopener noreferrer");
+
+            }
+          })
+          .catch(error => {
+            alert(`Erro no download: ${error}`);
+          })
+      })
+    })
   }
 }
 

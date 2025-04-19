@@ -28,11 +28,14 @@
 <body>
     <!-- Navbar -->
     <div class="bg-blue-700 pb-80 relative z-0 flex flex-col justify-left">
+      <div class=""
+
       <div>
         <img class=" absolute brightness-50" src="{% static 'img/senai.png' %}" title="Serviço Nacional de Aprendizagem Industrial">
       </div>
-      <!-- Nav Query -->
+      
       <div class="flex translate-x-120 mt-4 absolute hover:text-white gap-10">
+        <!-- Nav Query -->
         <span class="flex opacity-65 bg-blue-800 p-5 rounded-xl">
           <img class="w-25 h-25" src="{% static 'img/piggybank.png' %}">
           <div class="ml-2 translate-y-1.5 text-white">
@@ -70,8 +73,6 @@
           <div class="mt-4 flex flex-col justify-left text-sm text-gray-600"> 
             <strong class="text-2xl text-white -translate-x-3 -translate-y-1">{{ user_name }}</strong>
             <strong class="text-md text-gray-400 -translate-x-3">{{ user_email }}</strong>
-            
-
           </div>
         </div>
       </div>
@@ -166,7 +167,7 @@
         Preencha os campos e gere um contrato hora-aula.
       </p>
     </div>
-    <form id="professor-form" method="post">
+    <form id="form__gencontract" method="post">
       {%csrf_token %}
       <div class="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
         <div class="sm:col-span-3">

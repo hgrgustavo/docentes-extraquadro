@@ -1,12 +1,15 @@
-from django.views.generic import base, edit, list
 from . import models, forms, storages
-from django import http
-from django.template import loader
+
 from xhtml2pdf import pisa
+
 import io
+
 from django.core.files.base import ContentFile
 from django.contrib import auth
 from django.db.models import Sum
+from django import http, shortcuts
+from django.template import loader
+from django.views.generic import base, edit, list
 
 
 class LoginView(edit.FormView):
@@ -107,7 +110,7 @@ class MenuListarProfessor(list.ListView):
         return context
 
 
-class MenuGerarContrato(edit.CreateView):
+class MenuGenContract(edit.CreateView):
     template_name = "menu_gerarcontrato.html"
     model = models.Contratos
     form_class = forms.GerarContratoForm
@@ -125,15 +128,21 @@ class MenuGerarContrato(edit.CreateView):
                 file_content = ContentFile(pdf_buffer.read())
                 file_name = f"contrato_{contrato.id}.pdf"
 
+                """
+                (Uncomment this and pdf field on models if you wanna save
+                .pdfs in the server.)
+
                 contrato.pdf.save(
-                    file_name,
-                    file_content)
+                    file_content,
+                    file_name
+                )
+                """
 
                 storages.GoogleDriveStorage().save(file_content, file_name)
 
             pdf_buffer.close()
 
-            return http.JsonResponse(  # melhorar retorno !
+            return http.JsonResponse(  # async
                 {
                     "message": "PDF gerado com sucesso",
                     "contrato_id": contrato.id,
@@ -143,12 +152,13 @@ class MenuGerarContrato(edit.CreateView):
 
         except Exception as e:
             return http.JsonResponse(
-                {"error": f"Erro inesperado: {str(e)}"},
+                {"message": f"Erro inesperado: {str(e)}"},
                 status=500
             )
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+
         try:
             user = models.Usuario.objects.get(pk=1)
             contract = models.Contratos.objects.all()
@@ -192,7 +202,7 @@ class GeneratePDF(base.View):
             return None
 
 
-class MenuHistorico(list.ListView):
+class MenuHistory(list.ListView):
     template_name = "menu_historico.html"
     context_object_name = "contratos"
     model = models.Contratos
@@ -221,7 +231,7 @@ class MenuHistorico(list.ListView):
         return context
 
 
-class DeleteContratos(edit.DeleteView):
+class DeleteContract(edit.DeleteView):
     model = models.Contratos
 
     def delete(self, request, **kwargs):
@@ -229,14 +239,58 @@ class DeleteContratos(edit.DeleteView):
             self.get_object().delete()
             return http.JsonResponse(
                 {
-                    "status": "success"
-                }
+                    "message": "success"
+                },
+                status=200
             )
 
         except models.Contratos.DoesNotExist:
             return http.JsonResponse(
                 {
-                    "status": "error",
+                    "message": "error",
                     "cause": "Item not found"
-                }
+                },
+                status=404
+            )
+
+
+class DownloadContract(base.View):
+    def post(self, request, **kwargs):
+        contract_id = kwargs.get("pk")
+
+        try:
+            shortcuts.get_object_or_404(
+                models.Contratos,
+                id=contract_id
+            )
+
+            download_link = storages.GoogleDriveStorage().get_download_link(
+                contract_id
+            )
+
+            if not download_link:
+                return http.JsonResponse(
+                    {
+                        "message": "error",
+                        "cause": "Link not found"
+
+                    },
+                    status=400
+                )
+
+            return http.JsonResponse(
+                {
+                    "message": "success",
+                    "link": download_link,
+                },
+                status=200
+            )
+
+        except http.Http404:
+            return http.JsonResponse(
+                {
+                    "message": "error",
+                    "cause": "Item not found",
+                },
+                status=404
             )

@@ -169,23 +169,25 @@
       <table class="table-fixed rounded-lg shadow-xl overflow-hidden w-full" id="table_history">
         <thead class="bg-indigo-200 overflow-hidden">
           <tr>
+            <th class="text-left">Identificador</th>
             <th class="">Prestador</th>
             <th class="">Modalidade</th>
             <th class="">Data de Início</th>
-            <th class="">Data de término</th>
+            <th class="">Data de Término</th>
             <th class="">Ações</th>
           </tr>
         </thead>
         <tbody id="table_body" class="">
           {% for c in contratos %}
           <tr id="{{ c.id }}" class="odd:bg-gray-100 text-center">
+            <td class="-translate-x-3">{{ c.id }}</td>
             <td class="-translate-x-3">{{ c.prestador }}</td>
             <td class="-translate-x-3">{{ c.modalidade }}</td>
-            <td class="-translate-x-3">{{ c.data_inicio|date:"d/m/Y" }}</td>
-            <td class=""><strong>{{ c.data_termino|date:"d/m/Y" }}</strong></td>
+            <td class="-translate-x-3 text-green-600"><strong>{{ c.data_inicio|date:"d/m/Y" }}</strong></td>
+            <td class="-translate-x-3 text-red-600"><strong>{{ c.data_termino|date:"d/m/Y" }}</strong></td>
             <td class="flex gap-3 justify-center -translate-x-2">
-              <a href="#" class="hover:text-orange-600"><i data-lucide="download"></i></a>
-              <a href="#" class="hover:text-red-700"><i data-lucide="trash"></i></a>
+                      <a href="" class="hover:text-orange-700" title="Download"><i data-lucide="download"></i></a>
+                      <a href="" class="hover:text-red-700" title="Excluir"><i data-lucide="trash"></i></a>
             </td>
           </tr>
           {% endfor %}

@@ -1,7 +1,9 @@
 from django.core.files import storage
-from googleapiclient import discovery, http
-from google.oauth2.service_account import Credentials
 from django.conf import settings
+
+from googleapiclient.errors import HttpError
+from google.oauth2.service_account import Credentials
+from googleapiclient import discovery, http
 
 
 class GoogleDriveStorage(storage.Storage):
@@ -12,10 +14,14 @@ class GoogleDriveStorage(storage.Storage):
         self.service = discovery.build(
             "drive", "v3", credentials=self.credentials)
 
+        self.PARENTS_FOLDER = [
+            "1Ykw24XKHNcartBaRbSAvrBf1z-qTKqGd",
+        ]
+
     def save(self, fd, filename):
         file_metadata = {
             "name": str(filename),
-            "parents": ["1Ykw24XKHNcartBaRbSAvrBf1z-qTKqGd"],
+            "parents": self.PARENTS_FOLDER,
         }
         media = http.MediaIoBaseUpload(
             fd=fd, mimetype="application/pdf")
@@ -27,6 +33,41 @@ class GoogleDriveStorage(storage.Storage):
 
         return file.get("id")
 
-    def url(self, name):
-        # Retorna a URL pública ou o ID do arquivo no Google Drive
-        return f'https://drive.google.com/drive/u/0/folders/1Ykw24XKHNcartBaRbSAvrBf1z-qTKqGd'
+    def search_drivefile_id(self, url_id):
+        query = f"name contains 'contrato_{url_id}' and '{
+            self.PARENTS_FOLDER[0]}' in parents"
+
+        try:
+            result = (
+                self.service.files().list(
+                    q=query,
+                    fields="files(id)"
+                ).execute()
+            )
+
+            files = result.get("files", [])
+
+            return files[0]["id"]
+
+        except HttpError as error:
+            return f"Search error: {error}"
+
+    def get_download_link(self, url_id):
+
+        try:
+            drivefile_id = self.search_drivefile_id(url_id)
+
+            if not drivefile_id:
+                raise ValueError("Nenhum arquivo encontrado.")
+
+            request = (
+                self.service.files().get(
+                    fileId=drivefile_id,
+                    fields="webContentLink"
+                ).execute()
+            )
+
+            return request.get("webContentLink")
+
+        except ValueError as error:
+            return f"Link not found, cause: {error}"

@@ -1,3 +1,5 @@
+/* DataTables requires jquery */
+
 class DataTablesHandler {
   constructor() {
     this.initializeTables();

@@ -34,7 +34,7 @@
       </div>
       <!-- Nav Query -->
       <div class="flex translate-x-120 mt-4 absolute hover:text-white gap-10">
-        <span class="flex opacity-65 bg-blue-800 p-5 rounded-xl">
+        <span class="flex opacity-65 bg-blue-800 p-4 rounded-xs">
           <img class="w-25 h-25" src="{% static 'img/piggybank.png' %}">
           <div class="ml-2 translate-y-1.5 text-white">
             {% if total_cost == 0 %}
@@ -49,7 +49,7 @@
           </div>
         </span>
         <!-- Nav Query -->
-         <span class="flex opacity-65 bg-blue-800 p-5 rounded-xl">
+         <span class="flex opacity-65 bg-blue-800 p-4 rounded-xs">
           <canvas id="chart_history" class="h-25"></canvas>
           <div class="ml-2 translate-y-1.5 text-white">
             {% if teacher_cpf_percentage == 0 %}

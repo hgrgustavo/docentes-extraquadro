@@ -1,6 +1,9 @@
 class Charts {
   constructor() {
-    this.initializeCharts();
+    document.addEventListener("DOMContentLoaded", () => {
+      this.initializeCharts();
+    })
+
   }
 
   initializeCharts() {
@@ -91,8 +94,6 @@ class Charts {
 
 }
 
-$(document).ready(() => {
-  new Charts();
-});
+const chart = new Charts();
 
 

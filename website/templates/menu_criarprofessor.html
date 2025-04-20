@@ -20,7 +20,7 @@
       </div>
       <!-- Nav Query -->
       <div class="flex translate-x-120 mt-4 absolute hover:text-white gap-10 align-left">
-        <span class="flex opacity-65 bg-blue-800 p-4 rounded-xl">
+        <span class="flex opacity-65 bg-blue-800 p-4 rounded-xs">
           <img class="w-25 h-25 mr-3" src="{% static 'img/tape.png' %}">
           <div class="ml-2 translate-y-1.5 text-white">
             {% if last_record == 0 %}
@@ -40,7 +40,7 @@
           </div>
         </span>
         <!-- Nav Query -->
-         <span class="flex opacity-65 bg-blue-800 p-5 rounded-xl">
+         <span class="flex opacity-65 bg-blue-800 p-4 rounded-xs">
           <img class="w-25 h-25" src="{% static 'img/cpf.png' %}">
           <div class="ml-2 translate-y-1.5 text-white">
              {% if teacher_cpf_percentage == 0 %}
@@ -56,7 +56,7 @@
         </span>
 
         <!-- Nav Query -->
-         <span class="flex opacity-65 bg-blue-800 p-5 rounded-xl">
+         <span class="flex opacity-65 bg-blue-800 p-4 rounded-xs">
           <img class="w-25 h-25" src="{% static 'img/encpj.webp' %}">
           <div class="ml-2 translate-y-1.5 text-white">
             {% if teacher_cnpj_percentage == 0 %}
@@ -169,13 +169,13 @@
             <div class="w-4/5 rounded-4xl shadow-xl h-dvh absolute translate-x-50 -translate-y-35 ml-20 bg-white z-10">
               <div class="px-6 py-4 grid grid-rows-1">
                 <div class="font-bold text-xl row-span-1">
-                  <h2>Cadastrar professor</h2>
+                  <h2>Adicionar professor</h2>
                   <p class="text-gray-700 text-base">
                     Cadastre um novo professor no sistema, preenchendo o formulário.
                   </p>
                 </div>
                 <form id="professor-form" method="post">
-                {%csrf_token %}
+                {% csrf_token %}
                   <div class="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
                     <div class="sm:col-span-3">
                       <label for="country" class="block text-sm/6 font-medium text-gray-900">Pessoa Física ou Jurídica</label>

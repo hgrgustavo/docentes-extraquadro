@@ -1,83 +1,73 @@
 <!DOCTYPE html>
 <html lang="pt-br">
-{% load static %}
 {% load text_filters %}
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">  
-  <link rel="stylesheet" href="style.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
   <title>Contrato Hora-aula</title>
 </head>
 
-<body>
-    <div class="flex flex-col">     
-      <img class="w-75 h-25 m-0 self-center" src="img/senai.png">
-      <h1 class="text-2xl font-bold text-center mt-2 self-center justify-center">
-        CONTRATO DE PRESTAÇÃO DE SERVIÇOS Nº {{ id }} – HORA-AULA
-      </h1>
+<body style="text-align: justify; margin: 0 auto; font-family: 'Roboto', sans-serif; font-style: normal;">
+    <div style="display: flex; flex-direction: column; justify-content: center; align-items:center">     
+    <img style="width: 25rem; height: 6rem; " src="https://upload.wikimedia.org/wikipedia/commons/0/05/SENAI_logo_2024.png">
+      <h3 style="text-align: center;">
+        CONTRATO DE PRESTAÇÃO DE SERVIÇOS Nº {{ id }}
+      </h3>
     </div> 
-    <div class="flex flex-col text-justify space-y-3 text-md">
-      <p class="mt-10">Pelo presente instrumento particular de contrato as partes abaixo qualificadas:</p>
-      <div>
-        <strong>Contratante:</strong>
-        <span>SENAI Itumbiara, localizado em Rua Olívia Garcia Fagundes, 32 - St. Paranaiba, Itumbiara - GO</span>
-      </div>
-      <div>
-        <strong>Contratado:</strong>
-        <span>{{ prestador }}, localizado em Itumbiara - GO</span>
-      </div>
+    <div style="display: flex; flex-direction: column;>
+      <p style="margin-block: 0.5rem; font-size: 0.75rem;">Pelo presente instrumento particular de contrato as partes abaixo qualificadas:</p> 
+        <div style="margin-top: 0.5rem; font-size: 0.75rem;">
+          <strong>Contratante:</strong>
+          <span>
+            SENAI Itumbiara - GO, localizado em Rua Olívia Garcia Fagundes, 32 St. Paranaiba
+        </span> 
+        </div>
+        <div style="font-size: 0.75rem;">
+          <strong>Contratado:</strong>
+          <span>{{ prestador }}, localizado em Itumbiara - GO</span>
+        </div>
       <br>
-      <strong class="self-center text-center">CLÁUSULAS</strong>
-      <div>
+      <strong style="text-align: center; margin-block: 0.5rem;">CLÁUSULAS</strong>
+      <div style="margin-block: 0.5rem; font-size: 0.75rem;">
         <strong>CLÁUSULA PRIMEIRA - DO OBJETO: </strong>
         <span>O presente contrato tem como objeto a prestação de serviços de {{ servico }}, conforme especificado no processo administrativo Nº {{ processo }}, a ser realizado no evento ocorrido em {{ evento }}.</span> 
       </div>
-      <div>
+      <div style="margin-block: 0.5rem; font-size: 0.75rem;">
         <strong>CLÁUSULA SEGUNDA - DAS OBRIGAÇÕES DO CONTRATADO: </strong>
         <span>O contratado se compromete a realizar os serviços descritos, com carga horária total de {{ carga_horaria }} horas, no período de {{ data_inicio }} a {{ data_termino }}, conforme cronograma previamente acordado.</span>
       </div>
-      <div>
+      <div style="margin-block: 0.5rem; font-size: 0.75rem;">
         <strong>CLÁUSULA TERCEIRA – DA REMUNERAÇÃO: </strong>
         <span>Pela prestação dos serviços, o contratante pagará ao contratado o valor de R$ {{ valor_hora_aula|floatformat:"2g"}} por hora-aula, totalizando o valor de R$ {{ total_valor|floatformat:"2g" }} ({{ total_valor|float_to_words|floatformat:"2g" }} reais), a ser pago conforme as condições estabelecidas no cronograma de pagamento.</span>
       </div>
-      <div>
+      <div style="margin-block: 0.5rem; font-size: 0.75rem;">
         <strong>CLÁUSULA QUARTA – DAS OBRIGAÇÕES DO CONTRATANTE: </strong>
         <span>O contratante se compromete a fornecer os recursos necessários para a execução dos serviços, bem como realizar o pagamento conforme estipulado na cláusula anterior.</span>
       </div>
-      <div>
+      <div style="margin-block: 0.5rem; font-size: 0.75rem;">
         <strong>CLÁUSULA QUINTA – DA RESCISÃO: </strong>
         <span>O presente contrato poderá ser rescindido por qualquer das partes, mediante aviso prévio de 30 (trinta) dias, ou imediatamente em caso de descumprimento de qualquer cláusula contratual.</span>
       </div>
-      <div>
+      <div style="margin-block: 0.5rem; font-size: 0.75rem;">
         <strong>CLÁUSULA SEXTA – DAS DISPOSIÇÕES GERAIS: </strong>
         <span>
-          <ol>
+          <ol style="font-style: italic;">
             <li>O contratado declara possuir as qualificações necessárias para a execução dos serviços.</li>
             <li>Este contrato é firmado em caráter personalíssimo, sendo vedada a sua transferência ou cessão a terceiros.</li>
             <li>Fica eleito o foro da comarca de Itumbiara - GO, com exclusão de qualquer outro, por mais privilegiado que seja, para dirimir quaisquer dúvidas ou litígios decorrentes deste contrato.</li>
           </ol>
           <p>E, por estarem assim justos e contratados, assinam o presente instrumento em duas vias de igual teor e forma, na presença de duas testemunhas.</p> 
-          <br>
-          <strong class="text-center self-center flex justify-center mt-10">Itumbiara - GO, {{ data_inicio }}</strong>
-          <br>
-        </span>
+        </span> 
       </div>
-      <div class="flex flex-row justify-center gap-10 mt-10">
-        <strong class="justify-center">Contratante: ___________________________</strong> 
-        <strong class="justify-center">Contratado: ____________________________</strong> 
-      </div> 
-      <div class="flex flex-col justify-center"> 
-        <strong class="justify-center text-center mt-10">TESTEMUNHAS</strong>
-        <br><br>
-        <div class="flex flex-row gap-10 justify-center mt-5">
-          <strong>Nome: ____________________________</strong>  
-          <strong>CPF: ____________________________</strong> 
-        </div>
-        <div class="flex flex-row gap-10 justify-center">
-          <strong>Nome: ____________________________</strong> 
-          <strong>CPF: ____________________________</strong> 
-        </div>
-      </div>
-    </div> 
+      <strong style="text-align: center; margin-block: 0.5rem;">Itumbiara - GO, {{ data_inicio }}</strong>
+      <strong style="text-align: center; margin-block: 0.5rem;">ASSINATURAS</strong>
+      <div style="display: flex; flex-direction: row; justify-content: space-between;">
+        <strong>Contratante: ___________________________</strong> 
+        <strong>Contratado: ____________________________</strong> 
+      </div>  
+    </div>
 </body>
 </html>

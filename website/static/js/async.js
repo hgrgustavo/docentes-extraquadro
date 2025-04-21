@@ -70,7 +70,7 @@ class Async {
 
                     setTimeout(() => {
                       window.location.reload();
-                    }, "500")
+                    }, "1000")
                   }
                 }
               })
@@ -104,7 +104,7 @@ class Async {
         })
           .then((response) => {
             if (!response.ok) {
-              throw new Error(`Erro HTTP: ${response.status}`);
+              throw new Error(`HTTP Error: ${response.status}`);
             }
 
             return response.json();

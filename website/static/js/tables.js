@@ -1,5 +1,4 @@
 /* DataTables requires jquery */
-import { deleteContract } from "./async.js"
 
 class DataTablesHandler {
   constructor() {

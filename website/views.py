@@ -173,7 +173,7 @@ class GeneratePDF(base.View):
             buffer = io.BytesIO()
 
             HTML(
-                string=html, base_url="website/templates/contracts/static/").write_pdf(buffer)
+                string=html).write_pdf(buffer)
 
             buffer.seek(0)
 

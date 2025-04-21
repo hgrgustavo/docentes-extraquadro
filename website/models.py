@@ -73,15 +73,13 @@ class Contratos(models.Model):
     valor_hora_aula = models.FloatField()
     modalidade = models.CharField(
         max_length=50, default="hora-aula", choices=CHOICES_MODALIDADES)
-    # pdf = models.FileField(
-    #    upload_to="contratos/hora-aula/", null=True, blank=True)
 
     class Meta:
         db_table = 'contratos'
 
     def get_pdf_context(self):
         return {
-            "id": self.id,
+            "id": self.pk,
             "processo": self.processo,
             "evento": self.evento,
             "prestador": self.prestador,
@@ -91,4 +89,5 @@ class Contratos(models.Model):
             "data_termino": self.data_termino,
             "carga_horaria": self.carga_horaria,
             "valor_hora_aula": self.valor_hora_aula,
+            "total_valor": self.valor_hora_aula * self.carga_horaria,
         }

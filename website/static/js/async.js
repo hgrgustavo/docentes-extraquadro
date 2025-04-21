@@ -67,6 +67,10 @@ class Async {
 
                   if (table_body) {
                     row.parentNode.removeChild(row);
+
+                    setTimeout(() => {
+                      window.location.reload();
+                    }, "500")
                   }
                 }
               })
@@ -81,7 +85,7 @@ class Async {
 
   downloadContract() {
     document.addEventListener("DOMContentLoaded", () => {
-      document.querySelectorAll("a.hover\\:text-orange-700").forEach((anchor) => {
+      document.querySelectorAll("a.hover\\:text-yellow-700").forEach((anchor) => {
         const row = anchor.closest("tr[id]");
 
         if (!row) {

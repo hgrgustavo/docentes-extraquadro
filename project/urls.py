@@ -5,10 +5,10 @@ from website import views
 urlpatterns = [
     path("", views.MenuInicio.as_view(), name="menuiniciopage"),
     path("login/", views.LoginView.as_view(), name="loginpage"),
-
     path("menu/", include([
         path("criar-professor/", views.MenuCriarProfessor.as_view(),
              name="menucriarprofessorpage"),
+
         path("listar-professor", views.MenuListarProfessor.as_view(),
              name="menulistarprofessorpage"),
 

@@ -36,7 +36,7 @@
             <p class="text-xl">Despesa</p>
             {% endif %}
 
-            {% if total_cost > 1 %}
+            {% if total_cost > 0 %}
             <strong class="text-5xl">R$ {{ total_cost|floatformat:"2g" }}</strong>
             <p class="text-xl">De Despesa</p> 
             {% endif %} 

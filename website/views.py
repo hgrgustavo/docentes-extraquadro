@@ -1,15 +1,13 @@
-from . import models, forms, storages
-
-from xhtml2pdf import pisa
-
 import io
-
+from . import models, forms, storages
+from weasyprint import HTML
 from django.core.files.base import ContentFile
 from django.contrib import auth
 from django.db.models import Sum
 from django import http, shortcuts
 from django.template import loader
 from django.views.generic import base, edit, list
+from django.conf import settings
 
 
 class LoginView(edit.FormView):
@@ -128,19 +126,11 @@ class MenuGenContract(edit.CreateView):
                 file_content = ContentFile(pdf_buffer.read())
                 file_name = f"contrato_{contrato.id}.pdf"
 
-                """
-                (Uncomment this and pdf field on models if you wanna save
-                .pdfs in the server.)
-
-                contrato.pdf.save(
-                    file_content,
-                    file_name
-                )
-                """
-
                 storages.GoogleDriveStorage().save(file_content, file_name)
 
-            pdf_buffer.close()
+                pdf_buffer.close()
+
+            return http.HttpResponseRedirect(self.request.path)
 
         except Exception as e:
             return http.JsonResponse(
@@ -182,17 +172,19 @@ class GeneratePDF(base.View):
             html = template.render(context_dict)
             buffer = io.BytesIO()
 
-            pisa_status = pisa.CreatePDF(html, dest=buffer)
-
-            if pisa_status.err:
-                print("Erro na geração do PDF")
-                return None
+            HTML(
+                string=html, base_url="website/templates/contracts/static/").write_pdf(buffer)
 
             buffer.seek(0)
+
             return buffer
 
         except Exception as e:
             print(f"Erro ao renderizar o PDF: {str(e)}")
+
+            if buffer:
+                buffer.close()
+
             return None
 
 
@@ -230,9 +222,11 @@ class DeleteContract(edit.DeleteView):
 
     def delete(self, request, **kwargs):
         try:
-            obj = self.get_object()
-            obj.delete()
-            storages.GoogleDriveStorage().delete(obj.id)
+            contract_id = kwargs.get("pk")
+
+            if contract_id:
+                self.get_object().delete()
+                storages.GoogleDriveStorage().delete(contract_id)
 
             return http.JsonResponse(
                 {
@@ -250,11 +244,11 @@ class DeleteContract(edit.DeleteView):
                 status=404
             )
 
-        except Exception as e:
+        except Exception:
             return http.JsonResponse(
                 {
                     "message": "error",
-                    "cause": f"Failed to delete file on Google Drive: {str(e)}"
+                    "cause": "Failed to delete file on Google Drive"
                 },
                 status=500
             )

@@ -166,7 +166,7 @@
 
     <div class="m-2 mt-10">
       <table class="table-fixed rounded-md shadow-2xl overflow-hidden w-full" id="table_history">
-        <thead class="bg-zinc-800 overflow-hidden text-white text-center border-b-2 border-solid border-white">
+          <thead class="bg-zinc-800 text-white text-center"> 
           <tr class="-translate-x-1">
             <th class="text-center">Identificador</th>
             <th class="text-center">Prestador</th>
@@ -175,17 +175,17 @@
             <th class="text-center">Vencimento</th>
             <th class="text-center">Arquivo</th>
           </tr>
-        </thead>
+        </thead> 
         <tbody id="table_body" class="bg-zinc-800 text-white">
           {% for c in contratos %}
-          <tr id="{{ c.id }}" class="text-center">
+          <tr id="{{ c.id }}" class="text-center rounded-md border-y-1 border-zinc-700">
             <td class="-translate-x-3">{{ c.id }}</td>
             <td class="-translate-x-3">{{ c.prestador }}</td>
             <td class="-translate-x-3">{{ c.modalidade }}</td>
 
             {% if c.data_inicio > c.data_termino %}
             <td class="-translate-x-3 text-green-600"><strong>{{ c.data_inicio|date:"d/b/Y" }}</strong></td>
-            <td class="-translate-x-3 text-red-600 hover:underline hover:cursor-pointer animate-pulse" title="Vencido!"><strong>{{ c.data_termino|date:"d/b/Y" }}</strong></td>
+            <td class="-translate-x-3 text-red-600 underline underline-offset-8 hover:cursor-pointer animate-pulse" title="Vencido!"><strong>{{ c.data_termino|date:"d/b/Y" }}</strong></td>
             {% elif c.data_inicio <= c.data_termino %}
             <td class="-translate-x-3 text-green-600"><strong>{{ c.data_inicio|date:"d/b/Y" }}</strong></td>
             <td class="-translate-x-3 text-green-600"><strong>{{ c.data_termino|date:"d/b/Y" }}</strong></td>

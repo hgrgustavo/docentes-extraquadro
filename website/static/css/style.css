@@ -1,7 +1,7 @@
 /* Overriding datatables css rules */
 
 div.dt-container.dt-empty-footer tbody>tr:last-child>* {
-  border-bottom: 1px solid rgba(0, 0, 0, 0);
+  border-bottom: 0px solid rgba(0, 0, 0, 0);
 
 }
 
@@ -9,7 +9,8 @@ table.dataTable>thead>tr>th,
 table.dataTable>thead>tr>td {
   padding: 10px;
   padding-right: 10px;
-  border-bottom: 1px solid white;
+  border-bottom: 4px solid transparent;
+  border-image: linear-gradient(90deg, #4285F4, #F4B400, #0F9D58);
   text-align: center;
 }
 

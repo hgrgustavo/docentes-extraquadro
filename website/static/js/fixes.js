@@ -3,6 +3,7 @@ class Fixes {
     this.removeSelectDashes();
     this.dropdownClick();
     this.selectConstraint();
+    this.cpfMask();
   }
 
   removeSelectDashes() {
@@ -81,6 +82,25 @@ class Fixes {
       }
     });
   }
+
+  // masks   
+  cpfMask() {
+    const cpfInput = document.getElementById("cpf");
+    cpfInput.addEventListener("input", (event) => {
+      let cpf = event.target.value;
+
+
+      cpf = cpf.replace(/\D/g, "");
+
+      cpf = cpf.replace(/(\d{3})(\d)/, "$1.$2");
+      cpf = cpf.replace(/(\d{3})(\d)/, "$1.$2");
+      cpf = cpf.replace(/(\d{3})(\d{1,2})$/, "$1-$2");
+
+
+      event.target.value = cpf;
+    });
+  }
+
 }
 
 const fixes = new Fixes();

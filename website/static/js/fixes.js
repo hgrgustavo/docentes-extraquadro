@@ -4,6 +4,7 @@ class Fixes {
     this.dropdownClick();
     this.selectConstraint();
     this.cpfMask();
+    this.cnpjMask();
   }
 
   removeSelectDashes() {
@@ -99,6 +100,22 @@ class Fixes {
 
       event.target.value = cpf;
     });
+  }
+
+  cnpjMask() {
+    const cnpjInput = document.getElementById("cnpj");
+    cnpjInput.addEventListener("input", (event) => {
+      let cnpj = event.target.value;
+
+      cnpj = cnpj.replace(/\D/g, "");
+
+      cnpj = cnpj.replace(/(\d{2})(\d)/, "$1.$2");
+      cnpj = cnpj.replace(/(\d{3})(\d)/, "$1.$2");
+      cnpj = cnpj.replace(/(\d{3})(\d)/, "$1/$2");
+      cnpj = cnpj.replace(/(\d{4})(\d)$/, "$1-$2");
+
+      event.target.value = cnpj;
+    })
   }
 
 }

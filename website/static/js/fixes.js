@@ -30,6 +30,7 @@ class Fixes {
       });
     })
   }
+
   // Constraints
   constraintInputField(field_id) {
     field_id.readOnly = true;
@@ -84,7 +85,7 @@ class Fixes {
     });
   }
 
-  // masks   
+  // Masks   
   cpfMask() {
     const cpfInput = document.getElementById("cpf");
     cpfInput.addEventListener("input", (event) => {
@@ -112,12 +113,11 @@ class Fixes {
       cnpj = cnpj.replace(/(\d{2})(\d)/, "$1.$2");
       cnpj = cnpj.replace(/(\d{3})(\d)/, "$1.$2");
       cnpj = cnpj.replace(/(\d{3})(\d)/, "$1/$2");
-      cnpj = cnpj.replace(/(\d{4})(\d)$/, "$1-$2");
+      cnpj = cnpj.replace(/(\d{4})(\d)/, "$1-$2");
 
       event.target.value = cnpj;
     })
   }
-
 }
 
 const fixes = new Fixes();

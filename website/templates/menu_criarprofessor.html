@@ -10,13 +10,14 @@
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script> 
     <script src="{% static 'js/fixes.js' %}" defer></script>
     <link type="image/x-icon" rel="icon" href="{% static 'img/senai-icon.png' %}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/intl-tel-input@25.3.1/build/css/intlTelInput.css">
 </head>
 
 <body>
     <!-- Navbar -->
     <div class="bg-blue-700 pb-80 relative z-0 flex flex-col justify-left">
       <div>
-        <img class=" absolute brightness-50" src="{% static 'img/senai.png' %}" title="Serviço Nacional de Aprendizagem Industrial">
+        <img class=" absolute -translate-x-15" src="{% static 'img/senai.png' %}" title="Serviço Nacional de Aprendizagem Industrial">
       </div>
       <!-- Nav Query -->
       <div class="flex translate-x-120 mt-4 absolute hover:text-white gap-10 align-left">
@@ -265,7 +266,7 @@
 
     <!-- Scripts -->
     <script>lucide.createIcons();</script>
-    <script src="https://cdn.datatables.net/2.2.2/js/dataTables.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/intl-tel-input@25.3.1/build/js/intlTelInput.min.js"></script>
 </body>
 </html>
 

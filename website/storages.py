@@ -18,22 +18,20 @@ class GoogleDriveStorage(storage.Storage):
             "1Ykw24XKHNcartBaRbSAvrBf1z-qTKqGd",
         ]
 
-    def save(self, fd, filename):
+    def save(self, fd, filename) -> None:
         file_metadata = {
             "name": str(filename),
             "parents": self.PARENTS_FOLDER,
         }
         media = http.MediaIoBaseUpload(
             fd=fd, mimetype="application/pdf")
-        file = (
-            self.service.files()
-            .create(body=file_metadata, media_body=media, fields="id")
-            .execute()
-        )
 
-        return file.get("id")
+        self.service.files().create(body=file_metadata,
+                                    media_body=media, fields="id").execute()
 
-    def search_drivefile_id(self, url_id):
+        return None
+
+    def search_drivefile_id(self, url_id) -> str:
         query = f"name contains 'contrato_{url_id}' and '{
             self.PARENTS_FOLDER[0]}' in parents"
 
@@ -52,7 +50,7 @@ class GoogleDriveStorage(storage.Storage):
         except HttpError as error:
             return f"Error while fetching file id, because {error}"
 
-    def get_download_link(self, url_id):
+    def get_download_link(self, url_id) -> str:
 
         try:
             drivefile_id = self.search_drivefile_id(url_id)

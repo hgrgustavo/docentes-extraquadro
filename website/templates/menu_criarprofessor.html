@@ -8,9 +8,11 @@
     <title>Adicionar Professor</title>
     <script src="https://unpkg.com/lucide@latest"></script>
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script> 
-    <script src="{% static 'js/fixes.js' %}" defer></script>
+    <script src="{% static 'js/fixes.js' %}" defer></script> 
     <link type="image/x-icon" rel="icon" href="{% static 'img/senai-icon.png' %}">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/intl-tel-input@25.3.1/build/css/intlTelInput.css">
+    <script src="{% static 'js/phones.js' %}"></script>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
 </head>
 
 <body>
@@ -20,26 +22,7 @@
         <img class=" absolute -translate-x-15" src="{% static 'img/senai.png' %}" title="Serviço Nacional de Aprendizagem Industrial">
       </div>
       <!-- Nav Query -->
-      <div class="flex translate-x-120 mt-4 absolute hover:text-white gap-10 align-left">
-        <span class="flex opacity-65 bg-blue-800 p-4 rounded-xs">
-          <img class="w-25 h-25 mr-3" src="{% static 'img/tape.png' %}">
-          <div class="ml-2 translate-y-1.5 text-white">
-            {% if last_record == 0 %}
-            <strong class="text-5xl">Nenhum</strong>
-            <p class="text-xl">Cadastro<br>Realizado</p>
-            {% endif %}
-
-            {% if last_record == 1 %}
-            <strong class="text-5xl">{{ last_record }}</strong>
-            <p class="text-xl">Cadastro</p>
-            {% endif %}
-
-            {% if last_record > 1 %}
-            <strong class="text-5xl">{{ last_record }}</strong>
-            <p class="text-xl">Cadastros<br>Realizados</p> 
-            {% endif %} 
-          </div>
-        </span>
+      <div class="flex translate-x-120 mt-4 absolute hover:text-white gap-10 align-left"> 
         <!-- Nav Query -->
          <span class="flex opacity-65 bg-blue-800 p-4 rounded-xs">
           <img class="w-25 h-25" src="{% static 'img/cpf.png' %}">
@@ -216,7 +199,7 @@
          </div>
        </div>
 
-       <div class="sm:col-span-2 sm:col-start-1">
+       <div class="sm:col-span-2">
          <label for="city" class="block text-sm/6 font-medium text-gray-900">Telefone</label>
          <div class="mt-2">
            
@@ -251,12 +234,6 @@
          <i data-lucide="file-pen-line" class="m-1 mr-2"></i>
          <span>Cadastrar</span>
        </button>
-       <!--
-       <button class="sm:col-span-1 translate-x-90 bg-green-600 hover:bg-green-700 text-white font-bold py-2 rounded border-b-5 border-green-700 flex items-center justify-center">
-         <i data-lucide="cloud-upload" class="w-6 h-6 m-1"></i>
-         <span>Upload nuvem</span>
-       </button>
-       -->
     </form>
   </div> 
   

@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 {% load static %}
+{% now "Y-m-d" as current_date %}
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -183,12 +184,12 @@
             <td class="-translate-x-3">{{ c.prestador }}</td>
             <td class="-translate-x-3">{{ c.modalidade }}</td>
 
-            {% if c.data_inicio > c.data_termino %}
-            <td class="-translate-x-3 text-green-600"><strong>{{ c.data_inicio|date:"d/b/Y" }}</strong></td>
-            <td class="-translate-x-3 text-red-600 underline underline-offset-8 hover:cursor-pointer animate-pulse" title="Vencido!"><strong>{{ c.data_termino|date:"d/b/Y" }}</strong></td>
-            {% elif c.data_inicio <= c.data_termino %}
+            {% if c.data_termino > c.data_termino %}
             <td class="-translate-x-3 text-green-600"><strong>{{ c.data_inicio|date:"d/b/Y" }}</strong></td>
             <td class="-translate-x-3 text-green-600"><strong>{{ c.data_termino|date:"d/b/Y" }}</strong></td>
+            {% elif c.data_termino <= c.data_termino %}
+            <td class="-translate-x-3 text-green-600"><strong>{{ c.data_inicio|date:"d/b/Y" }}</strong></td>
+            <td class="-translate-x-3 text-red-600 underline underline-offset-8 hover:cursor-pointer animate-pulse" title="Vencido!"><strong>{{ c.data_termino|date:"d/b/Y" }}</strong></td>
             {% endif %}
             <td class="flex gap-3 justify-center -translate-x-2">
               <a href="" class="hover:text-yellow-700" title="Download"><i data-lucide="download"></i></a>

@@ -68,9 +68,6 @@ class Async {
                   if (table_body) {
                     row.parentNode.removeChild(row);
 
-                    setTimeout(() => {
-                      window.location.reload();
-                    }, "1000")
                   }
                 }
               })

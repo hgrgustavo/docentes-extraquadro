@@ -68,12 +68,11 @@ class MenuCriarProfessor(edit.CreateView):
             context["user_name"] = user.nome
             context["user_email"] = user.email
 
-            context["last_record"] = teacher.order_by("-id").first().id
             context["teacher_cpf_percentage"] = round((teacher.filter(
-                pf_ou_pj="PF").count() / teacher.count()) * 100)
+                pf_ou_pj="PF").count() / teacher.count()) * 100) or 0
 
             context["teacher_cnpj_percentage"] = round((teacher.filter(
-                pf_ou_pj="PJ").count() / teacher.count()) * 100)
+                pf_ou_pj="PJ").count() / teacher.count()) * 100) or 0
 
         except models.Usuario.DoesNotExist:
             context["user_nome"] = None
@@ -95,7 +94,6 @@ class MenuListarProfessor(list.ListView):
             context["user_name"] = user.nome
             context["user_email"] = user.email
 
-            context["last_record"] = teacher.order_by("-id").first().id
             context["teacher_cpf_percentage"] = round((teacher.filter(
                 pf_ou_pj="PF").count() / teacher.count()) * 100)
 

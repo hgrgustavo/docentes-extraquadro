@@ -1,7 +1,7 @@
 from django.contrib.auth import hashers
 from django.db import models
 from django.core import validators, exceptions
-import os
+from django.utils.translation import gettext_lazy as _
 
 
 class Professor(models.Model):
@@ -13,62 +13,59 @@ class Professor(models.Model):
     def remove_mask(string: str) -> str:
         return "".join(filter(str.isdigit, string))
 
-    def check_cpf_digit(cpf: str, position: int):
+    def check_cpf_digit(cpf: str, position: int) -> str:
         product = sum(int(cpf[i]) * (position - i)
                       for i in range(len(cpf)))
-        remant = product % 11
+        remnant = product % 11
 
-        return "0" if remant < 2 else str(11 - remant)
+        return str(0 if remnant < 2 else str(11 - remnant))
 
-    def check_cnpj_digit(cnpj: str, weights: list[int]):
+    def check_cnpj_digit(cnpj: str, weights: list[int]) -> str:
         product = sum(int(cnpj[i]) * weights[i] for i in range(len(weights)))
         remnant = product % 11
 
-        return "0" if remnant < 2 else str(11 - remnant)
+        return str(0 if remnant < 2 else str(11 - remnant))
 
-    def verify_cpf(cpf: str) -> bool:
-        try:
-            new_cpf = Professor.remove_mask(cpf)
+    def verify_cpf(cpf: str) -> None:
+        new_cpf = Professor.remove_mask(cpf)
 
-            if len(new_cpf) != 11:
-                raise exceptions.ValidationError(
-                    "O CPF deve conter 11 dígitos!")
+        if len(new_cpf) != 11:
+            raise exceptions.ValidationError(
+                _("CPF com tamanho inválido."), code="invalid")
 
-            if new_cpf == new_cpf[0] * 11:
-                raise exceptions.ValidationError(
-                    "CPF inválido: não pode conter todos os dígitos iguais!")
+        if new_cpf == new_cpf[0] * 11:
+            raise exceptions.ValidationError(
+                _("CPF com digitos repetidos."), code="invalid")
 
-            first_digit = Professor.check_cpf_digit(new_cpf[:9], 10)
-            second_digit = Professor.check_cpf_digit(new_cpf[:10], 11)
+        first_digit = Professor.check_cpf_digit(new_cpf[:9], 10)
+        second_digit = Professor.check_cpf_digit(new_cpf[:9] + first_digit, 11)
 
-            return new_cpf[-2:] == first_digit + second_digit
+        if new_cpf[-2:] != first_digit + second_digit:
+            raise exceptions.ValidationError(
+                _("CPF com digitos verificadores inválidos."), code="invalid")
 
-        except exceptions.ValidationError as e:
-            raise exceptions.ValidationError("CPF Inválido!") from e
+    def verify_cnpj(cnpj: str) -> None:
 
-    def verify_cnpj(cnpj: str) -> bool:
-        try:
-            new_cnpj = Professor.remove_mask(cnpj)
-            first_weights = [5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2]
-            second_weights = [6] + first_weights
+        new_cnpj = Professor.remove_mask(cnpj)
+        first_weights = [5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2]
+        second_weights = [6] + first_weights
 
-            if len(new_cnpj) != 14:
-                raise exceptions.ValidationError(
-                    "O CNPJ deve conter 14 dígitos!")
+        if len(new_cnpj) != 14:
+            raise exceptions.ValidationError(
+                _("O CNPJ deve conter 14 dígitos!"), code="invalid")
 
-            if new_cnpj == new_cnpj[0] * 14:
-                raise exceptions.ValidationError(
-                    "CNPJ inválido: não pode conter todos os digitos iguais!")
+        if new_cnpj == new_cnpj[0] * 14:
+            raise exceptions.ValidationError(
+                _("CNPJ inválido: não pode conter todos os digitos iguais!"), code="invalid")
 
-            first_digit = Professor.check_cnpj_digit(
-                new_cnpj[:12], first_weights)
-            second_digit = Professor.check_cnpj_digit(
-                new_cnpj[:12] + first_digit, second_weights)
+        first_digit = Professor.check_cnpj_digit(
+            new_cnpj[:12], first_weights)
+        second_digit = Professor.check_cnpj_digit(
+            new_cnpj[:12] + first_digit, second_weights)
 
-            return new_cnpj[-2:] == first_digit + second_digit
-
-        except exceptions.ValidationError as e:
-            raise exceptions.ValidationError("CPF Inválido!") from e
+        if new_cnpj[-2:] != first_digit + second_digit:
+            raise exceptions.ValidationError(
+                ("CNPJ com digitos verificadores inválidos!"), code="invalid")
 
     nome = models.CharField(max_length=45)
     email = models.CharField(max_length=255)
@@ -76,10 +73,15 @@ class Professor(models.Model):
     data_nascimento = models.DateField()
     observacao = models.TextField()
     pf_ou_pj = models.CharField(max_length=15, choices=CHOICES)
-    cpf = models.CharField(max_length=14, null=True, blank=True, validators=[validators.RegexValidator(
-        regex=r'\d{3}\.?\d{3}\.?\d{3}-?\d{2}$'), verify_cpf])
+    cpf = models.CharField(max_length=14, null=True, blank=True, validators=[
+        validators.RegexValidator(
+            regex=r'\d{3}\.?\d{3}\.?\d{3}-?\d{2}$'),
+        verify_cpf
+    ])
     cnpj = models.CharField(max_length=18, null=True, blank=True, validators=[
-                            validators.RegexValidator(regex=r'^\d{2}\.?(\d{3}\.?){2}/?\d{4}-?\d{2}$'), verify_cnpj])
+                            validators.RegexValidator(
+                                regex=r'^\d{2}\.?(\d{3}\.?){2}/?\d{4}-?\d{2}$'),
+                            verify_cnpj])
 
     class Meta:
         db_table = 'professor'

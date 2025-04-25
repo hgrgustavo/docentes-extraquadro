@@ -19,26 +19,7 @@
         <img class=" absolute -translate-x-15" src="{% static 'img/senai.png' %}" title="Serviço Nacional de Aprendizagem Industrial">
       </div>
       <!-- Nav Query -->
-      <div class="flex translate-x-120 mt-4 absolute hover:text-white gap-10 align-left">
-        <span class="flex opacity-65 bg-blue-800 p-4 rounded-xs">
-          <img class="w-25 h-25 mr-3" src="{% static 'img/tape.png' %}">
-          <div class="ml-2 translate-y-1.5 text-white">
-            {% if last_record == 0 %}
-            <strong class="text-5xl">Nenhum</strong>
-            <p class="text-xl">Cadastro<br>Realizado</p>
-            {% endif %}
-
-            {% if last_record == 1 %}
-            <strong class="text-5xl">{{ last_record }}</strong>
-            <p class="text-xl">Cadastro</p>
-            {% endif %}
-
-            {% if last_record > 1 %}
-            <strong class="text-5xl">{{ last_record }}</strong>
-            <p class="text-xl">Cadastros<br>Realizados</p> 
-            {% endif %} 
-          </div>
-        </span>
+      <div class="flex translate-x-120 mt-4 absolute hover:text-white gap-10 align-left"> 
         <!-- Nav Query -->
          <span class="flex opacity-65 bg-blue-800 p-4 rounded-xs">
           <img class="w-25 h-25" src="{% static 'img/cpf.png' %}">

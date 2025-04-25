@@ -32,3 +32,9 @@ table.dataTable td.dt-type-numeric,
 table.dataTable td.dt-type-date {
   text-align: center;
 }
+
+/* Overrriding Internatinoal Telephone Number css rules */
+.iti {
+  position: relative;
+  display: block;
+}

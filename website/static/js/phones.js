@@ -7,7 +7,7 @@ class PhoneInputHandler {
   initializeInputs() {
     document.addEventListener("DOMContentLoaded", () => {
       const input = document.querySelector("#telefone");
-      window.intlTelInput(input, {
+      const iti = window.intlTelInput(input, {
         initialCountry: "auto",
         geoIpLookup: callback => {
           fetch("https://ipapi.co/json")
@@ -19,6 +19,15 @@ class PhoneInputHandler {
         fixDropdownWidth: true,
         loadUtils: () => import("https://cdn.jsdelivr.net/npm/intl-tel-input@25.3.1/build/js/utils.js"),
       });
+
+      // Concatenate dial code
+      const form = document.querySelector("#professor-form");
+
+      form.addEventListener("submit", () => {
+        input.value = iti.getNumber();
+        console.log("Número completo: ", input.value);
+      })
+
     })
   }
 

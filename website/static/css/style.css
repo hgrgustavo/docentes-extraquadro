@@ -38,3 +38,10 @@ table.dataTable td.dt-type-date {
   position: relative;
   display: block;
 }
+
+.iti__search-input {
+  width: 100%;
+  border-width: 0;
+  border-radius: 3px;
+  padding-left: 8px;
+}

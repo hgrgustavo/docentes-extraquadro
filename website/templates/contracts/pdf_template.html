@@ -17,7 +17,7 @@
         CONTRATO DE PRESTAÇÃO DE SERVIÇOS Nº {{ id }}
       </h3>
     </div> 
-    <div style="display: flex; flex-direction: column;>
+    <div style="display: flex; flex-direction: column;">
       <p style="margin-block: 0.5rem; font-size: 0.75rem;">Pelo presente instrumento particular de contrato as partes abaixo qualificadas:</p> 
         <div style="margin-top: 0.5rem; font-size: 0.75rem;">
           <strong>Contratante:</strong>
@@ -31,27 +31,27 @@
         </div>
       <br>
       <strong style="text-align: center; margin-block: 0.5rem;">CLÁUSULAS</strong>
-      <div style="margin-block: 0.5rem; font-size: 0.75rem;">
+      <div style="margin-block-end: 0.3rem; font-size: 0.75rem;">
         <strong>CLÁUSULA PRIMEIRA - DO OBJETO: </strong>
         <span>O presente contrato tem como objeto a prestação de serviços de {{ servico }}, conforme especificado no processo administrativo Nº {{ processo }}, a ser realizado no evento ocorrido em {{ evento }}.</span> 
       </div>
-      <div style="margin-block: 0.5rem; font-size: 0.75rem;">
+      <div style="margin-block-end: 0.3rem; font-size: 0.75rem;">
         <strong>CLÁUSULA SEGUNDA - DAS OBRIGAÇÕES DO CONTRATADO: </strong>
         <span>O contratado se compromete a realizar os serviços descritos, com carga horária total de {{ carga_horaria }} horas, no período de {{ data_inicio }} a {{ data_termino }}, conforme cronograma previamente acordado.</span>
       </div>
-      <div style="margin-block: 0.5rem; font-size: 0.75rem;">
+      <div style="margin-block-end: 0.3rem; font-size: 0.75rem;">
         <strong>CLÁUSULA TERCEIRA – DA REMUNERAÇÃO: </strong>
-        <span>Pela prestação dos serviços, o contratante pagará ao contratado o valor de R$ {{ valor_hora_aula|floatformat:"2g"}} por hora-aula, totalizando o valor de R$ {{ total_valor|floatformat:"2g" }} ({{ total_valor|float_to_words|floatformat:"2g" }} reais), a ser pago conforme as condições estabelecidas no cronograma de pagamento.</span>
+        <span>Pela prestação dos serviços, o contratante pagará ao contratado o valor de R$ {{ valor_hora_aula|floatformat:"2g"}} por hora-aula, totalizando o valor de R$ {{ total_valor|floatformat:"2g" }} ({{ total_valor|float_to_words }} reais), a ser pago conforme as condições estabelecidas no cronograma de pagamento.</span>
       </div>
-      <div style="margin-block: 0.5rem; font-size: 0.75rem;">
+      <div style="margin-block-end: 0.3rem; font-size: 0.75rem;">
         <strong>CLÁUSULA QUARTA – DAS OBRIGAÇÕES DO CONTRATANTE: </strong>
         <span>O contratante se compromete a fornecer os recursos necessários para a execução dos serviços, bem como realizar o pagamento conforme estipulado na cláusula anterior.</span>
       </div>
-      <div style="margin-block: 0.5rem; font-size: 0.75rem;">
+      <div style="margin-block-end: 0.3rem; font-size: 0.75rem;">
         <strong>CLÁUSULA QUINTA – DA RESCISÃO: </strong>
         <span>O presente contrato poderá ser rescindido por qualquer das partes, mediante aviso prévio de 30 (trinta) dias, ou imediatamente em caso de descumprimento de qualquer cláusula contratual.</span>
       </div>
-      <div style="margin-block: 0.5rem; font-size: 0.75rem;">
+      <div style="margin-block-end: 0.3rem; font-size: 0.75rem;">
         <strong>CLÁUSULA SEXTA – DAS DISPOSIÇÕES GERAIS: </strong>
         <span>
           <ol style="font-style: italic;">
@@ -63,8 +63,8 @@
         </span> 
       </div>
       <strong style="text-align: center; margin-block: 0.5rem;">Itumbiara - GO, {{ data_inicio }}</strong>
-      <strong style="text-align: center; margin-block: 0.5rem;">ASSINATURAS</strong>
-      <div style="display: flex; flex-direction: row; justify-content: space-between;">
+      <strong style="text-align: center; margin-block-end: 0.3rem;">ASSINATURAS</strong>
+      <div style="display: flex; flex-direction: row; justify-content: space-between; margin-block-end: 0.3rem;">
         <strong>Contratante: ___________________________</strong> 
         <strong>Contratado: ____________________________</strong> 
       </div>  

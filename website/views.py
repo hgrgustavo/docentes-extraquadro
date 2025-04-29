@@ -1,4 +1,6 @@
 import io
+import ntplib
+from datetime import datetime
 from . import models, forms, storages
 from weasyprint import HTML
 from django.core.files.base import ContentFile
@@ -7,7 +9,6 @@ from django.db.models import Sum
 from django import http, shortcuts
 from django.template import loader
 from django.views.generic import base, edit, list
-from django.conf import settings
 
 
 class LoginView(edit.FormView):
@@ -178,7 +179,7 @@ class GeneratePDF(base.View):
             return buffer
 
         except Exception as e:
-            print(f"Erro ao renderizar o PDF: {str(e)}")
+            print(f"Error rendering PDF: {str(e)}")
 
             if buffer:
                 buffer.close()
@@ -205,9 +206,21 @@ class MenuHistory(list.ListView):
             sum_carga_horaria = aggregate_data["sum_carga_horaria"] or 0
             sum_valor_hora_aula = aggregate_data["sum_valor_hora_aula"] or 0
 
+            # data de hoje
+            try:
+                ntp_client = ntplib.NTPClient()
+                ntp_response = ntp_client.request(
+                    host="pool.ntp.org", version=4)
+                today = ntp_response
+
+            except Exception as e:
+                print("Error obtaining ntp data, because ", e)
+                today = datetime.now().strftime("%Y-%m-d")
+
             context["user_name"] = user.nome
             context["user_email"] = user.email
             context["total_cost"] = sum_carga_horaria * sum_valor_hora_aula
+            context["today"] = today
 
         except models.Usuario.DoesNotExist:
             context["user_nome"] = None

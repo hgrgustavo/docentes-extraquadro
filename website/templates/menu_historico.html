@@ -184,10 +184,10 @@
             <td class="-translate-x-3">{{ c.prestador }}</td>
             <td class="-translate-x-3">{{ c.modalidade }}</td>
 
-            {% if c.data_termino > c.data_termino %}
+            {% if c.data_termino >= today %}
             <td class="-translate-x-3 text-green-600"><strong>{{ c.data_inicio|date:"d/b/Y" }}</strong></td>
             <td class="-translate-x-3 text-green-600"><strong>{{ c.data_termino|date:"d/b/Y" }}</strong></td>
-            {% elif c.data_termino <= c.data_termino %}
+            {% else %}
             <td class="-translate-x-3 text-green-600"><strong>{{ c.data_inicio|date:"d/b/Y" }}</strong></td>
             <td class="-translate-x-3 text-red-600 underline underline-offset-8 hover:cursor-pointer animate-pulse" title="Vencido!"><strong>{{ c.data_termino|date:"d/b/Y" }}</strong></td>
             {% endif %}

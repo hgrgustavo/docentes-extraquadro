@@ -7,8 +7,9 @@
     <meta name="csrf-token" content="{{ csrf_token }}">
     <title>Listar Professor</title>
     <script src="https://unpkg.com/lucide@latest"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script> 
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <script src="{% static 'js/fixes.js' %}" defer></script>
+    <script src="{% static 'js/async.js' %}" defer></script>
     <link type="image/x-icon" rel="icon" href="{% static 'img/senai-icon.png' %}">
 </head>
 
@@ -54,7 +55,7 @@
       </div>
       <!-- Nav Query -->
       <div class=" absolute self-left translate-x-20 translate-y-30">
-        <img class="avatar-preview rounded-full w-[120px] h-[120px] border border-dashed border-white">
+        <div class="avatar-preview rounded-full w-[120px] h-[120px] border border-dashed border-white"></div>
         <div class="text-center">
           <div class="mt-4 flex flex-col justify-left text-sm text-gray-600"> 
             <strong class="text-2xl text-white -translate-x-3 -translate-y-1">{{ user_name }}</strong>
@@ -159,17 +160,25 @@
     {% for p in professor %}
     <div class="mt-10 grid grid-cols-12 gap-x-5 gap-y-8 sm:grid-cols-5">
       <div class="col-span-1">
-        <img class="avatar-preview rounded-full w-[300px] h-[200px] border border-dashed">
-        <div class="text-center">
-          <div class="mt-4 flex text-sm text-gray-600">
-            <label for="file-upload" class="cursor-pointer rounded-md bg-white font-semibold text-indigo-600 focus-within:ring-2 focus-within:ring-indigo-600 hover:text-indigo-500">
-              <span>Upload a file</span>
-              <input id="file-upload" type="file" class="sr-only">
-            </label>
+        <div id="{{ p.id }}" class="bg-center bg-origin-border bg-size=[auto_200px] -translate-y-5 rounded-full w-[200px] h-[200px] border border-dashed relative flex flex-col justify-center cursor-pointer hover:bg-transparent z-10">
+          <div class="-translate-y-2 flex flex-col items-center justify-center text-center text-sm text-gray-600 relative overflow-hidden">
+            <svg class="mx-auto size-12 text-gray-300" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" data-slot="icon">
+              <path fill-rule="evenodd" d="M1.5 6a2.25 2.25 0 0 1 2.25-2.25h16.5A2.25 2.25 0 0 1 22.5 6v12a2.25 2.25 0 0 1-2.25 2.25H3.75A2.25 2.25 0 0 1 1.5 18V6ZM3 16.06V18c0 .414.336.75.75.75h16.5A.75.75 0 0 0 21 18v-1.94l-2.69-2.689a1.5 1.5 0 0 0-2.12 0l-.88.879.97.97a.75.75 0 1 1-1.06 1.06l-5.16-5.159a1.5 1.5 0 0 0-2.12 0L3 16.061Zm10.125-7.81a1.125 1.125 0 1 1 2.25 0 1.125 1.125 0 0 1-2.25 0Z" clip-rule="evenodd" />
+            </svg>
+            <div class="text-sm/6 justify-self-center text-gray-600">
+              <label class="relative cursor-pointer rounded-md bg-white font-semibold text-indigo-600 focus-within:ring-2 focus-within:ring-indigo-600 focus-within:ring-offset-2 focus-within:outline-hidden hover:text-indigo-500"> 
+                <span>Upload a file</span>
+                <input type="file" class="sr-only">
+              </label>
+              <p class="pl-1 text-center">or drag and drop</p>
+              <p class="text-xs/5 text-gray-600">PNG, JPG, GIF up to 10MB</p>
+            </div>
           </div>
         </div>
       </div>
        <div class="col-span-2 text-left">
+        <strong>N°{{ p.id }}</strong>
+        <br>
         <strong>{{ p.nome }}</strong>
         <br>
         <span>E-mail: <strong> {{ p.email }}</strong></span>
@@ -200,7 +209,6 @@
   </div>
 </div>
 <!-- Scripts -->
-    <script>lucide.createIcons();</script>
-    <script src="https://cdn.datatables.net/2.2.2/js/dataTables.js"></script>
+    <script>lucide.createIcons();</script> 
 </body>
 </html>

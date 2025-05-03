@@ -123,9 +123,9 @@ class MenuGenContract(edit.CreateView):
 
             if pdf_buffer:
                 file_content = ContentFile(pdf_buffer.read())
-                file_name = f"contrato_{contrato.id}.pdf"
+                file_name = f"contract_{contrato.id}.pdf"
 
-                storages.GoogleDriveStorage().save(file_content, file_name)
+                storages.GoogleDriveStorage().upload(file_content, file_name)
 
                 pdf_buffer.close()
 
@@ -194,36 +194,33 @@ class MenuHistory(list.ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+
+        user = models.Usuario.objects.get(pk=1)
+        contract = models.Contratos.objects.all()
+
+        aggregate_data = contract.aggregate(
+            sum_carga_horaria=Sum("carga_horaria"),
+            sum_valor_hora_aula=Sum("valor_hora_aula")
+        )
+
+        sum_carga_horaria = aggregate_data["sum_carga_horaria"] or 0
+        sum_valor_hora_aula = aggregate_data["sum_valor_hora_aula"] or 0
+
+        # data de hoje
         try:
-            user = models.Usuario.objects.get(pk=1)
-            contract = models.Contratos.objects.all()
+            ntp_client = ntplib.NTPClient()
+            ntp_response = ntp_client.request(
+                host="pool.ntp.org", version=4)
+            today = ntp_response
 
-            aggregate_data = contract.aggregate(
-                sum_carga_horaria=Sum("carga_horaria"),
-                sum_valor_hora_aula=Sum("valor_hora_aula")
-            )
+        except Exception as e:
+            print("Error obtaining ntp data, because ", e)
+            today = datetime.now().strftime("%Y-%m-d")
 
-            sum_carga_horaria = aggregate_data["sum_carga_horaria"] or 0
-            sum_valor_hora_aula = aggregate_data["sum_valor_hora_aula"] or 0
-
-            # data de hoje
-            try:
-                ntp_client = ntplib.NTPClient()
-                ntp_response = ntp_client.request(
-                    host="pool.ntp.org", version=4)
-                today = ntp_response
-
-            except Exception as e:
-                print("Error obtaining ntp data, because ", e)
-                today = datetime.now().strftime("%Y-%m-d")
-
-            context["user_name"] = user.nome
-            context["user_email"] = user.email
-            context["total_cost"] = sum_carga_horaria * sum_valor_hora_aula
-            context["today"] = today
-
-        except models.Usuario.DoesNotExist:
-            context["user_nome"] = None
+        context["user_name"] = user.nome
+        context["user_email"] = user.email
+        context["total_cost"] = sum_carga_horaria * sum_valor_hora_aula
+        context["today"] = today
 
         return context
 
@@ -276,7 +273,7 @@ class DownloadContract(base.View):
             )
 
             download_link = storages.GoogleDriveStorage().get_download_link(
-                contract_id
+                f"contract_{contract_id}.pdf"
             )
 
             if not download_link:
@@ -305,3 +302,33 @@ class DownloadContract(base.View):
                 },
                 status=404
             )
+
+
+class UploadTeacherPhoto(base.View):
+    model = models.Professor
+
+    def post(self, request, pk):
+        try:
+            models.Professor.objects.get(
+                pk=pk)
+
+            buffer = io.BytesIO()
+
+            for _, file in request.FILES.items():
+                buffer.write(b"".join(file.chunks(chunk_size=1024**2)))
+
+            buffer.seek(0)
+
+            file_name = f"teacher_{pk}_photo.{
+                request.FILES["file"].name.split('.')[-1]}"
+
+            storages.GoogleDriveStorage().upload(ContentFile(buffer.read()), file_name)
+
+            buffer.close()
+
+            file_url = storages.GoogleDriveStorage().get_drivefile_url(file_name)
+
+            return http.JsonResponse({"status": "success", "photo_url": file_url})
+
+        except models.Professor.DoesNotExist:
+            return http.JsonResponse({"status": "error", "message": "Teacher not found!"}, status=404)

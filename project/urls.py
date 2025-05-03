@@ -9,8 +9,11 @@ urlpatterns = [
         path("criar-professor/", views.MenuCriarProfessor.as_view(),
              name="menucriarprofessorpage"),
 
-        path("listar-professor", views.MenuListarProfessor.as_view(),
+        path("listar-professor/", views.MenuListarProfessor.as_view(),
              name="menulistarprofessorpage"),
+
+        path("listar-professor/upload/teacher_photo/<int:pk>/",
+             views.UploadTeacherPhoto.as_view(), name="uploadteacherphoto"),
 
         path("contratos/", include([
             path("gerar-contrato/", views.MenuGenContract.as_view(),

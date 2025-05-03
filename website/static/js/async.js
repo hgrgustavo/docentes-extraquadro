@@ -3,6 +3,7 @@ class Async {
     this.showUserAvatar();
     this.deleteContract();
     this.downloadContract();
+    this.uploadTeacherPhoto();
 
   }
 
@@ -119,6 +120,58 @@ class Async {
           })
       })
     })
+  }
+
+  uploadTeacherPhoto() {
+    document.addEventListener("DOMContentLoaded", () => {
+      document.querySelectorAll("input.sr-only").forEach((input) => {
+        const target_div = input.closest("div[id]");
+
+        if (!target_div) {
+          throw new DOMException("Target div not found.", "NotFoundError");
+        }
+
+        const id = target_div.id;
+
+        if (!id) {
+          throw new DOMException("Teacher id not found.", "NotFoundError");
+        }
+
+        const label = target_div.querySelector("label");
+
+        if (!label) {
+          throw new DOMException("Label not found.", "NotFoundError");
+        }
+
+        label.setAttribute("for", `input_${id}`);
+        input.setAttribute("name", `teacher_${id}`);
+        input.setAttribute("id", `input_${id}`)
+
+        input.addEventListener("change", (event) => {
+          const photo = event.target.files[0];
+          const formData = new FormData();
+
+          formData.append("file", photo);
+
+          fetch(`upload/teacher_photo/${id}/`, {
+            method: "POST",
+            headers: { "X-CSRFToken": this.getCSRFToken() },
+            body: formData,
+          })
+            .then(response => response.json())
+            .then((data) => {
+              if (data.status === "success" && data.photo_url) {
+                console.log(data.photo_url);
+                target_div.classList.add(`bg-[url(${data.photo_url})]`);
+                target_div.classList.remove("border");
+                target_div.classList.remove("border-dashed");
+
+              }
+            })
+        })
+      })
+    })
+
   }
 }
 

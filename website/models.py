@@ -2,6 +2,7 @@ from django.contrib.auth import hashers
 from django.db import models
 from django.core import validators, exceptions
 from django.utils.translation import gettext_lazy as _
+import os
 
 
 class Professor(models.Model):

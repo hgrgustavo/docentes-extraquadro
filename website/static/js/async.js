@@ -125,19 +125,19 @@ class Async {
   uploadTeacherPhoto() {
     document.addEventListener("DOMContentLoaded", () => {
       document.querySelectorAll("input.sr-only").forEach((input) => {
-        const target_div = input.closest("div[id]");
+        const targetDiv = input.closest("div[id]");
 
-        if (!target_div) {
+        if (!targetDiv) {
           throw new DOMException("Target div not found.", "NotFoundError");
         }
 
-        const id = target_div.id;
+        const id = targetDiv.id;
 
         if (!id) {
           throw new DOMException("Teacher id not found.", "NotFoundError");
         }
 
-        const label = target_div.querySelector("label");
+        const label = targetDiv.querySelector("label");
 
         if (!label) {
           throw new DOMException("Label not found.", "NotFoundError");
@@ -160,15 +160,21 @@ class Async {
           })
             .then(response => response.json())
             .then((data) => {
-              if (data.status === "success" && data.photo_url) {
-                console.log(data.photo_url);
-                target_div.classList.add(`bg-[url(${data.photo_url})]`);
-                target_div.classList.remove("border");
-                target_div.classList.remove("border-dashed");
+              if (data.status === "success" && data.photo_url.match(/^https:\/\/lh3\.googleusercontent\.com\/d\//)) {
+                localStorage.setItem(`teacher_${id}_photo`, data.photo_url);
 
               }
             })
+            .catch(error => {
+              alert(`Teacher photo upload error, because ${error}`);
+            })
         })
+        let cachedPhoto = localStorage.getItem(`teacher_${id}_photo`);
+
+        if (cachedPhoto) {
+          targetDiv.classList.add(`bg-[url(${cachedPhoto})]`);
+
+        }
       })
     })
 

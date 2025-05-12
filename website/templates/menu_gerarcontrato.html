@@ -7,12 +7,11 @@
     <meta name="csrf-token" content="{{ csrf_token }}">
     <title>Gerar Contrato</title>
     <script src="https://unpkg.com/lucide@latest"></script>
-    
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>    
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
-    <script src="{% static 'js/fixes.js' %}" defer></script>
-    <script src="{% static 'js/async.js' %}" defer></script>
+    <script src="{% static 'js/fixes.js' %}"></script>
+    <script src="{% static 'js/async.js' %}"></script>
     <script src="{% static 'js/charts.js' %}"></script>
     <link type="image/x-icon" rel="icon" href="{% static 'img/senai-icon.png' %}">
 </head>
@@ -180,7 +179,7 @@
         </div>
 
         <div class="sm:col-span-full">
-          <label for="email" class="block text-sm/6 font-medium text-gray-900">Prestador</label>
+          <label for="email" class="block text-sm/6 font-medium text-gray-900">Professor(a)</label>
           <div class="mt-2">
 
             {{ form.prestador }}

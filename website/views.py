@@ -91,15 +91,28 @@ class MenuListarProfessor(list.ListView):
         try:
             user = models.Usuario.objects.get(pk=1)
             teacher = models.Professor.objects.all()
+            contract = models.Contratos.objects.all()
+
+            # data de hoje
+            try:
+                ntp_client = ntplib.NTPClient()
+                ntp_response = ntp_client.request(
+                    host="pool.ntp.org", version=4)
+                today = ntp_response
+
+            except Exception as e:
+                print("Error obtaining ntp data, because ", e)
+                today = datetime.now().strftime("%Y-%m-d")
 
             context["user_name"] = user.nome
             context["user_email"] = user.email
-
             context["teacher_cpf_percentage"] = round((teacher.filter(
                 pf_ou_pj="PF").count() / teacher.count()) * 100)
-
             context["teacher_cnpj_percentage"] = round((teacher.filter(
                 pf_ou_pj="PJ").count() / teacher.count()) * 100)
+            context["contract_expiration_date"] = contract.values(
+                "prestador_id", "data_termino", "servico", "componentes", "modalidade", "id")
+            context["today"] = today
 
         except models.Usuario.DoesNotExist:
             context["user_nome"] = None

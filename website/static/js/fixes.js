@@ -9,14 +9,11 @@ class Fixes {
 
   removeSelectDashes() {
     document.addEventListener("DOMContentLoaded", () => {
-      const select = document.getElementById("pf_ou_pj");
-      if (select && select.options.length > 0) {
-        select.remove(0);
-        console.log("Dashes removidos com sucesso!");
-      } else {
-        console.error("O elemento select não foi encontrado ou está vazio.");
-      }
-    })
+      document.querySelectorAll("select").forEach(select => {
+        select.options.length > 0 ? select.remove(0) : console.error(
+          `O elemento select (${select.name || select.id}) não foi encontrado ou está vazio.`);
+      });
+    });
   }
 
   dropdownClick() {
@@ -28,6 +25,7 @@ class Fixes {
         event.stopPropagation();
         dropdown.classList.toggle("hidden");
       });
+
     })
   }
 

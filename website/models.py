@@ -11,6 +11,9 @@ class Professor(models.Model):
         ("PJ", "Pessoa Jurídica"),
     ]
 
+    def __str__(self) -> str:
+        return self.nome
+
     def remove_mask(string: str) -> str:
         return "".join(filter(str.isdigit, string))
 
@@ -89,7 +92,8 @@ class Professor(models.Model):
 
     def clean(self):
         if self.cpf and self.cnpj:
-            raise exceptions.ValidationError("Pessoa Física não pode ter CNPJ")
+            raise exceptions.ValidationError(
+                "Escolha entre Pessoa Física ou Jurídica.")
 
 
 class Usuario(models.Model):
@@ -123,7 +127,7 @@ class Contratos(models.Model):
 
     processo = models.CharField(max_length=255)
     evento = models.DateField()
-    prestador = models.CharField(max_length=255)
+    prestador = models.ForeignKey(Professor, on_delete=models.CASCADE)
     servico = models.CharField(max_length=255)
     componentes = models.CharField(max_length=255)
     data_inicio = models.DateField()
@@ -131,7 +135,8 @@ class Contratos(models.Model):
     carga_horaria = models.IntegerField()
     valor_hora_aula = models.FloatField()
     modalidade = models.CharField(
-        max_length=50, default="hora-aula", choices=CHOICES_MODALIDADES)
+        max_length=50, default="hora-aula", choices=CHOICES_MODALIDADES
+    )
 
     class Meta:
         db_table = 'contratos'

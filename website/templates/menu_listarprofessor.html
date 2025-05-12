@@ -99,13 +99,13 @@
                     </li>
                     <li>
                         <!-- Dropdown -->
-                        <div class="flex flex-col hover:bg-blue-700 hover:text-white rounded-lg transition-all align-center">
+                        <div class="flex flex-col hover:bg-blue-700 hover:text-white rounded-lg  align-center">
                             <div class="w-full">
                                 <button 
                                     id="menu-button" 
                                     aria-expanded="true" 
                                     aria-haspopup="true" 
-                                    class="flex items-center w-full p-3 rounded-lg cursor-pointer">
+                                    class=" flex items-center w-full p-3 rounded-lg cursor-pointer">
                                     <i data-lucide="dollar-sign" class="wr-2 duration-700 transition-all"></i>
                                     <span class="ml-2 whitespace-nowrap text-sm">Contratos</span>
                                     <i data-lucide="chevron-down" class="translate-x-13"></i>
@@ -113,7 +113,7 @@
                             </div>
                             <div 
                                 id="dropdown" 
-                                class="hidden -translate-y-1 underline hover:text-white rounded-lg transition-all" 
+                                class="hidden -translate-y-1 underline hover:text-white rounded-lg" 
                                 role="menu" 
                                 aria-orientation="vertical" 
                                 aria-labelledby="menu-button">
@@ -158,7 +158,7 @@
       </p>
     </div>
     {% for p in professor %}
-    <div class="mt-10 grid grid-cols-12 gap-x-5 gap-y-8 sm:grid-cols-5">
+    <div class="mt-10 grid grid-cols-3 gap-x-5 gap-y-8 sm:grid-cols-5">
       <div class="col-span-1">
         <div id="{{ p.id }}" class="hover:bg-none bg-center bg-origin-border bg-size=[auto_200px] -translate-y-5 rounded-full w-[200px] h-[200px] border border-dashed hover:border hover:border-dashed relative flex flex-col justify-center cursor-pointer hover:bg-transparent z-10">
           <div class="absolute inset-0 flex flex-col justify-center -translate-y-2 text-center text-sm text-gray-600 opacity-0 hover:opacity-100">
@@ -186,8 +186,8 @@
         <span></span>
         <span class="flex items-center gap-1"> 
           Telefone: <strong> {{ p.telefone }}</strong>
-          <a target="_blank" rel="noopener noreferrer" style="color: #0DD940" class="ml-1 -translate-y-0.5" href="https://web.whatsapp.com/send?phone={{ p.telefone }}">
-            <img src="{% static 'img/whatsapp.png' %}" alt="WhatsApp" style="width: 20px; height: auto;" title="Conversar no WhatsApp">
+          <a target="_blank" rel="noopener noreferrer" style="color: #0DD940" class="ml-1 transform transition-transform duration-300 hover:-translate-y-1" href="https://web.whatsapp.com/send?phone={{ p.telefone }}">
+            <img src="{% static 'img/whatsapp.png' %}" alt="WhatsApp" style="width: 22px; height: auto;" title="Conversar no WhatsApp">
           </a>
         </span>
         <span>Nascimento: <strong> {{ p.data_nascimento|date:"d/m/Y" }}</strong></span> 
@@ -198,17 +198,68 @@
 
         {% if p.pf_ou_pj == "PJ" %}
         <span>Categoria: <strong> Pessoa Jurídica</strong></span>
-        {% endif %}
-        
+        {% endif %}        
         <br><br>
         <strong>Observação: </strong><span> {{ p.observacao }}</span>
-      </div>
+      </div> 
     </div>
-    <hr>
+    <strong class="mt-6">- Contratos Vinculados -</strong>
+    <table class="mt-6 flex table-auto">
+      <tbody>
+        <tr>
+          {% for contract in contract_expiration_date %}
+            {% if contract.prestador_id == p.id %}
+              <td class="align-middle">
+                <div class="flex flex-col mr-9 justify-start">
+                  <strong class="text-2xl">
+                      {{ contract.data_termino|date:"d/ M" }}
+                  </strong> 
+                  <span class="text-sm translate-x-0.5 text-gray-500"><i>Venc. - Status</i></span>
+                  {% if contract.data_termino < today %}
+                      <span class="text-xs text-white rounded-full bg-red-950 p-1 font-bold">Vencido</span>
+                      <td class="border-l-5 border-red-800 pl-3 text-justify align-top">
+                        <p class="text-gray-600 text-sm mr-3"><strong class="text-gray-700 underline underline-offset-3">Id</strong>: {{ contract.id }}.</p> 
+                        <br>
+                        <p class="text-gray-600 text-sm mr-3"><strong class="text-gray-700 underline underline-offset-3">Tipo</strong>: {{ contract.modalidade }}.</p>
+                        <br>
+                        <p class="text-gray-600 text-sm mr-3"><strong class="text-gray-700 underline underline-offset-4">Serviço</strong>: {{ contract.servico }}</p>
+                        <br>
+                        <p class="text-gray-600 text-sm mr-3"><strong class="text-gray-700 underline underline-offset-3">Componentes</strong>: {{ contract.componentes }}</p>
+                      </td>
+                  {% else %}
+                      <span class="w-[83.9px] text-xs text-white rounded-full bg-green-800 p-1 text-center font-bold">Vigente</span>
+                      <td class="border-l-5 border-green-700 pl-3 text-justify align-top">
+                        <p class="text-gray-600 text-sm mr-3"><strong class="text-gray-700 underline underline-offset-3">Id</strong>: {{ contract.id }}.</p>
+                        <br>
+                        <p class="text-gray-600 text-sm mr-3"><strong class="align-top text-gray-700 underline underline-offset-3">Tipo</strong>: {{ contract.modalidade }}.</p>
+                        <br>
+                        <p class="text-gray-600 text-sm mr-3"><strong class="text-gray-700 underline underline-offset-4">Serviço</strong>: {{ contract.servico }}.</p>
+                        <br>
+                        <p class="text-gray-600 text-sm mr-3"><strong class="text-gray-700 underline underline-offset-3">Componentes</strong>: {{ contract.componentes }}.</p>
+                      </td>
+                  {% endif %}
+                </div>
+              </td>
+              <td class="px-3 text-xs place-self-end align-middle">
+                <div class="flex flex-row gap-10 justify-end">
+                  <div class="flex flex-col text-center text-gray-600 gap-3">
+                    <a class="hover:text-blue-700 transition delay-150 duration-300 ease-in-out hover:-translate-y-1 hover:scale-90">
+                      <i class="w-13 h-auto" data-lucide="download"></i>
+                      <span>Download</span>
+                    </a> 
+                  </div> 
+                </div>
+              </td>
+            {% endif %}
+          {% endfor %}
+        </tr>
+      </tbody>
+    </table>
+    <hr class="m-1">
     {% endfor %}
   </div>
 </div>
 <!-- Scripts -->
-    <script>lucide.createIcons();</script> 
+<script>lucide.createIcons();</script> 
 </body>
 </html>

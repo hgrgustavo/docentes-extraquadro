@@ -192,8 +192,8 @@
             <td class="-translate-x-3 text-red-600 underline underline-offset-8 hover:cursor-pointer animate-pulse" title="Vencido!"><strong>{{ c.data_termino|date:"d/b/Y" }}</strong></td>
             {% endif %}
             <td class="flex gap-3 justify-center -translate-x-2">
-              <a href="" class="hover:text-yellow-700" title="Download"><i data-lucide="download"></i></a>
-              <a href="" class="hover:text-red-700" title="Excluir"><i data-lucide="trash"></i></a>
+              <a data-contract-id="{{ c.id }}" class="hover:text-yellow-700" title="Download"><i data-lucide="download"></i></a>
+              <a class="hover:text-red-700" title="Excluir"><i data-lucide="trash"></i></a>
             </td>
           </tr>
           {% endfor %}

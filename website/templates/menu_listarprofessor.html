@@ -203,14 +203,14 @@
         <strong>Observação: </strong><span> {{ p.observacao }}</span>
       </div> 
     </div>
-    <strong class="mt-6">- Contratos Vinculados -</strong>
-    <table class="mt-6 flex table-auto">
+    <strong class="mt-9">- Contratos Vinculados -</strong>
+    <table class="mt-6 border-separate border-spacing-2">
       <tbody>
-        <tr>
-          {% for contract in contract_expiration_date %}
-            {% if contract.prestador_id == p.id %}
+        {% for contract in contract_expiration_date %}
+          {% if contract.prestador_id == p.id %}
+            <tr>
               <td class="align-middle">
-                <div class="flex flex-col mr-9 justify-start">
+                <div class="flex flex-col justify-start">
                   <strong class="text-2xl">
                       {{ contract.data_termino|date:"d/ M" }}
                   </strong> 
@@ -243,7 +243,7 @@
               <td class="px-3 text-xs place-self-end align-middle">
                 <div class="flex flex-row gap-10 justify-end">
                   <div class="flex flex-col text-center text-gray-600 gap-3">
-                    <a class="hover:text-blue-700 transition delay-150 duration-300 ease-in-out hover:-translate-y-1 hover:scale-90">
+                      <a data-contract-id="{{ contract.id }}" class="hover:text-yellow-700 transition delay-150 duration-300 ease-in-out hover:-translate-y-1 hover:scale-90">
                       <i class="w-13 h-auto" data-lucide="download"></i>
                       <span>Download</span>
                     </a> 

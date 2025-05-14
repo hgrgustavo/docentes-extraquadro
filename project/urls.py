@@ -15,6 +15,9 @@ urlpatterns = [
         path("listar-professor/upload/teacher_photo/<int:pk>/",
              views.UploadTeacherPhoto.as_view(), name="uploadteacherphoto"),
 
+        path("listar-professor/download/<int:pk>/",
+             views.DownloadContract.as_view()),
+
         path("contratos/", include([
             path("gerar-contrato/", views.MenuGenContract.as_view(),
                  name="menugerarcontratopage"),

@@ -97,7 +97,7 @@ class MenuListarProfessor(list.ListView):
             try:
                 ntp_client = ntplib.NTPClient()
                 ntp_response = ntp_client.request(
-                    host="pool.ntp.org", version=4)
+                    host="pool.ntp.org", version=4, timeout=5)
                 today = ntp_response
 
             except Exception as e:
@@ -223,7 +223,7 @@ class MenuHistory(list.ListView):
         try:
             ntp_client = ntplib.NTPClient()
             ntp_response = ntp_client.request(
-                host="pool.ntp.org", version=4)
+                host="pool.ntp.org", version=4, timeout=5)
             today = ntp_response
 
         except Exception as e:

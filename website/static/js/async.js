@@ -83,17 +83,15 @@ class Async {
 
   downloadContract() {
     document.addEventListener("DOMContentLoaded", () => {
-      document.querySelectorAll("a.hover\\:text-yellow-700").forEach((anchor) => {
-        const row = anchor.closest("tr[id]");
+      document.querySelectorAll("a.hover\\:text-yellow-700[data-contract-id]").forEach((anchor) => {
+        const id = anchor.getAttribute("data-contract-id");
 
-        if (!row) {
-          console.error("Table row not found");
+        if (!id) {
+          console.error("ID not found");
           return;
         }
 
-        const row_id = row.id;
-
-        fetch(`download/${row_id}/`, {
+        fetch(`download/${id}/`, {
           method: "POST",
           headers: {
             "X-CSRFToken": this.getCSRFToken(),
@@ -109,6 +107,7 @@ class Async {
           })
           .then((data) => {
             if (data.message === "success" && data.link) {
+              console.log(data.link);
               anchor.setAttribute("href", data.link);
               anchor.setAttribute("target", "_blank");
               anchor.setAttribute("rel", "noopener noreferrer");

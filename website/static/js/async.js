@@ -47,13 +47,12 @@ class Async {
           const row = event.target.closest("tr[id]");
 
           if (!row) {
-            console.error("Table row not found.");
-            return;
+            throw new DOMException("Row not found.", "NotFoundError");
           }
 
           const row_id = row.id;
 
-          if (confirm(`Deseja excluir o contrato Nº${row_id}?`)) {
+          if (confirm(`Excluir contrato Nº${row_id}?`)) {
             fetch(`excluir/${row_id}/`, {
               method: "DELETE",
               headers: {
@@ -66,10 +65,15 @@ class Async {
                 if (data.message === "success") {
                   const table_body = document.getElementById("table_body");
 
-                  if (table_body) {
-                    row.parentNode.removeChild(row);
-
+                  if (!table_body) {
+                    throw new DOMException("Table not found.", "NotFoundError");
                   }
+
+
+                  row.style.transition = "opacity 0.5s";
+                  row.style.opacity = "0";
+
+                  setTimeout(() => row.parentNode.removeChild(row), 500);
                 }
               })
               .catch((error) => {
@@ -87,8 +91,7 @@ class Async {
         const id = anchor.getAttribute("data-contract-id");
 
         if (!id) {
-          console.error("ID not found");
-          return;
+          throw new DOMException("ID not found.", "NotFoundError");
         }
 
         fetch(`download/${id}/`, {

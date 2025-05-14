@@ -97,12 +97,12 @@ class MenuListarProfessor(list.ListView):
             try:
                 ntp_client = ntplib.NTPClient()
                 ntp_response = ntp_client.request(
-                    host="pool.ntp.org", version=4, timeout=5)
-                today = ntp_response
+                    host="pool.ntp.org", version=3)
+                today = datetime.utcfromtimestamp(ntp_response.tx_time).date()
 
             except Exception as e:
                 print("Error obtaining ntp data, because ", e)
-                today = datetime.now().strftime("%Y-%m-d")
+                today = datetime.now().strftime("%Y-%m-%d")
 
             context["user_name"] = user.nome
             context["user_email"] = user.email
@@ -223,12 +223,12 @@ class MenuHistory(list.ListView):
         try:
             ntp_client = ntplib.NTPClient()
             ntp_response = ntp_client.request(
-                host="pool.ntp.org", version=4, timeout=5)
-            today = ntp_response
+                host="pool.ntp.org", version=3)
+            today = datetime.utcfromtimestamp(ntp_response.tx_time).date()
 
         except Exception as e:
             print("Error obtaining ntp data, because ", e)
-            today = datetime.now().strftime("%Y-%m-d")
+            today = datetime.now().strftime("%Y-%m-%d")
 
         context["user_name"] = user.nome
         context["user_email"] = user.email

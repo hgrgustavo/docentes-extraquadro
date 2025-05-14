@@ -193,15 +193,18 @@
             {% endif %}
             <td class="flex gap-3 justify-center -translate-x-2">
               <a data-contract-id="{{ c.id }}" class="hover:text-yellow-700" title="Download"><i data-lucide="download"></i></a>
-              <a class="hover:text-red-700" title="Excluir"><i data-lucide="trash"></i></a>
+              <a class="hover:text-red-700" title="Excluir"><i data-lucide="trash-2"></i></a>
             </td>
           </tr>
           {% endfor %}
         </tbody>
       </table>
+      <p>Hoje: {{ today }}</p>
+      <p>Data término: {{ contratos.data_termino }}</p>
     </div>
   </div>
 </div>
+
 <!-- Scripts -->
     <script>lucide.createIcons();</script>
     <script src="https://cdn.datatables.net/2.2.2/js/dataTables.js"></script>

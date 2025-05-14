@@ -204,20 +204,20 @@
       </div> 
     </div>
     <strong class="mt-9">- Contratos Vinculados -</strong>
-    <table class="mt-6 border-separate border-spacing-2">
+    <table class="mt-3 border-separate border-spacing-y-8">
       <tbody>
         {% for contract in contract_expiration_date %}
           {% if contract.prestador_id == p.id %}
-            <tr>
-              <td class="align-middle">
+            <tr id="{{ contract.id }}">
+              <td class="align-middle w-30">
                 <div class="flex flex-col justify-start">
                   <strong class="text-2xl">
                       {{ contract.data_termino|date:"d/ M" }}
                   </strong> 
                   <span class="text-sm translate-x-0.5 text-gray-500"><i>Venc. - Status</i></span>
                   {% if contract.data_termino < today %}
-                      <span class="text-xs text-white rounded-full bg-red-950 p-1 font-bold">Vencido</span>
-                      <td class="border-l-5 border-red-800 pl-3 text-justify align-top">
+                      <span class="w-[83.9px] text-xs text-white rounded-full bg-red-800 p-1 text-center font-bold">Vencido</span>
+                      <td class="border-l-5 border-red-800 pl-3 text-justify align-top pb-1">
                         <p class="text-gray-600 text-sm mr-3"><strong class="text-gray-700 underline underline-offset-3">Id</strong>: {{ contract.id }}.</p> 
                         <br>
                         <p class="text-gray-600 text-sm mr-3"><strong class="text-gray-700 underline underline-offset-3">Tipo</strong>: {{ contract.modalidade }}.</p>
@@ -228,7 +228,7 @@
                       </td>
                   {% else %}
                       <span class="w-[83.9px] text-xs text-white rounded-full bg-green-800 p-1 text-center font-bold">Vigente</span>
-                      <td class="border-l-5 border-green-700 pl-3 text-justify align-top">
+                      <td class="border-l-5 border-green-700 pl-3 text-justify align-top pb-1">
                         <p class="text-gray-600 text-sm mr-3"><strong class="text-gray-700 underline underline-offset-3">Id</strong>: {{ contract.id }}.</p>
                         <br>
                         <p class="text-gray-600 text-sm mr-3"><strong class="align-top text-gray-700 underline underline-offset-3">Tipo</strong>: {{ contract.modalidade }}.</p>
@@ -240,14 +240,15 @@
                   {% endif %}
                 </div>
               </td>
-              <td class="px-3 text-xs place-self-end align-middle">
-                <div class="flex flex-row gap-10 justify-end">
-                  <div class="flex flex-col text-center text-gray-600 gap-3">
-                      <a data-contract-id="{{ contract.id }}" class="hover:text-yellow-700 transition delay-150 duration-300 ease-in-out hover:-translate-y-1 hover:scale-90">
-                      <i class="w-13 h-auto" data-lucide="download"></i>
-                      <span>Download</span>
-                    </a> 
-                  </div> 
+              <td class="px-3 text-xs align-middle">
+                <div class="flex flex-row gap-6 justify-start">
+                  <a title="Download" data-contract-id="{{ contract.id }}" class="hover:text-yellow-700 transition duration-300 ease-in-out hover:-translate-y-1 hover:scale-95">
+                    <i class="w-8 h-auto self-center" data-lucide="download"></i> 
+                  </a>
+
+                  <a class="hover:text-red-700 transition duration-300 ease-in-out hover:-translate-y-1 hover:scale-95" title="Excluir">
+                    <i class="w-8 h-auto self-center" data-lucide="trash-2"></i>
+                  </a> 
                 </div>
               </td>
             {% endif %}

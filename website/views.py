@@ -5,7 +5,6 @@ from . import models, forms, storages
 from weasyprint import HTML
 from django.core.files.base import ContentFile
 from django.contrib import auth
-from django.db.models import Sum
 from django import http, shortcuts
 from django.template import loader
 from django.views.generic import base, edit, list
@@ -39,14 +38,9 @@ class MenuInicio(list.ListView):
         context = super().get_context_data(**kwargs)
         try:
             user = models.Usuario.objects.get(pk=1)
-            teacher = models.Professor.objects.all()
-            contract = models.Contratos.objects.all()
 
             context["user_name"] = user.nome
             context["user_email"] = user.email
-
-            context["teacher_quantity"] = teacher.count()
-            context["contract_quantity"] = contract.count()
 
         except models.Usuario.DoesNotExist:
             context["user_nome"] = None
@@ -64,16 +58,9 @@ class MenuCriarProfessor(edit.CreateView):
         context = super().get_context_data(**kwargs)
         try:
             user = models.Usuario.objects.get(pk=1)
-            teacher = models.Professor.objects.all()
 
             context["user_name"] = user.nome
             context["user_email"] = user.email
-
-            context["teacher_cpf_percentage"] = round((teacher.filter(
-                pf_ou_pj="PF").count() / teacher.count()) * 100) or 0
-
-            context["teacher_cnpj_percentage"] = round((teacher.filter(
-                pf_ou_pj="PJ").count() / teacher.count()) * 100) or 0
 
         except models.Usuario.DoesNotExist:
             context["user_nome"] = None
@@ -90,7 +77,6 @@ class MenuListarProfessor(list.ListView):
         context = super().get_context_data(**kwargs)
         try:
             user = models.Usuario.objects.get(pk=1)
-            teacher = models.Professor.objects.all()
             contract = models.Contratos.objects.all()
 
             # data de hoje
@@ -106,10 +92,6 @@ class MenuListarProfessor(list.ListView):
 
             context["user_name"] = user.nome
             context["user_email"] = user.email
-            context["teacher_cpf_percentage"] = round((teacher.filter(
-                pf_ou_pj="PF").count() / teacher.count()) * 100)
-            context["teacher_cnpj_percentage"] = round((teacher.filter(
-                pf_ou_pj="PJ").count() / teacher.count()) * 100)
             context["contract_expiration_date"] = contract.values(
                 "prestador_id", "data_termino", "servico", "componentes", "modalidade", "id")
             context["today"] = today
@@ -157,19 +139,9 @@ class MenuGenContract(edit.CreateView):
 
         try:
             user = models.Usuario.objects.get(pk=1)
-            contract = models.Contratos.objects.all()
-
-            aggregate_data = contract.aggregate(
-                sum_carga_horaria=Sum("carga_horaria"),
-                sum_valor_hora_aula=Sum("valor_hora_aula")
-            )
-
-            sum_carga_horaria = aggregate_data["sum_carga_horaria"] or 0
-            sum_valor_hora_aula = aggregate_data["sum_valor_hora_aula"] or 0
 
             context["user_name"] = user.nome
             context["user_email"] = user.email
-            context["total_cost"] = sum_carga_horaria * sum_valor_hora_aula
 
         except models.Usuario.DoesNotExist:
             context["user_nome"] = None
@@ -209,15 +181,6 @@ class MenuHistory(list.ListView):
         context = super().get_context_data(**kwargs)
 
         user = models.Usuario.objects.get(pk=1)
-        contract = models.Contratos.objects.all()
-
-        aggregate_data = contract.aggregate(
-            sum_carga_horaria=Sum("carga_horaria"),
-            sum_valor_hora_aula=Sum("valor_hora_aula")
-        )
-
-        sum_carga_horaria = aggregate_data["sum_carga_horaria"] or 0
-        sum_valor_hora_aula = aggregate_data["sum_valor_hora_aula"] or 0
 
         # data de hoje
         try:
@@ -232,7 +195,7 @@ class MenuHistory(list.ListView):
 
         context["user_name"] = user.nome
         context["user_email"] = user.email
-        context["total_cost"] = sum_carga_horaria * sum_valor_hora_aula
+
         context["today"] = today
 
         return context

@@ -7,59 +7,17 @@
     <title>Home</title>
     <script src="https://unpkg.com/lucide@latest"></script> 
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.9/dist/chart.umd.min.js"></script>
     <script src="{% static 'js/fixes.js' %}" defer></script>
     <link type="image/x-icon" rel="icon" href="{% static 'img/senai-icon.png' %}">
-
 </head>
-
 <body>
     <!-- Navbar -->
     <div class="bg-blue-700 pb-80 relative z-0 flex flex-col justify-left">
       <div>
         <img class=" absolute -translate-x-15" src="{% static 'img/senai.png' %}" title="Serviço Nacional de Aprendizagem Industrial">
       </div>
-      <div class="flex translate-x-120 mt-4 absolute hover:text-white gap-10">
-        <!-- Nav Query -->
-        <span class="flex opacity-65 bg-blue-800 p-5 rounded-xs">
-          <img class="w-25 h-25" src="{% static 'img/group.png' %}">
-          <div class="ml-2 translate-y-1.5 text-white">
-            {% if teacher_quantity == 0 %}
-            <strong class="text-5xl">Nenhum</strong>
-            <p class="text-xl">Professor</p>
-            {% endif %}
-
-            {% if teacher_quantity == 1 %}
-            <strong class="text-5xl">{{ teacher_quantity }}</strong>
-            <p class="text-xl">Professor</p>
-            {% endif %}
-
-            {% if teacher_quantity > 1 %}
-            <strong class="text-5xl">{{ teacher_quantity }}</strong>
-            <p class="text-xl">Professores</p> 
-            {% endif %} 
-          </div>
-        </span>
-        <!-- Nav Query -->
-         <span class="flex opacity-65 bg-blue-800 p-5 rounded-xs">
-          <img class="w-25 h-25" src="{% static 'img/contract.png' %}">
-          <div class="ml-2 translate-y-1.5 text-white">
-            {% if contract_quantity == 0 %}
-            <strong class="text-5xl">Nenhum</strong>
-            <p class="text-xl">Contrato</p>
-            {% endif %}
-
-            {% if contract_quantity == 1 %}
-            <strong class="text-5xl">{{ contract_quantity }}</strong>
-            <p class="text-xl">Contrato</p>
-            {% endif %}
-
-            {% if contract_quantity > 1 %}
-            <strong class="text-5xl">{{ contract_quantity }}</strong>
-            <p class="text-xl">Contratos</p> 
-            {% endif %} 
-          </div>
-        </span>
-      </div> 
+       
       <!-- Nav Query -->
       <div class=" absolute self-left translate-x-20 translate-y-30">
         <img class="avatar-preview rounded-full w-[120px] h-[120px] border border-dashed border-white">
@@ -166,6 +124,34 @@
             </div>
         </div>
     </div>
+    <footer class="bg-gray-100 flex flex-row justify-between text-xs align-top text-center divide-x-gray-500 border-solid"> 
+      <div class="flex flex-col p-3 items-center self-center">
+        <small class="translate-x-1">Developer socials ↓</small>
+        <div class="flex flex-row gap-3 mt-1 align-center">
+          <span>
+            <a href="https://github.com/hgrgustavo">
+              <img src="{% static 'img/github.png' %}" class="w-5 h-auto hover:opacity-50">
+            </a> 
+          </span>
+          <span>
+            <a href="https://x.com/hgrgustavo1">
+              <img src="{% static 'img/twitter.png' %}" class="w-5 h-auto hover:opacity-50">
+            </a>
+          </span>
+        </div>
+      </div> 
+      <div class="self-center text-center">
+        <a href="/about/policies" class="text-[#699eca] hover:underline mx-4">Policies</a>
+        <a href="/about/policies/coc/" class="text-[#699eca] hover:underline">Code of Conduct</a>
+        <a href="/about/" class="text-[#699eca] hover:underline mx-4">About</a>
+        <a href="/about/contact/" class="text-[#699eca] hover:underline">Contact</a>
+        <br>
+        <p class="mt-1">Copyright © 1996-2025<a href="https://senaigoias.com.br/escola-senai-itumbiara" class="ml-2 hover:underline hover:text-[#699eca]">Serviço Nacional de Aprendizagem Industrial</a></p> 
+      </div>
+      <div class="flex flex-col p-3 items-center text-center self-center">
+        Utils
+      </div>
+    </footer>
     <!-- Scripts -->
     <script>lucide.createIcons();</script>
 </body>

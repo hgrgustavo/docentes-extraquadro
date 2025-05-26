@@ -52,7 +52,7 @@
                     <!-- Links de navegação -->
                     <li>
                         <a 
-                            href="{% url 'menuiniciopage' %}" 
+                            href="{% url 'menuhomepage' %}" 
                             class="flex items-center p-3 rounded-lg cursor-pointer hover:bg-blue-700 hover:text-white transition-all">
                             <i data-lucide="house" class="duration-700 transition-all"></i>
                             <span class="flex-1 ml-2 whitespace-nowrap text-sm">Home</span>
@@ -107,7 +107,7 @@
                     </li>
                     <li>
                       <a 
-                        href="{% url 'menuiniciopage' %}" 
+                        href="{% url 'menuhomepage' %}" 
                         class="flex items-center p-3 rounded-lg cursor-pointer hover:bg-green-700 hover:text-white transition-all">
                         <i data-lucide="wrench" class="duration-700 transition-all"></i>
                         <span class="flex-1 ml-2 whitespace-nowrap text-sm">Configurações</span>
@@ -115,7 +115,7 @@
                     </li>
                     <li>
                         <a 
-                            href="{% url 'menuiniciopage' %}" 
+                            href="{% url 'menuhomepage' %}" 
                             class="flex items-center p-3 rounded-lg cursor-pointer hover:bg-red-700 hover:text-white transition-all">
                             <i data-lucide="door-open" class="duration-700 transition-all"></i>
                             <span class="flex-1 ml-2 whitespace-nowrap text-sm">Sair</span>
@@ -165,9 +165,7 @@
           </tr>
           {% endfor %}
         </tbody>
-      </table>
-      <p>Hoje: {{ today }}</p>
-      <p>Data término: {{ contratos.data_termino }}</p>
+      </table> 
     </div>
   </div>
 </div>

@@ -1,113 +1,128 @@
 import io
-import ntplib
-from datetime import datetime
+from typing import Any, override
+from django.utils.decorators import method_decorator
+from django.contrib.auth import login
 from . import models, forms, storages
 from weasyprint import HTML
 from django.core.files.base import ContentFile
-from django.contrib import auth
-from django import http, shortcuts
+from django import http
 from django.template import loader
-from django.views.generic import base, edit, list
+from django.views.generic.base import TemplateView, View, ContextMixin
+from django.views.generic.list import ListView
+from django.views.generic.edit import CreateView, DeleteView
+from django.contrib.auth.decorators import login_required
+from django.conf import settings
+from django.shortcuts import redirect, get_object_or_404
+from .backends import CustomAuthentication
+from abc import ABC, abstractmethod
+from django.forms import BaseModelForm
 
 
-class LoginView(edit.FormView):
+class UserDataStrategy(ABC):
+    @abstractmethod
+    def get_user_data(self, request: http.HttpRequest) -> Any:
+        pass
+
+class SessionUserDataStrategy(UserDataStrategy):
+    @override
+    def get_user_data(self, request: http.HttpRequest) -> models.Usuario | None:
+        email = request.session.get("email")        
+        return models.Usuario.objects.filter(email=email).first() if email else None
+
+class QueryUserDataStrategy(UserDataStrategy):
+    @override
+    def get_user_data(self, request: http.HttpRequest) -> models.Usuario | None: # type: ignore
+        email = getattr(request.user, "email", None)
+        return models.Usuario.objects.filter(email=email).first()
+
+class UserDataMixin(ContextMixin):
+    strategy: UserDataStrategy
+
+    def set_strategy(self, request: http.HttpRequest, strategy: UserDataStrategy):
+        self.request = request
+        self.strategy = strategy
+
+    @override
+    def get_context_data(self, **kwargs: Any) -> Any:
+        context: dict[str, Any] = super().get_context_data(**kwargs)
+        
+        current_user = self.strategy.get_user_data(self.request)
+
+        if current_user:
+            context["user_name"] = current_user.nome
+            context["user_email"] = current_user.email
+   
+        return context
+
+class Index(TemplateView):
+    template_name = "index.html"
+
+class Login(TemplateView):
     template_name = "login.html"
     form_class = forms.LoginForm
 
-    def form_valid(self, form):
-        username = form.cleaned_data["username"]
-        password = form.cleaned_data["password"]
-        user = auth.authenticate(
-            self.request, username=username, password=password)
+    def get_context_data(self, **kwargs: Any):
+        context = super().get_context_data(**kwargs)
+        context["form"] = forms.LoginForm
+        
+        return context
 
-        if user is not None:
-            auth.login(self.request, user)
+    def post(self, request: http.HttpRequest) -> http.HttpResponse:
+        email: str = str(request.POST.get("email"))
+        password: str = str(request.POST.get("password"))
+        
+        user_query: models.Usuario | None = CustomAuthentication.authenticate(request=request, email=email, password=password)
 
-            return http.HttpResponseRedirect(self.success_url)
-        else:
-            form.add_error(None, "Usuário ou senha inválidos")
-            return super().form_invalid(form)
+        if user_query is not None:
+            login(request=request, user=user_query)
+            request.session["email"] = email
+            return redirect("menuhomepage")
+            
+        return http.JsonResponse({"message": "forbidden"}, status=403)
 
-
-class MenuInicio(list.ListView):
-    template_name = "menu_inicio.html"
+@method_decorator(login_required(login_url=settings.LOGIN_URL), name='dispatch')
+class MenuHome(UserDataMixin, ListView):
+    template_name = "menu_home.html"
     model = models.Usuario
     context_object_name = "usuario"
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        try:
-            user = models.Usuario.objects.get(pk=1)
+    def get(self, request: http.HttpRequest, *args: Any, **kwargs: Any) -> http.HttpResponse:
+        self.set_strategy(self.request, SessionUserDataStrategy())
+        return super().get(request, *args, **kwargs)
 
-            context["user_name"] = user.nome
-            context["user_email"] = user.email
-
-        except models.Usuario.DoesNotExist:
-            context["user_nome"] = None
-
-        return context
-
-
-class MenuCriarProfessor(edit.CreateView):
+@method_decorator(login_required(login_url=settings.LOGIN_URL), name='dispatch')
+class MenuCriarProfessor(UserDataMixin, CreateView):
     template_name = "menu_criarprofessor.html"
     model = models.Professor
     form_class = forms.CriarProfessorForm
     success_url = "#"
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        try:
-            user = models.Usuario.objects.get(pk=1)
+    def get(self, request: http.HttpRequest, *args: Any, **kwargs: Any) -> http.HttpResponse:
+        self.set_strategy(self.request, SessionUserDataStrategy())
+        return super().get(request, *args, **kwargs)
 
-            context["user_name"] = user.nome
-            context["user_email"] = user.email
-
-        except models.Usuario.DoesNotExist:
-            context["user_nome"] = None
-
-        return context
-
-
-class MenuListarProfessor(list.ListView):
+@method_decorator(login_required(login_url=settings.LOGIN_URL), name='dispatch')
+class MenuListarProfessor(UserDataMixin, ListView):
     template_name = "menu_listarprofessor.html"
     model = models.Professor
     context_object_name = "professor"
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        try:
-            user = models.Usuario.objects.get(pk=1)
-            contract = models.Contratos.objects.all()
-
-            # data de hoje
-            try:
-                ntp_client = ntplib.NTPClient()
-                ntp_response = ntp_client.request(
-                    host="pool.ntp.org", version=3)
-                today = datetime.utcfromtimestamp(ntp_response.tx_time).date()
-
-            except Exception as e:
-                print("Error obtaining ntp data, because ", e)
-                today = datetime.now().strftime("%Y-%m-%d")
-
-            context["user_name"] = user.nome
-            context["user_email"] = user.email
-            context["contract_expiration_date"] = contract.values(
-                "prestador_id", "data_termino", "servico", "componentes", "modalidade", "id")
-            context["today"] = today
-
-        except models.Usuario.DoesNotExist:
-            context["user_nome"] = None
-
-        return context
+    def get(self, request: http.HttpRequest, *args: Any, **kwargs: Any) -> http.HttpResponse:
+        self.set_strategy(self.request, SessionUserDataStrategy())
+        return super().get(request, *args, **kwargs)
 
 
-class MenuGenContract(edit.CreateView):
+@method_decorator(login_required(login_url=settings.LOGIN_URL), name='dispatch')
+class MenuGenContract(UserDataMixin, CreateView):
     template_name = "menu_gerarcontrato.html"
     model = models.Contratos
     form_class = forms.GerarContratoForm
 
-    def form_valid(self, form):
+    def get(self, request: http.HttpRequest, *args: Any, **kwargs: Any) -> http.HttpResponse:
+        self.set_strategy(self.request, SessionUserDataStrategy())
+        return super().get(request, *args, **kwargs)
+
+    def form_valid(self, form: BaseModelForm):
         try:
             contrato = form.save()
 
@@ -134,77 +149,39 @@ class MenuGenContract(edit.CreateView):
                 status=500
             )
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-
-        try:
-            user = models.Usuario.objects.get(pk=1)
-
-            context["user_name"] = user.nome
-            context["user_email"] = user.email
-
-        except models.Usuario.DoesNotExist:
-            context["user_nome"] = None
-
-        return context
+        
 
 
-class GeneratePDF(base.View):
-    def render_to_pdf(self, html_src, context_dict):
-        try:
-            template = loader.get_template(html_src)
-            html = template.render(context_dict)
-            buffer = io.BytesIO()
+@method_decorator(login_required(login_url=settings.LOGIN_URL), name='dispatch')
+class GeneratePDF(View):
+    def render_to_pdf(self, html_src: str, context_dict: dict[str, Any]) -> io.BytesIO:
+        template = loader.get_template(html_src)
+        html = template.render(context_dict)
+        buffer = io.BytesIO()
 
-            HTML(
-                string=html).write_pdf(buffer)
+        HTML(string=html).write_pdf(buffer) # type: ignore
 
-            buffer.seek(0)
+        buffer.seek(0)
 
-            return buffer
-
-        except Exception as e:
-            print(f"Error rendering PDF: {str(e)}")
-
-            if buffer:
-                buffer.close()
-
-            return None
+        return buffer
 
 
-class MenuHistory(list.ListView):
+@method_decorator(login_required(login_url=settings.LOGIN_URL), name='dispatch')
+class MenuHistory(UserDataMixin, ListView):
     template_name = "menu_historico.html"
     context_object_name = "contratos"
     model = models.Contratos
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-
-        user = models.Usuario.objects.get(pk=1)
-
-        # data de hoje
-        try:
-            ntp_client = ntplib.NTPClient()
-            ntp_response = ntp_client.request(
-                host="pool.ntp.org", version=3)
-            today = datetime.utcfromtimestamp(ntp_response.tx_time).date()
-
-        except Exception as e:
-            print("Error obtaining ntp data, because ", e)
-            today = datetime.now().strftime("%Y-%m-%d")
-
-        context["user_name"] = user.nome
-        context["user_email"] = user.email
-
-        context["today"] = today
-
-        return context
+    def get(self, request: http.HttpRequest, *args: Any, **kwargs: Any) -> http.HttpResponse:
+        self.set_strategy(self.request, SessionUserDataStrategy())
+        return super().get(request, *args, **kwargs)
 
 
-class DeleteContract(edit.DeleteView):
+@method_decorator(login_required(login_url=settings.LOGIN_URL), name='dispatch')
+class DeleteContract(DeleteView):
     model = models.Contratos
 
-    def delete(self, request, **kwargs):
+    def delete(self, request: http.HttpRequest, *args: Any, **kwargs: Any):
         try:
             contract_id = kwargs.get("pk")
 
@@ -238,12 +215,13 @@ class DeleteContract(edit.DeleteView):
             )
 
 
-class DownloadContract(base.View):
-    def post(self, request, **kwargs):
+@method_decorator(login_required(login_url=settings.LOGIN_URL), name='dispatch')
+class DownloadContract(View):
+    def post(self, request: http.HttpRequest, **kwargs: Any):
         contract_id = kwargs.get("pk")
 
         try:
-            shortcuts.get_object_or_404(
+            get_object_or_404 (
                 models.Contratos,
                 id=contract_id
             )
@@ -280,10 +258,11 @@ class DownloadContract(base.View):
             )
 
 
-class UploadTeacherPhoto(base.View):
+@method_decorator(login_required(login_url=settings.LOGIN_URL), name='dispatch')
+class UploadTeacherPhoto(View):
     model = models.Professor
 
-    def post(self, request, pk):
+    def post(self, request: http.HttpRequest, pk: int):
         try:
             models.Professor.objects.get(
                 pk=pk)
@@ -295,8 +274,8 @@ class UploadTeacherPhoto(base.View):
 
             buffer.seek(0)
 
-            file_name = f"teacher_{pk}_photo.{
-                request.FILES["file"].name.split('.')[-1]}"
+            file_name: str = f"teacher_{pk}_photo.{
+                request.FILES["file"].name.split('.')[-1]}"  # type: ignore
 
             storages.GoogleDriveStorage().upload(ContentFile(buffer.read()), file_name)
 

@@ -1,17 +1,18 @@
+from typing import Any
 from django.core.files import storage
 from django.conf import settings
-
 from googleapiclient.errors import HttpError
 from google.oauth2.service_account import Credentials
 from googleapiclient import discovery, http
+from django.core.files.base import ContentFile
 
 
 class GoogleDriveStorage(storage.Storage):
     def __init__(self):
-        self.credentials = Credentials.from_service_account_file(
+        self.credentials: Credentials = Credentials.from_service_account_file( # type: ignore
             settings.GOOGLE_DRIVE_CREDENTIALS)
 
-        self.service = discovery.build(
+        self.service = discovery.build( # type: ignore
             "drive", "v3", credentials=self.credentials)
 
         self.PARENTS_FOLDER = [
@@ -20,105 +21,106 @@ class GoogleDriveStorage(storage.Storage):
             "1KnyEXJfj0VY_TVxCuPw54uPe437vEMwi",  # usuarios
         ]
 
-    def upload(self, fd, filename: str) -> None:
+    def upload(self, fd: ContentFile, filename: str) -> None:
         try:
-            match True:
-                case _ if "contract_" in filename:
-                    file_metadata = {
-                        "name": str(filename),
-                        "parents": [self.PARENTS_FOLDER[0]],
-                    }
+            if "contract_" in filename:
+                file_metadata: dict[str, Any] = {
+                    "name": str(filename),
+                    "parents": [self.PARENTS_FOLDER[0]],
+                }
 
-                    media = http.MediaIoBaseUpload(
-                        fd=fd, mimetype="application/pdf")
+                media = http.MediaIoBaseUpload(
+                    fd=fd, mimetype="application/pdf")
 
-                    self.service.files().create(body=file_metadata,
-                                                media_body=media, fields="id").execute()
+                self.service.files().create(body=file_metadata, media_body=media, fields="id").execute() # type: ignore
 
-                case _ if "teacher_" in filename:
-                    teacher_photo_metadata = {
-                        "name": str(filename),
-                        "parents": [self.PARENTS_FOLDER[1]]
-                    }
+            if "teacher_" in filename:
+                teacher_photo_metadata: dict[str, Any] = {
+                    "name": str(filename),
+                    "parents": [self.PARENTS_FOLDER[1]]
+                }
 
-                    media = http.MediaIoBaseUpload(
-                        fd=fd,
-                        mimetype="image/*",
-                        resumable=True
-                    )
+                media = http.MediaIoBaseUpload(
+                    fd=fd,
+                    mimetype="image/*",
+                    resumable=True
+                )
 
-                    self.service.files().create(body=teacher_photo_metadata,
-                                                media_body=media).execute()
+                self.service.files().create( # type: ignore
+                    body=teacher_photo_metadata,
+                    media_body=media).execute()
 
-                case _ if "user_" in filename:
-                    user_photo_metadata = {
-                        "name": str(filename),
-                        "parents": [self.PARENTS_FOLDER[2]]
-                    }
+            if "user_" in filename:
+                user_photo_metadata: dict[str, Any] = {
+                    "name": str(filename),
+                    "parents": [self.PARENTS_FOLDER[2]]
+                }
 
-                    media = http.MediaIoBaseUpload(
-                        fd=fd,
-                        mimetype="image/*",
-                        resumable=True
-                    )
+                media = http.MediaIoBaseUpload(
+                    fd=fd,
+                    mimetype="image/*",
+                    resumable=True
+                )
 
-                    self.service.files().create(body=user_photo_metadata,
-                                                media_body=media, fields="id").execute()
+                self.service.files().create( # type: ignore
+                    body=user_photo_metadata,
+                    media_body=media, 
+                    fields="id").execute()
+                
         except HttpError as e:
-            print(f"Error while uploading photo, because {e.reason}")
+            print(f"Error while uploading photo, because {e}")
 
-    def search_drivefile_id(self, filename: str) -> str:
+    def search_drivefile_id(self, filename: str) -> str | None:
         try:
-            match True:
-                case _ if "contract_" in filename:
-                    query = f"name = '{filename}' and '{
-                        self.PARENTS_FOLDER[0]}' in parents"
+           
+            if "contract_" in filename:
+                query = f"name = '{filename}' and '{
+                self.PARENTS_FOLDER[0]}' in parents"
 
-                    result = (
-                        self.service.files().list(
-                            q=query,
-                            fields="files(id)",
-                        ).execute()
-                    )
+                result = ( # type: ignore
+                    self.service.files().list( # type: ignore
+                        q=query,
+                        fields="files(id)",
+                    ).execute()
+                )
 
-                    file = result.get("files", [])
+                file = result.get("files", []) # type: ignore
 
-                    return file[0]["id"] if file else "File not found"
+                return file[0]["id"] if file else "File not found" # type: ignore
 
-                case _ if "teacher_" in filename:
+            if "teacher_" in filename:
+                query = f"name = '{filename}' and '{
+                    self.PARENTS_FOLDER[1]}' in parents"
 
-                    query = f"name = '{filename}' and '{
-                        self.PARENTS_FOLDER[1]}' in parents"
+                result = ( # type: ignore
+                    self.service.files().list( # type: ignore
+                        q=query,
+                        fields="files(id)"
+                    ).execute()
+                )
 
-                    result = (
-                        self.service.files().list(
-                            q=query,
-                            fields="files(id)"
-                        ).execute()
-                    )
+                file = result.get("files", []) # type: ignore
+                
+                return file[0]["id"] if file else "File not found" # type: ignore
 
-                    file = result.get("files", [])
+            if "user_" in filename:
 
-                    return file[0]["id"] if file else "File not found"
+                query = f"name = '{filename}' and '{
+                    self.PARENTS_FOLDER[2]}' in parents"
 
-                case _ if "user_" in filename:
+                result = ( # type: ignore
+                    self.service.files().list( # type: ignore
+                        q=query,
+                        fields="files(id)"
+                    ).execute() # type: ignore
+                )
 
-                    query = f"name = '{filename}' and '{
-                        self.PARENTS_FOLDER[2]}' in parents"
-
-                    result = (
-                        self.service.files().list(
-                            q=query,
-                            fields="files(id)"
-                        ).execute()
-                    )
-
-                    file = result.get("files", [])
-
-                    return file[0]["id"] if file else "File not found"
+                file = result.get("files", []) # type: ignore
+                
+                return file[0]["id"] if file else "File not found" # type: ignore
 
         except HttpError as e:
-            return f"Error while searching drive file id, because {e.reason}"
+            return f"Error while searching drive file id, because {e}"
 
     def get_download_link(self, filename: str) -> str | None:
         try:
@@ -129,20 +131,18 @@ class GoogleDriveStorage(storage.Storage):
 
                 return None
 
-            request = self.service.files().get(
+            request = self.service.files().get( # type: ignore
                 fileId=drivefile_id, fields="webContentLink").execute()
 
-            return request.get("webContentLink", None)
+            return request.get("webContentLink", None) # type: ignore
 
         except HttpError as e:
             print(f"Error fetching download link for {filename}: {e}")
 
             return None
 
-    def url():
-        return None
-
-    def delete(self, filename: str) -> str | None:
+   
+    def delete_drivefile(self, filename: str) -> str | None:
         try:
             drivefile_id = self.search_drivefile_id(filename)
 
@@ -151,12 +151,12 @@ class GoogleDriveStorage(storage.Storage):
 
                 return None
 
-            self.service.files().delete(fileId=drivefile_id).execute()
+            self.service.files().delete(fileId=drivefile_id).execute() # type: ignore
 
             return f"File {filename} deleted successfully!"
 
         except HttpError as e:
-            print(f"Error while deleting {filename}: {e.reason}")
+            print(f"Error while deleting {filename}: {e}")
 
             return None
 
@@ -173,6 +173,6 @@ class GoogleDriveStorage(storage.Storage):
 
         except HttpError as e:
             print(f"Error fetching Drive file URL: {
-                  e.reason}")  # Debug log
+                  e}")  # Debug log
 
             return None

@@ -11,8 +11,12 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
 from pathlib import Path
+from typing import Any
+from dotenv import load_dotenv
 import os
 
+
+load_dotenv()
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -21,10 +25,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure--urf8=^g)9d2+2#m2o@**5armm+1s+1=m1%(+-!38e$ss3q6om'
+SECRET_KEY = os.getenv("DJANGO_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.getenv("DJANGO_ENV") == "development"
 
 ALLOWED_HOSTS = []
 
@@ -53,7 +57,7 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'project.urls'
 
-TEMPLATES = [
+TEMPLATES: list[dict[str, Any]] = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [
@@ -146,3 +150,17 @@ MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 
 DEFAULT_FILE_STORAGE = 'website.storages.GoogleDriveStorage'
 GOOGLE_DRIVE_CREDENTIALS = BASE_DIR / "credentials/credentials.json"
+
+AUTHENTICATION_BACKENDS = [
+    'website.backends.CustomAuthentication',
+]
+
+AUTH_USER_MODEL = "website.Usuario"
+
+
+LOGIN_URL = os.getenv("LOGIN_URL")
+
+SESSION_ENGINE = "django.contrib.sessions.backends.signed_cookies"
+SESSION_COOKIE_HTTPONLY = True
+SESSION_COOKIE_SECURE = os.getenv("DJANGO_ENV") == "production"
+SESSION_COOKIE_AGE = 604800

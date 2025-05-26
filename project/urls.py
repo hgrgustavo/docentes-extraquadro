@@ -1,15 +1,18 @@
-from django.urls import path, include
+from django.urls import path, include, resolvers
 from website import views
+from website import models, time_sync
 
-
-urlpatterns = [
-    path("", views.MenuInicio.as_view(), name="menuiniciopage"),
-    path("login/", views.LoginView.as_view(), name="loginpage"),
+urlpatterns: list[resolvers.URLPattern | resolvers.URLResolver] = [
+    path("", views.Index.as_view(), name="indexpage"),
+    path("login/", views.Login.as_view(), name="loginpage"),
     path("menu/", include([
+        path("home/", views.MenuHome.as_view(), name="menuhomepage"),
+
         path("criar-professor/", views.MenuCriarProfessor.as_view(),
              name="menucriarprofessorpage"),
 
-        path("listar-professor/", views.MenuListarProfessor.as_view(),
+        path("listar-professor/", views.MenuListarProfessor.as_view(extra_context={"contract_expiration_date": models.Contratos.objects.all().values(
+                "prestador_id", "data_termino", "servico", "componentes", "modalidade", "id"), "today": time_sync.get_synced_date()}),
              name="menulistarprofessorpage"),
 
         path("listar-professor/upload/teacher_photo/<int:pk>/",
